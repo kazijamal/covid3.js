@@ -1,0 +1,7 @@
+Team TwoFortyNine -- Kazi Jamal, Eric Lau, and Raymond Lee
+SoftDev1 pd9
+P04 —- Let the Data Speak
+2020-05-04
+
+kaziJ -- 2020-04-22 11:15
+Team TwoFortyNine formed, chose Kazi Jamal as project manager, and initialized repo.
