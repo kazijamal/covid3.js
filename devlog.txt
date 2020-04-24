@@ -11,3 +11,6 @@ Reorganize repository structure
 
 ericL -- 2020-04-24 10:58
 Initialize basic Flask app
+
+ericL -- 2020-04-24 11:11
+Update README.md
