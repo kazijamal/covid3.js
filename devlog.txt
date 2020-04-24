@@ -8,3 +8,6 @@ Team TwoFortyNine formed, chose Kazi Jamal as project manager, and initialized r
 
 ericL -- 2020-04-24 10:46
 Reorganize repository structure
+
+ericL -- 2020-04-24 10:58
+Initialize basic Flask app
