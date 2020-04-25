@@ -2,7 +2,7 @@
 
 ## Roster
 
-- **Kazi Jamal** (Project Manager):
+- **Kazi Jamal**: Project Manager
 - **Eric "Morty" Lau**
 - **Raymond "ray. lee" Lee**
 
