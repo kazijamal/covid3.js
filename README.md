@@ -4,7 +4,7 @@
 
 - **Kazi Jamal**: Project Manager
 - **Eric "Morty" Lau**
-- **Raymond "ray. lee" Lee**
+- **Raymond "ray. lee." Lee**
 
 ## Description
 
