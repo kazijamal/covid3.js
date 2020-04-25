@@ -16,3 +16,7 @@ ericL -- 2020-04-24 11:11
 Update README.md
 
 ericL -- 2020-04-25 07:29
+Implement basic MTA request
+
+ericL -- 2020-04-25 08:08
+Implement time loop for MTA requests
