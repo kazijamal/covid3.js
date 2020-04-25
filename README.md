@@ -2,7 +2,7 @@
 
 ## Roster
 
-- **Kazi Jamal**: Project Manager, Frontend
+- **Kazi Jamal**: Project Manager and Frontend
 - **Eric "Morty" Lau**: D3 and Backend for transportation section
 - **Raymond "ray. lee." Lee**: D3 and Backend for sentiment analysis section
 
