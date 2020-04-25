@@ -1,10 +1,10 @@
-# PROJECT_TITLE by TwoFortyNine
+# coviD3.js by TwoFortyNine
 
 ## Roster
 
-- **Kazi Jamal**: Project Manager
-- **Eric "Morty" Lau**
-- **Raymond "ray. lee." Lee**
+- **Kazi Jamal**: Project Manager, Frontend
+- **Eric "Morty" Lau**: D3 and Backend for transportation section
+- **Raymond "ray. lee." Lee**: D3 and Backend for sentiment analysis section
 
 ## Description
 
