@@ -1,12 +1,14 @@
-# PROJECT_TITLE by TwoFortyNine
+# coviD3.js by TwoFortyNine
 
 ## Roster
 
-- **Kazi Jamal** (Project Manager):
-- **Eric "Morty" Lau**
-- **Raymond "ray. lee" Lee**
+- **Kazi Jamal**: Project Manager and Frontend
+- **Eric "Morty" Lau**: D3 and Backend for transportation section
+- **Raymond "ray. lee." Lee**: D3 and Backend for sentiment analysis section
 
 ## Description
+
+coviD3.js is a website run by TwoFortyNine. We specialize in telling stories through beautiful and engaging data visualizations. With coviD3.js, we plan on analyzing the ways the coronavirus pandemic affects society outside of the hospital. For our first week, we plan on publishing two articles on changes in media sentiment and transportation. 
 
 ## Instructions
 
