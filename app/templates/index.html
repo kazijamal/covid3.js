@@ -2,6 +2,8 @@
 
 {% block title %} yer {% endblock %}
 
-{% block body %}
-Hello, World!
+{% block body %}{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/app.js')}}"></script>
 {% endblock %}
