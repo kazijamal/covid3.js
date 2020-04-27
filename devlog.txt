@@ -14,3 +14,6 @@ Initialize basic Flask app
 
 ericL -- 2020-04-24 11:11
 Update README.md
+
+kaziJ -- 2020-04-27 09:02
+Add unfinished version of design doc v0.
