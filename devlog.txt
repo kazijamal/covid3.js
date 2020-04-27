@@ -17,3 +17,7 @@ Update README.md
 
 kaziJ -- 2020-04-27 09:02
 Add unfinished version of design doc v0.
+
+rayL -- 2020-04-27 13:41
+Add number of coronavirus articles per day CSV file
+Add Flask route for data transfer to JS files 
