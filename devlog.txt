@@ -24,3 +24,6 @@ Implement time loop for MTA requests
 ericL -- 2020-04-25 22:33
 Add data for New York City subways, maps
 Implement basic NYC map drawing
+
+ericL -- 2020-04-25 13:23
+Implement MTA data parsing algorithm
