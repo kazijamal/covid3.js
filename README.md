@@ -61,7 +61,7 @@ cd TwoFortyNine_jamalK-lauE-leeR
 Run the following line in your virtual environment
 
 ```shell
-python app/__init__.py
+python3 app/__init__.py
 ```
 
 Open a browser and head to <http://127.0.0.1:5000/>
