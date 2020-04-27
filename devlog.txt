@@ -25,6 +25,9 @@ ericL -- 2020-04-25 22:33
 Add data for New York City subways, maps
 Implement basic NYC map drawing
 
+kaziJ -- 2020-04-27 09:02
+Add unfinished version of design doc v0.
+
 ericL -- 2020-04-27 12:23
 Implement MTA data parsing algorithm
 
