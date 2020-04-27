@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- D3-minified -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    
+    <!-- Flask app script -->
+    <script
+      src="{{ url_for('static', filename='js/num-articles-per-day.js')}}"
+      type="text/javascript"
+      defer
+    ></script>
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
 
-        <title>
-            {% block title %}{% endblock %}
-        </title>
-    </head>
+    <!-- Prevent GET request to favicon.ico -->
+    <link rel="icon" href="data:," />
 
-    <body>
-        {% block body %}
-        {% endblock %}
-    </body>
+    <title>
+      {% block title %}{% endblock %}
+    </title>
+  </head>
 
+  <body>
+    {% block body %} {% endblock %}
+  </body>
 </html>
