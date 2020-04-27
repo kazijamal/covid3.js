@@ -15,5 +15,18 @@ Initialize basic Flask app
 ericL -- 2020-04-24 11:11
 Update README.md
 
+ericL -- 2020-04-25 07:29
+Implement basic MTA request
+
+ericL -- 2020-04-25 08:08
+Implement time loop for MTA requests
+
+ericL -- 2020-04-25 22:33
+Add data for New York City subways, maps
+Implement basic NYC map drawing
+
+ericL -- 2020-04-25 13:23
+Implement MTA data parsing algorithm
+
 kaziJ -- 2020-04-27 09:02
 Add unfinished version of design doc v0.
