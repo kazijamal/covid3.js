@@ -1,7 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %} Sentiment Analysis {% endblock %}
+{% block title %} Sentiment {% endblock %}
 
 {% block body %}
-<h1>Sentiment Analysis</h1>
+
+<div class="navbar">
+	<div class="navbar-top">
+		<h1><span class="title">coviD3.js</span> by TwoFortyNine</h1>
+	</div>
+	<hr>
+	<div class="navbar-bottom">
+		<div class="navbar-nav">
+			<ul>
+				<li><a href="/">Dashboard</a></li>
+				<li><a href="/sentiment" class="active">Sentiment Analysis</a></li>
+				<li><a href="/transportation">Transportation</a></li>
+				<li><a href="/numbers">Numbers</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="content">
+	<h2>Sentiment Analysis</h2>
+</div>
+
 {% endblock %}

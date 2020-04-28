@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 2rem;
+}
+
+/* NAVBAR START */
+
+.navbar {
+    display: block;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.navbar-top {
+    margin: 1rem;
+}
+
+.navbar-top h1 {
+    font-family: "Roboto Mono", monospace;
+    font-size: 1.75rem;
+    font-weight: 300;
+}
+
+.navbar-top h1 .title {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+hr {
+    border: 2px solid black;
+}
+
+.navbar-bottom ul {
+    list-style-type: none;
+}
+
+.navbar-bottom li {
+    display: inline;
+    margin: 1rem;
+}
+
+.navbar-bottom li a {
+    text-decoration: none;
+    color: rgb(100, 100, 100);
+}
+
+.navbar-bottom li a:hover {
+    color: rgb(150, 150, 150);
+}
+
+.navbar-bottom li .active {
+    color: black;
+    font-weight: bold;
+}
+
+
+/* NAVBAR END */
