@@ -24,7 +24,7 @@ with open("covid19_articles.csv", encoding="utf8") as csvfile:
     else:
       numArticlesPerDay[date] = 1
 
-numArticlesPerDayFilePath = os.path.join(csvDirPath, "num-articles-per-day.csv")
+# numArticlesPerDayFilePath = os.path.join(csvDirPath, "num-articles-per-day.csv")
 
 with open("output.csv", "w") as output_file:
   output = csv.writer(output_file, delimiter=",")
