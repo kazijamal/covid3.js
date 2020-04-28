@@ -79,6 +79,13 @@ body {
 .article-preview {
     padding: 2rem 0;
     border-bottom: 1px solid silver;
+    display: flex;
+    flex-direction: row;
+}
+
+.preview-img {
+    width: 300px;
+    margin-right: 2rem;
 }
 
 .preview-title {

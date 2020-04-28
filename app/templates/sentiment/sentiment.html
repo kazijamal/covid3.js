@@ -26,12 +26,22 @@
 	<hr class="subheading-hr">
 
 	<div class="article-preview">
-		<a href="/sentiment/publicmedia" class="preview-title">Public Media</a>
-		<p class="preview-description">Displays patterns and analysis of public opinion during the COVID-19 pandemic</p>
+		<div class="preview-left">
+			<img src="{{ url_for('static', filename='img/publicmedia.png') }}" class="preview-img"/>
+		</div>
+		<div class="preview-right">
+			<a href="/sentiment/publicmedia" class="preview-title">Public Media</a>
+			<p class="preview-description">Displays patterns and analysis of public opinion during the COVID-19 pandemic</p>
+		</div>
 	</div>
 	<div class="article-preview">
-		<a href="/sentiment/trumptweets" class="preview-title">Trump Tweets</a>
-		<p class="preview-description">Sentiment analysis on tweets from Donald Trump, the president of the United States</p>
+		<div class="preview-left">
+			<img src="{{ url_for('static', filename='img/trumptweets.png') }}" class="preview-img"/>
+		</div>
+		<div class="preview-right">
+			<a href="/sentiment/trumptweets" class="preview-title">Trump Tweets</a>
+			<p class="preview-description">Sentiment analysis on tweets from Donald Trump, the president of the United States</p>
+		</div>
 	</div>
 </div>
 
