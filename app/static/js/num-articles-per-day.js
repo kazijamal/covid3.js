@@ -37,40 +37,43 @@ const svg = d3
 const numArticlesPerDay = {};
 
 // Read the data
-d3.csv('/data/sentiment/publicmedia').then((numArticles) => {
-  for (const day in numArticles) {
-    numArticlesPerDay[day] = numArticles[day];
-  }
-  const numArticlesPerDayData = d3
-    .range(numDatapoints)
-    .map((d) => ({ y: +numArticlesPerDay[d].numArticles })); // TODO: Replace randomly generated y-values with actual values from CSV
+// TODO: Split this chunk into smaller, intentional pieces
+d3.csv('/data/sentiment/publicmedia')
+  .then((numArticles) => {
+    for (const day in numArticles) {
+      numArticlesPerDay[day] = numArticles[day];
+    }
+    const numArticlesPerDayData = d3
+      .range(numDatapoints)
+      .map((d) => ({ y: +numArticlesPerDay[d].numArticles }));
 
-  // Call the x-axis in a group tag
-  svg
-    .append('g')
-    .attr('class', 'x-axis')
-    .attr('transform', `translate(0, ${height})`)
-    .call(d3.axisBottom(xScale)); // Create an x-axis component with d3.axisBottom
+    // Call the x-axis in a group tag
+    svg
+      .append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(xScale)); // Create an x-axis component with d3.axisBottom
 
-  // Call the y-axis in a group tag
-  svg.append('g').attr('class', 'y-axis').call(d3.axisLeft(yScale)); // Create a y-axis component with d3.axisLeft
+    // Call the y-axis in a group tag
+    svg.append('g').attr('class', 'y-axis').call(d3.axisLeft(yScale)); // Create a y-axis component with d3.axisLeft
 
-  // Append the path, bind the data, and call the line generator
-  svg
-    .append('path')
-    .datum(numArticlesPerDayData) // Bind the data to the line
-    .attr('class', 'line') // TODO: Create custom CSS to style line
-    .attr('d', line); // Call the line generator
+    // Append the path, bind the data, and call the line generator
+    svg
+      .append('path')
+      .datum(numArticlesPerDayData) // Bind the data to the line
+      .attr('class', 'line') // TODO: Create custom CSS to style line
+      .attr('d', line); // Call the line generator
 
-  // Append a circle for each datapoint
-  svg
-    .selectAll('.dot')
-    .data(numArticlesPerDayData)
-    .enter()
-    .append('circle')
-    .attr('class', 'dot')
-    .attr('cx', (_, i) => xScale(i))
-    .attr('cy', (d) => yScale(d.y))
-    .attr('r', 5);
-  // TODO: Add on mouseover events on these datapoint circles
-});
+    // Append a circle for each datapoint
+    svg
+      .selectAll('.dot')
+      .data(numArticlesPerDayData)
+      .enter()
+      .append('circle')
+      .attr('class', 'dot')
+      .attr('cx', (_, i) => xScale(i))
+      .attr('cy', (d) => yScale(d.y))
+      .attr('r', 5);
+    // TODO: Add on mouseover events on these datapoint circles
+  })
+  .catch((err) => console.log(err));
