@@ -6,6 +6,8 @@
 body {
     padding: 2rem;
     font-family: 'Open Sans', sans-serif;
+    max-width: 1080px;
+    margin: auto;
 }
 
 /* NAVBAR START */
