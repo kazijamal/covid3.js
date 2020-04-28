@@ -3,5 +3,28 @@
 {% block title %} Public Media {% endblock %}
 
 {% block body %}
-<h1>Public Media</h1>
+
+<div class="navbar">
+	<div class="navbar-top">
+		<h1><span class="title">coviD3.js</span> by TwoFortyNine</h1>
+	</div>
+	<hr class="navbar-hr">
+	<div class="navbar-bottom">
+		<div class="navbar-nav">
+			<ul>
+				<li><a href="/">Dashboard</a></li>
+				<li><a href="/sentiment" class="active">Sentiment Analysis</a></li>
+				<li><a href="/transportation">Transportation</a></li>
+				<li><a href="/numbers">Numbers</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="content">
+	<div class="article">
+		<h1 class="article-heading">Public Media</h1>
+		<p class="article-subheading">Displays patterns and analysis of public opinion during the COVID-19 pandemic</p>
+	</div>
+</div>
 {% endblock %}

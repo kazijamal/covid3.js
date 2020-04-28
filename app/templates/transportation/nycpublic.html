@@ -3,7 +3,33 @@
 {% block title %} NYC Public Transportation {% endblock %}
 
 {% block body %}
-<h1>NYC Public Transportation</h1>
+
+<div class="navbar">
+	<div class="navbar-top">
+		<h1><span class="title">coviD3.js</span> by TwoFortyNine</h1>
+	</div>
+	<hr class="navbar-hr">
+	<div class="navbar-bottom">
+		<div class="navbar-nav">
+			<ul>
+				<li><a href="/">Dashboard</a></li>
+				<li><a href="/sentiment">Sentiment Analysis</a></li>
+				<li><a href="/transportation" class="active">Transportation</a></li>
+				<li><a href="/numbers">Numbers</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="content">
+	<div class="content">
+		<div class="article">
+			<h1 class="article-heading">NYC Public Transportation</h1>
+			<p class="article-subheading">Displays transportation changes in New York City during quarantine</p>
+		</div>
+	</div>
+</div>
+
 {% endblock %}
 
 {% block script %}
