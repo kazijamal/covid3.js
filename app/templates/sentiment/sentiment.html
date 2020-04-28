@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} Sentiment {% endblock %}
+
+{% block body %}
+
+<div class="navbar">
+	<div class="navbar-top">
+		<h1><span class="title">coviD3.js</span> by TwoFortyNine</h1>
+	</div>
+	<hr class="navbar-hr">
+	<div class="navbar-bottom">
+		<div class="navbar-nav">
+			<ul>
+				<li><a href="/">Dashboard</a></li>
+				<li><a href="/sentiment" class="active">Sentiment Analysis</a></li>
+				<li><a href="/transportation">Transportation</a></li>
+				<li><a href="/numbers">Numbers</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="content">
+	<h2 class="subheading">Latest Sentiment Analysis</h2>
+	<hr class="subheading-hr">
+
+	<div class="article-preview">
+		<a href="/sentiment/publicmedia" class="preview-title">Public Media</a>
+		<p class="preview-description">Displays patterns and analysis of public opinion during the COVID-19 pandemic</p>
+	</div>
+	<div class="article-preview">
+		<a href="/sentiment/trumptweets" class="preview-title">Trump Tweets</a>
+		<p class="preview-description">Sentiment analysis on tweets from Donald Trump, the president of the United States</p>
+	</div>
+</div>
+
+{% endblock %}

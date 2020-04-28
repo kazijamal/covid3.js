@@ -24,3 +24,6 @@ Add Flask route for data transfer to JS files
 
 rayL -- 2020-04-27 16:43
 Plot number of article per day on line chart
+
+kaziJ -- 2020-04-28 02:40
+Add routes in app.py and create templates for viewable pages.
