@@ -128,5 +128,4 @@ ehthumbs.db
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 !__init__.py
-turnstile_200425.txt
-turnstile_190105.txt
+mta_turnstile.csv

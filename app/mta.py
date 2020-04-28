@@ -7,7 +7,9 @@ import os
 
 '''
 This file makes HTTP requests to the data files located here: http://web.mta.info/developers/turnstile.html
-MTA turnstile data is reported on every Saturday. The data is organized in the follow CSV manner:
+MTA turnstile data is reported on every Saturday.
+
+The data is organized in the follow CSV manner:
 
 C/A,UNIT,SCP,STATION,LINENAME,DIVISION,DATE,TIME,DESC,ENTRIES,EXITS
 
@@ -39,7 +41,8 @@ Because the data can be unexpected and there is simply too much data to go over 
 guarantee that our daily ridership is generating correct data.
 
 What does this script do?
-We are querying for all ridership data reported since January 05, 2019 to present.
+We are querying for all ridership data reported since January 05, 2019 to present. We cannot download all of the files
+in any feasible way because each file is 26 MB. There are 69 weeks worth of data, putting the total at 1.7 GB.
 
 In each query, we go through every line of data to find the total number of entries and exits in every turnstile
 at every station every day. After we retrieve data for each turnstile, we then compress the data to represent total
@@ -47,7 +50,10 @@ daily entries and exits per station.
 
 After getting the data for each day, we then have to match the names from our generated dictionary to the names from
 another official MTA file which contains location and borough data. After that, we write the data to a file in
-CSV format. This new  file will be returned as text in a Flask route, which will be queried by our frontend JavaScript.
+CSV format. This new file will be returned as text in a Flask route, which will be queried by our frontend JavaScript.
+
+Unsurprisingly, the turnstile data the MTA provides is not well organized or reliable enough to simply read from, so
+there are a number of checks to ensure that the numbers aren't wonky.
 '''
 
 
@@ -184,20 +190,15 @@ def mta_corrections(file):
     return mta_info
 
 
-json_file = os.path.dirname(os.path.abspath(
-    __file__)) + '/static/json/subway_stops.json'
-
-name_dict = correct(mta_corrections(json_file))
-
-
 def merge_stations(stations, s0, s1):
 
     d0 = stations[s0]
     d1 = stations[s1]
 
     for date in list(d0.keys()):
-        d0[date]['enter'] += d1[date]['enter']
-        d0[date]['exit'] += d1[date]['exit']
+        if date in d1:
+            d0[date]['enter'] += d1[date]['enter']
+            d0[date]['exit'] += d1[date]['exit']
 
     stations.pop(s1)
 
@@ -206,13 +207,12 @@ def merge_stations(stations, s0, s1):
 
 def send_request(date):
 
-    # pprint.pprint(name_dict)
-    # req = urllib.request.Request(BASE_URL + date + TXT)
-    # req = urllib.request.urlopen(req)
-    # print(req.status)
-    # res = req.read().decode('utf8').strip('\n').split('\n')
+    req = urllib.request.Request(BASE_URL + date + TXT)
+    req = urllib.request.urlopen(req)
+    print(BASE_URL + date + TXT, req.status)
+    res = req.read().decode('utf8').strip('\n').split('\n')
 
-    res = open('turnstile_200425.txt').read().strip('\n').split('\n')
+    # res = open('turnstile_200425.txt').read().strip('\n').split('\n')
 
     res = [line.rstrip() for line in res][1:]
 
@@ -257,8 +257,12 @@ def send_request(date):
             prev = date - d_date
             if prev in _station and control in _station[prev] and turnstile in _station[prev][control]:
                 prev = _station[prev][control][turnstile]
-                prev['enter'] += _enter - prev['c_enter']
-                prev['exit'] += _exit - prev['c_exit']
+                d_enter = _enter - prev['c_enter']
+                d_exit = _exit - prev['c_exit']
+                if _enter > prev['c_enter'] and d_enter < 100000:
+                    prev['enter'] += d_enter
+                if _exit > prev['c_exit'] and d_exit < 100000:
+                    prev['exit'] += d_exit
 
         else:
             _turnstile = _control[turnstile]
@@ -266,8 +270,12 @@ def send_request(date):
             '''
                 Increment the amount of change in entries and exits
             '''
-            _turnstile['enter'] += _enter - _turnstile['c_enter']
-            _turnstile['exit'] += _exit - _turnstile['c_exit']
+            d_enter = _enter - _turnstile['c_enter']
+            d_exit = _exit - _turnstile['c_exit']
+            if(_enter > _turnstile['c_enter'] and d_enter < 100000):
+                _turnstile['enter'] += d_enter
+            if(_exit > _turnstile['c_exit'] and d_exit < 100000):
+                _turnstile['exit'] += d_exit
 
         _turnstile['c_enter'], _turnstile['c_exit'] = _enter, _exit
 
@@ -310,6 +318,9 @@ def send_request(date):
             _date['enter'] = day_enter
             _date['exit'] = day_exit
 
+    '''
+        Merge stations with similar names
+    '''
     stations = merge_stations(stations, 'NEW LOTS AV', 'NEW LOTS')
     stations = merge_stations(stations, '33 ST', '33 ST-RAWSON ST')
     stations = merge_stations(stations, '46 ST', '46 ST BLISS ST')
@@ -324,31 +335,49 @@ def send_request(date):
     stations = merge_stations(stations, '4AV-9 ST', '4 AV-9 ST')
     stations = merge_stations(stations, 'HOWARD BCH JFK', 'JFK JAMAICA CT1')
 
-    for station in stations.keys():
-        if not station in name_dict:
-            print(station)
-
     return stations
 
 
+start = time.time()
+
 BASE_URL, TXT = 'http://web.mta.info/developers/data/nyct/turnstile/turnstile_', '.txt'
+
+json_file = os.path.dirname(os.path.abspath(
+    __file__)) + '/static/json/subway_stops.json'
+
+name_dict = correct(mta_corrections(json_file))
 
 date = datetime.datetime(2019, 1, 5)
 last_date = datetime.datetime(2020, 4, 25)
 
-start = time.time()
-# while(date <= last_date):
-#     # e.g. ['2020', '04', '25']
-#     date_list = date.date().isoformat().split('-')
+f = open('mta_turnstile.csv', 'w')
+f.write('station,date,borough,enter,exit\n')
 
-#     # e.g. '200425'
-#     url_date = date_list[0][2:] + date_list[1] + date_list[2]
+while(date <= last_date):
+    # e.g. ['2020', '04', '25']
+    date_list = date.date().isoformat().split('-')
 
-#     send_request(url_date)
+    # e.g. '200425'
+    url_date = date_list[0][2:] + date_list[1] + date_list[2]
 
-#     date += datetime.timedelta(weeks=1)
+    week_data = send_request(url_date)
 
-week_data = send_request('200425')
+    for station in week_data.keys():
+        if not station in name_dict:
+            continue
 
+        name = name_dict[station]['name']
+        borough = name_dict[station]['borough']
 
-# print(time.time() - start)
+        data = week_data[station]
+        for _date in data.keys():
+            day = _date.date().isoformat()
+            _enter = data[_date]['enter']
+            _exit = data[_date]['exit']
+            f.write(f'{name},{day},{borough},{_enter},{_exit}\n')
+
+    date += datetime.timedelta(days=7)
+
+f.close()
+
+print(time.time() - start)

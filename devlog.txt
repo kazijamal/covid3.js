@@ -33,3 +33,13 @@ Implement MTA data parsing algorithm
 
 ericL -- 2020-04-27 13:09
 Write comment explaining parsing file
+
+ericL -- 2020-04-28 02:42
+Fix majority of naming problems
+
+ericL -- 2020-04-28 03:18
+Merge stations with similar names
+
+ericL -- 2020-04-28 05:19
+Tune algorithm to handle erroneous audit events
+Complete data writing to CSV file
