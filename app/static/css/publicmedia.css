@@ -23,5 +23,14 @@
 
 #line-chart {
   width: 100%;
-  overflow: auto;
+  height: 600px;
+  text-align: center;
+  /* overflow: auto; */
+}
+
+.article-subtitle {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  padding-top: 3rem;
 }

@@ -2,8 +2,8 @@
 
 // Set the dimensions and margins of the graph
 const margin = { top: 50, right: 50, bottom: 50, left: 50 };
-const width = window.innerWidth - margin.left - margin.right; // Use window's width
-const height = window.innerHeight - margin.top - margin.bottom; // Use window's height
+const width = 1000 - margin.left - margin.right; // Use window's width
+const height = 600 - margin.top - margin.bottom; // Use window's height
 
 // TODO: extract numDatapoints dynamically
 const numDatapoints = 104;
@@ -45,7 +45,8 @@ d3.csv('/data/sentiment/publicmedia')
     // yScale.domain(d3.extent([0, d3.max(numArticles, (d) => +d.numArticles)]));
 
     for (const day in numArticles) {
-      numArticlesPerDay[day] = numArticles[day];
+      dayData = numArticles[day];
+      numArticlesPerDay[day] = { ...dayData, date: new Date(dayData.date) };
     }
     const numArticlesPerDayData = d3
       .range(numDatapoints)

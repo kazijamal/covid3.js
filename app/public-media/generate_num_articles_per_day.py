@@ -1,11 +1,10 @@
-# This should be used with Google Colab
+# This should be used in Google Colab
 
 import csv
 import os
 import sys
 
-# Error does not occur on Colab
-# csv.field_size_limit(sys.maxsize) # Resolves error: _csv.Error: field larger than field limit (131072)
+csv.field_size_limit(sys.maxsize) # Resolves error: _csv.Error: field larger than field limit (131072)
 
 # These paths are repository-specific, ignore for Colab
 # csvDirPath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static", "csv")
@@ -26,7 +25,7 @@ with open("covid19_articles.csv", encoding="utf8") as csvfile:
 
 # numArticlesPerDayFilePath = os.path.join(csvDirPath, "num-articles-per-day.csv")
 
-with open("output.csv", "w") as output_file:
+with open("num-articles-per-day.csv", "w") as output_file:
   output = csv.writer(output_file, delimiter=",")
 
   for key, val in numArticlesPerDay.items():
