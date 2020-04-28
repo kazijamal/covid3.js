@@ -57,6 +57,7 @@ def fix(d, wrong, correct):
 
 
 def correct(d):
+    d = fix(d, '4 Av', '4AV-9 ST')
     d = fix(d, 'Whitehall St', 'WHITEHALL S-FRY')
     d = fix(d, 'Essex St', 'DELANCEY/ESSEX')
     d = fix(d, 'Park Pl', 'PARK PLACE')
@@ -153,20 +154,7 @@ def correct(d):
     d = fix(d, 'Flatbush Av - Brooklyn College', 'FLATBUSH AV-B.C')
     d = fix(d, 'Eastchester - Dyre Av', 'EASTCHSTER/DYRE')
     d = fix(d, 'St George', 'ST. GEORGE')
-    # d = fix(d, 'New Lots Av', 'NEW LOTS AV') # NOTE
-    # d = fix(d, '33 St', '33 ST-RAWSON ST') # NOTE
-    # d = fix(d, '46 St', '46 ST BLISS ST') # NOTE
-    # d = fix(d, '14 St', '14TH STREET') # NOTE
-    # d = fix(d, '23 St', 'TWENTY THIRD ST') # NOTE
-    # d = fix(d, '33 St', 'THIRTY THIRD ST') # NOTE
-    # d = fix(d, '72 St', '72 ST-2 AVE') # NOTE
-    # d = fix(d, '86 St', '86 ST-2 AVE') # NOTE
-    # d = fix(d, '96 St', '96 ST-2 AVE') # NOTE
-    # d = fix(d, 'Court Sq', 'COURT SQ-23 ST') # NOTE
-    # d = fix(d, 'Van Siclen Av', 'VAN SICLEN AVE') # NOTE
-    # d = fix(d, '', 'JFK JAMAICA CT1') # NOTE
-    # d = fix(d, 'New Lots Av', 'NEW LOTS') # NOTE
-    # d = fix(d, '4 Av', '4AV-9 ST') # NOTE
+    d = fix(d, 'New Lots Av', 'NEW LOTS AV')
     for stop in list(d.keys()):
         name = stop
         if ' - ' in name:
@@ -200,7 +188,20 @@ json_file = os.path.dirname(os.path.abspath(
     __file__)) + '/static/json/subway_stops.json'
 
 name_dict = correct(mta_corrections(json_file))
-# pprint.pprint(name_dict)
+
+
+def merge_stations(stations, s0, s1):
+
+    d0 = stations[s0]
+    d1 = stations[s1]
+
+    for date in list(d0.keys()):
+        d0[date]['enter'] += d1[date]['enter']
+        d0[date]['exit'] += d1[date]['exit']
+
+    stations.pop(s1)
+
+    return stations
 
 
 def send_request(date):
@@ -271,11 +272,8 @@ def send_request(date):
         _turnstile['c_enter'], _turnstile['c_exit'] = _enter, _exit
 
     '''
-        Compress turnstile data into station data
+        Remove stations witohut proper location data
     '''
-    count = 0
-    # pprint.pprint(list(stations.keys()))
-
     stations.pop('NEWARK BM BW')
     stations.pop('NEWARK C')
     stations.pop('NEWARK HM HE')
@@ -292,11 +290,12 @@ def send_request(date):
     stations.pop('THIRTY ST')
     stations.pop('RIT-MANHATTAN')
     stations.pop('RIT-ROOSEVELT')
+    stations.pop('34 ST-HUDSON YD')
+
+    '''
+        Compress turnstile data into station data
+    '''
     for station in stations.keys():
-        if(not station in name_dict):
-            print(station)
-            # pprint.pprint(stations[station])
-            count+=1
         for date in stations[station]:
             _date = stations[station][date]
             day_enter, day_exit = 0, 0
@@ -311,7 +310,24 @@ def send_request(date):
             _date['enter'] = day_enter
             _date['exit'] = day_exit
 
-    print(count)
+    stations = merge_stations(stations, 'NEW LOTS AV', 'NEW LOTS')
+    stations = merge_stations(stations, '33 ST', '33 ST-RAWSON ST')
+    stations = merge_stations(stations, '46 ST', '46 ST BLISS ST')
+    stations = merge_stations(stations, '14 ST', '14TH STREET')
+    stations = merge_stations(stations, '23 ST', 'TWENTY THIRD ST')
+    stations = merge_stations(stations, '33 ST', 'THIRTY THIRD ST')
+    stations = merge_stations(stations, '72 ST', '72 ST-2 AVE')
+    stations = merge_stations(stations, '86 ST', '86 ST-2 AVE')
+    stations = merge_stations(stations, '96 ST', '96 ST-2 AVE')
+    stations = merge_stations(stations, 'COURT SQ', 'COURT SQ-23 ST')
+    stations = merge_stations(stations, 'VAN SICLEN AV', 'VAN SICLEN AVE')
+    stations = merge_stations(stations, '4AV-9 ST', '4 AV-9 ST')
+    stations = merge_stations(stations, 'HOWARD BCH JFK', 'JFK JAMAICA CT1')
+
+    for station in stations.keys():
+        if not station in name_dict:
+            print(station)
+
     return stations
 
 
@@ -335,4 +351,4 @@ start = time.time()
 week_data = send_request('200425')
 
 
-print(time.time() - start)
+# print(time.time() - start)
