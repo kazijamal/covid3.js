@@ -20,3 +20,12 @@ Add design doc v0.
 
 kaziJ -- 2020-04-28 02:40
 Add routes in app.py and create templates for viewable pages.
+
+kaziJ -- 2020-04-28 03:20
+Begin work on templates and create navbar.
+
+kaziJ -- 2020-04-28 03:40
+Add organization and subheading to templates.
+
+kaziJ -- 2020-04-28 4:00
+Add article previews on sentiment analysis and transportation pages.
