@@ -343,7 +343,7 @@ start = time.time()
 BASE_URL, TXT = 'http://web.mta.info/developers/data/nyct/turnstile/turnstile_', '.txt'
 
 json_file = os.path.dirname(os.path.abspath(
-    __file__)) + '/static/json/subway_stops.json'
+    __file__)) + '/../static/json/subway_stops.json'
 
 name_dict = correct(mta_corrections(json_file))
 
