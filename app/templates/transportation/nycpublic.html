@@ -1,7 +1,22 @@
 {% extends "base.html" %}
 
+{% set active_page = "transportation" %}
+
 {% block title %} NYC Public Transportation {% endblock %}
 
 {% block body %}
-<h1>NYC Public Transportation</h1>
+
+<div class="content">
+	<div class="content">
+		<div class="article">
+			<h1 class="article-heading">NYC Public Transportation</h1>
+			<p class="article-subheading">Displays transportation changes in New York City during quarantine</p>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/mta.js')}}"></script>
 {% endblock %}

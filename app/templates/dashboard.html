@@ -1,30 +1,15 @@
 {% extends "base.html" %}
 
+{% set active_page = "dashboard" %}
+
 {% block title %} Dashboard {% endblock %}
 
 {% block body %}
 
-<div class="navbar">
-	<div class="navbar-top">
-		<h1><span class="title">coviD3.js</span> by TwoFortyNine</h1>
-	</div>
-	<hr class="navbar-hr">
-	<div class="navbar-bottom">
-		<div class="navbar-nav">
-			<ul>
-				<li><a href="/" class="active">Dashboard</a></li>
-				<li><a href="/sentiment">Sentiment Analysis</a></li>
-				<li><a href="/transportation">Transportation</a></li>
-				<li><a href="/numbers">Numbers</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
-
 <div class="content">
 	<p>Welcome to coviD3.js, a website run by TwoFortyNine. We specialize in telling stories through beautiful and engaging data visualizations. With coviD3.js, we plan on analyzing the ways the coronavirus pandemic affects society outside of the hospital. For our first week, we plan on publishing two articles on changes in media sentiment and transportation.</p>
 
-	<div class="covid-article">
+	<div class="article">
 		<h1 class="article-heading">COVID-19</h1>
 		<p class="article-subheading">Data visualization of COVID-19 in the United States of America</p>
 	</div>

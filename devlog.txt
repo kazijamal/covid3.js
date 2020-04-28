@@ -15,6 +15,16 @@ Initialize basic Flask app
 ericL -- 2020-04-24 11:11
 Update README.md
 
+ericL -- 2020-04-25 07:29
+Implement basic MTA request
+
+ericL -- 2020-04-25 08:08
+Implement time loop for MTA requests
+
+ericL -- 2020-04-25 22:33
+Add data for New York City subways, maps
+Implement basic NYC map drawing
+
 kaziJ -- 2020-04-27 09:02
 Add unfinished version of design doc v0.
 
@@ -25,5 +35,33 @@ Add Flask route for data transfer to JS files
 rayL -- 2020-04-27 16:43
 Plot number of article per day on line chart
 
+ericL -- 2020-04-27 12:23
+Implement MTA data parsing algorithm
+
+ericL -- 2020-04-27 13:09
+Write comment explaining parsing file
+
 kaziJ -- 2020-04-28 02:40
 Add routes in app.py and create templates for viewable pages.
+
+ericL -- 2020-04-28 02:42
+Fix majority of naming problems
+
+ericL -- 2020-04-28 03:18
+Merge stations with similar names
+
+kaziJ -- 2020-04-28 03:20
+Begin work on templates and create navbar.
+
+kaziJ -- 2020-04-28 03:40
+Add organization and subheading to templates.
+
+kaziJ -- 2020-04-28 04:00
+Add article previews on sentiment analysis and transportation pages.
+
+ericL -- 2020-04-28 05:19
+Tune algorithm to handle erroneous audit events
+Complete data writing to CSV file
+
+ericL -- 2020-04-28 06:28
+Complete data retrieval functions for ridership
