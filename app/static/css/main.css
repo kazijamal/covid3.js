@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 2rem;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* NAVBAR START */
+
+.navbar {
+    display: block;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.navbar-top {
+    margin: 1rem;
+}
+
+.navbar-top h1 {
+    font-family: "Roboto Mono", monospace;
+    font-size: 1.75rem;
+    font-weight: 300;
+}
+
+.navbar-top h1 .title {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.navbar-hr {
+    border: 2px solid black;
+}
+
+.navbar-bottom ul {
+    list-style-type: none;
+}
+
+.navbar-bottom li {
+    display: inline;
+    margin: 1rem;
+}
+
+.navbar-bottom li a {
+    text-decoration: none;
+    color: rgb(100, 100, 100);
+}
+
+.navbar-bottom li a:hover {
+    color: rgb(150, 150, 150);
+}
+
+.navbar-bottom li .active {
+    color: black;
+    font-weight: 700;
+}
+
+
+/* NAVBAR END */
+
+/* ORGANIZATION START */
+
+.subheading {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.subheading-hr {
+    border: 1px solid black;
+}
+
+/* ORGANIZATION END */
+
+/* ARTICLE PREVIEW START */
+
+.article-preview {
+    padding: 2rem 0;
+    border-bottom: 1px solid silver;
+}
+
+.preview-title {
+    color: black;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.preview-title:hover {
+    color: black;
+}
+
+.preview-description {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-family: "Roboto Mono", monospace;
+}
+
+/* ARTICLE PREVIEW END */
+
+/* ARTICLE START */
+
+.article-heading {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    padding: 1.5rem;
+}
+
+.article-subheading {
+    text-align: center;
+    font-size: 1rem;
+    font-family: "Roboto Mono", monospace;
+}
+
+/* ARTICLE END */

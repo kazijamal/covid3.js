@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} Transportation {% endblock %}
+
+{% block body %}
+
+<div class="navbar">
+	<div class="navbar-top">
+		<h1><span class="title">coviD3.js</span> by TwoFortyNine</h1>
+	</div>
+	<hr class="navbar-hr">
+	<div class="navbar-bottom">
+		<div class="navbar-nav">
+			<ul>
+				<li><a href="/">Dashboard</a></li>
+				<li><a href="/sentiment">Sentiment Analysis</a></li>
+				<li><a href="/transportation" class="active">Transportation</a></li>
+				<li><a href="/numbers">Numbers</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="content">
+	<h2 class="subheading">Latest Transportation</h2>
+	<hr class="subheading-hr">
+	
+	<div class="article-preview">
+		<a href="/transportation/nycpublic" class="preview-title">NYC Public Transportation</a>
+		<p class="preview-description">Displays transportation changes in New York City during quarantine</p>
+	</div>
+	<div class="article-preview">
+		<a href="/transportation/mobility" class="preview-title">Mobility</a>
+		<p class="preview-description">Compares changes in mobility between different countries and regions</p>
+	</div>
+</div>
+
+{% endblock %}
