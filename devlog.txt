@@ -17,3 +17,6 @@ Update README.md
 
 kaziJ -- 2020-04-27 09:02
 Add design doc v0.
+
+kaziJ -- 2020-04-28 02:40
+Add routes in app.py and create templates for viewable pages.
