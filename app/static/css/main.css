@@ -74,6 +74,31 @@ body {
 
 /* ORGANIZATION END */
 
+/* ARTICLE PREVIEW START */
+
+.article-preview {
+    padding: 2rem 0;
+    border-bottom: 1px solid silver;
+}
+
+.preview-title {
+    color: black;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.preview-title:hover {
+    color: black;
+}
+
+.preview-description {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-family: "Roboto Mono", monospace;
+}
+
+/* ARTICLE PREVIEW END */
+
 /* ARTICLE START */
 
 .article-heading {
