@@ -40,6 +40,10 @@ const numArticlesPerDay = {};
 // TODO: Split this chunk into smaller, intentional pieces
 d3.csv('/data/sentiment/publicmedia')
   .then((numArticles) => {
+    // xScale.domain(d3.extent(numArticles, (d) => d.date));
+
+    // yScale.domain(d3.extent([0, d3.max(numArticles, (d) => +d.numArticles)]));
+
     for (const day in numArticles) {
       numArticlesPerDay[day] = numArticles[day];
     }

@@ -20,3 +20,8 @@
   fill: none;
   stroke: steelblue;
 }
+
+#line-chart {
+  width: 100%;
+  overflow: auto;
+}
