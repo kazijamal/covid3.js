@@ -5,3 +5,7 @@
 {% block body %}
 <h1>NYC Public Transportation</h1>
 {% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/mta.js')}}"></script>
+{% endblock %}
