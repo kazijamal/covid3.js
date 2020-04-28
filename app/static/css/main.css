@@ -5,6 +5,7 @@
 
 body {
     padding: 2rem;
+    font-family: 'Open Sans', sans-serif;
 }
 
 /* NAVBAR START */
@@ -30,7 +31,7 @@ body {
     font-weight: 700;
 }
 
-hr {
+.navbar-hr {
     border: 2px solid black;
 }
 
@@ -54,8 +55,38 @@ hr {
 
 .navbar-bottom li .active {
     color: black;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 
 /* NAVBAR END */
+
+/* ORGANIZATION START */
+
+.subheading {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.subheading-hr {
+    border: 1px solid black;
+}
+
+/* ORGANIZATION END */
+
+/* ARTICLE START */
+
+.article-heading {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    padding: 1.5rem;
+}
+
+.article-subheading {
+    text-align: center;
+    font-size: 1rem;
+    font-family: "Roboto Mono", monospace;
+}
+
+/* ARTICLE END */
