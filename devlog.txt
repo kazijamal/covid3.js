@@ -4,7 +4,7 @@ P04 —- Let the Data Speak
 2020-05-04
 
 kaziJ -- 2020-04-22 11:15
-Team TwoFortyNine formed, chose Kazi Jamal as project manager, and initialized repo.
+Team TwoFortyNine formed, chose Kazi Jamal as project manager, and initialized repo
 
 ericL -- 2020-04-24 10:46
 Reorganize repository structure
@@ -35,7 +35,7 @@ ericL -- 2020-04-27 13:09
 Write comment explaining parsing file
 
 kaziJ -- 2020-04-28 02:40
-Add routes in app.py and create templates for viewable pages.
+Add routes in app.py and create templates for viewable pages
 
 ericL -- 2020-04-28 02:42
 Fix majority of naming problems
@@ -44,10 +44,10 @@ ericL -- 2020-04-28 03:18
 Merge stations with similar names
 
 kaziJ -- 2020-04-28 03:20
-Begin work on templates and create navbar.
+Begin work on templates and create navbar
 
 kaziJ -- 2020-04-28 03:40
-Add organization and subheading to templates.
+Add organization and subheading to templates
 
 kaziJ -- 2020-04-28 04:00
 Add article previews on sentiment analysis and transportation pages.
@@ -58,3 +58,12 @@ Complete data writing to CSV file
 
 ericL -- 2020-04-28 06:28
 Complete data retrieval functions for ridership
+
+kaziJ -- 2020-04-28 14:05
+Add article preview images
+
+kaziJ -- 2020-04-28 14:42
+Move navbar into base template and add variability
+
+kaziJ -- 2020-04-28 22:05
+Create about page and route
