@@ -5,9 +5,17 @@
 
 body {
     padding: 2rem;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     max-width: 1080px;
     margin: auto;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    color: black;
 }
 
 /* NAVBAR START */
@@ -60,7 +68,6 @@ body {
     font-weight: 700;
 }
 
-
 /* NAVBAR END */
 
 /* ORGANIZATION START */
@@ -91,13 +98,8 @@ body {
 }
 
 .preview-title {
-    color: black;
     font-size: 1.5rem;
     font-weight: 700;
-}
-
-.preview-title:hover {
-    color: black;
 }
 
 .preview-description {
@@ -124,3 +126,11 @@ body {
 }
 
 /* ARTICLE END */
+
+/* ABOUT START */
+
+.about {
+    font-family: "Roboto Mono", monospace;
+}
+
+/* ABOUT END */

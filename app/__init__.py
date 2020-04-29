@@ -16,6 +16,11 @@ app.secret_key = os.urandom(32)
 def root():
     return render_template('dashboard.html')
 
+# ABOUT
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 # SENTIMENT ANALYSIS
 
 # absolute path to num-articles-per-day.csv
