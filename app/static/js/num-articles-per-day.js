@@ -5,18 +5,11 @@ const margin = { top: 50, right: 50, bottom: 50, left: 50 };
 const width = 1000 - margin.left - margin.right; // Use window's width
 const height = 600 - margin.top - margin.bottom; // Use window's height
 
-// TODO: extract numDatapoints dynamically
-const numDatapoints = 104;
+// Set the range of xScale to be the width of the chart
+const xScale = d3.scaleLinear().range([0, width]);
 
-// X scale maps the index of our data to the width of the graph
-const xScale = d3
-  .scaleLinear()
-  // .domain([0, numDatapoints - 1])
-  .range([0, width]);
-
-// Y scale maps the upper bound of the number of articles (2000) to the height of the graph
-// TODO: extract upper bound dynamically
-const yScale = d3.scaleLinear().domain([0, 2000]).range([height, 0]);
+// Set the range of yScale to be the height of the chart
+const yScale = d3.scaleLinear().range([height, 0]);
 
 // Append the SVG object to the body of the page
 const svg = d3
@@ -27,8 +20,7 @@ const svg = d3
   .append('g')
   .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-const numArticlesPerDay = {};
-
+// Zero-based object constant for month retrieval
 const months = {
   0: 'January',
   1: 'February',
@@ -48,32 +40,49 @@ const months = {
 // TODO: Split this chunk into smaller, intentional pieces
 d3.csv('/data/sentiment/publicmedia')
   .then((numArticles) => {
+    const numArticlesPerDay = {};
+
+    // Store the length of the dataset, or number of datapoints
+    const numDatapoints = numArticles.length;
+
+    // Set xScale and yScale domains
     xScale.domain(d3.extent(numArticles, (d) => new Date(d.date)));
+    yScale.domain(
+      d3.extent([0, d3.max(numArticles, (d) => +d.numArticles) + 300])
+    );
 
-    // d3's line generator
-    const line = d3
-      .line()
-      .x((d) => xScale(new Date(d.date))) // Set x values for the line generator
-      .y((d) => yScale(d.y)) // Set y values for the line generator
-      .curve(d3.curveMonotoneX); // Apply smoothing to the curve
-
-    // yScale.domain(d3.extent([0, d3.max(numArticles, (d) => +d.numArticles)]));
-
+    // Create an object, numArticlesPerDay, based on numArticles, to store Date objects instead of strings
     for (const day in numArticles) {
       dayData = numArticles[day];
       numArticlesPerDay[day] = { ...dayData, date: new Date(dayData.date) };
     }
 
+    // Create an object, numArticlesPerDay, to map a zero-based index (up to numDatapoints) to the number of articles its position corresponds with
     const numArticlesPerDayData = d3
       .range(numDatapoints)
-      .map((d) => ({ y: +numArticlesPerDay[d].numArticles }));
+      .map((d) => ({ y: +numArticlesPerDay[d].numArticles, date: numArticlesPerDay[d].date }));
 
-    for (const key in numArticles) {
-      numArticlesPerDayData[new Date(numArticles[key].date)] =
-        numArticlesPerDayData[key];
-    }
+    // for (const key in numArticles) {
+    //   numArticlesPerDayData[new Date(numArticles[key].date)] =
+    //     numArticlesPerDayData[key];
+    // }
 
     console.log(numArticlesPerDayData);
+
+    // d3's line generator
+    const line = d3
+      .line()
+      .x((d) => {
+        console.log(xScale(new Date(d.date)));
+        return xScale(new Date(d.date));
+      }) // Set x values for the line generator
+      .y((d) => {
+        console.log(d)
+        console.log(typeof d.y, d.y);
+        console.log(yScale(d.y));
+        return yScale(d.y);
+      }) // Set y values for the line generator
+      .curve(d3.curveMonotoneX); // Apply smoothing to the curve
 
     // Call the x-axis in a group tag
     svg
@@ -90,8 +99,8 @@ d3.csv('/data/sentiment/publicmedia')
     // Call the y-axis in a group tag
     svg.append('g').attr('class', 'y-axis').call(d3.axisLeft(yScale)); // Create a y-axis component with d3.axisLeft
 
-    console.log(numArticlesPerDayData);
-
+    // console.log(numArticlesPerDayData);
+    console.log(line(10));
     // Append the path, bind the data, and call the line generator
     svg
       .append('path')
@@ -108,8 +117,6 @@ d3.csv('/data/sentiment/publicmedia')
       .attr('class', 'dot')
       .attr('cx', (_, i) => {
         const { date } = numArticlesPerDay[i];
-        // console.log(`${date.getMonth() + 1}/${date.getDate()}`);
-        // console.log(xScale(new Date(date)));
         return xScale(new Date(date));
       })
       .attr('cy', (d) => yScale(d.y))
