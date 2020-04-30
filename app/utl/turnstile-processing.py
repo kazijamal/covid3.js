@@ -350,7 +350,7 @@ name_dict = correct(mta_corrections(json_file))
 date = datetime.datetime(2019, 1, 5)
 last_date = datetime.datetime(2020, 4, 25)
 
-f = open('mta_turnstile.csv', 'w')
+f = open('../static/data/mta_turnstile.csv', 'w')
 f.write('station,date,borough,enter,exit\n')
 
 while(date <= last_date):
