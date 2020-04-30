@@ -67,3 +67,21 @@ Move navbar into base template and add variability
 
 kaziJ -- 2020-04-28 22:05
 Create about page and route
+
+kaziJ -- 2020-04-29 23:00
+Teams who reviewed our design doc:
+- The-SIMPsons
+- MarshmallowFlush
+Summarized input:
+- Through data transfer systems
+- Listing additional features was nice
+- Extra packages can be expanded upon
+- Consider using SQLite database
+- Consider pulling turnstile data when it updates weekly
+Modifications to design doc:
+- Stated that we are currently looking for a medium income data source
+- Specified that we will be using sentiment analysis and natural processing Python libraries on the datasets
+- Stated that we will consider using GitHub Actions script that will run our processing file every weekend to update our MTA turnstile data CSV
+- Elaborated on extra packages
+Timeline adjustments:
+- We anticipated completing our project by 05-11-2020, and so we did not make any changes to our timeline. Our original additional features are sufficient.
