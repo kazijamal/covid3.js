@@ -85,3 +85,6 @@ Modifications to design doc:
 - Elaborated on extra packages
 Timeline adjustments:
 - We anticipated completing our project by 05-11-2020, and so we did not make any changes to our timeline. Our original additional features are sufficient.
+
+kaziJ -- 2020-05-01 10:00
+Create team flag and upload
