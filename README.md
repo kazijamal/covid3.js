@@ -38,14 +38,6 @@ To exit your virtual environment, run the following:
 deactivate
 ```
 
-### Dependencies
-
-Run the following line in your virtual environment
-
-```shell
-pip install -r requirements.txt
-```
-
 ### Cloning
 
 Run the following commands in your terminal
@@ -54,6 +46,14 @@ Run the following commands in your terminal
 git clone https://github.com/kazijamal/TwoFortyNine_jamalK-lauE-leeR.git
 
 cd TwoFortyNine_jamalK-lauE-leeR
+```
+
+### Dependencies
+
+Run the following line in your virtual environment
+
+```shell
+pip install -r requirements.txt
 ```
 
 ### Running
