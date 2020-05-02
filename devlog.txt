@@ -94,3 +94,6 @@ Remove mta_turnstile data from gitignore
 
 ericL -- 2020-05-02 05:26
 Implement daily ridership line graph
+
+ericL -- 2020-05-02 06:14
+Refactor data parsing functions

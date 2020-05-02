@@ -1,17 +1,26 @@
-import { getDailyRidership } from './mta.data.js';
+import { getDailyRidership, getWeeklyRidership, getSubwayStops } from './mta.data.js';
 
 window.onload = async () => {
 
+    // await getWeeklyRidership();
+
     let ridership = await getDailyRidership();
+    // let stops = await getSubwayStops();
 
-    let svg = createSVG();
+    let lineSVG = createLineSVG();
 
-    // console.log(ridership)
+    renderLineSVG(lineSVG, ridership);
 
-    renderSVG(svg, ridership);
+    // let mapSVG = createMapSVG();
+
+    // renderMapSVG(mapSVG, ridership, stops);
 }
 
-let renderSVG = (svg, ridership) => {
+let renderLineSVG = (svg, ridership) => {
+
+    // https://observablehq.com/@d3/line-chart-with-tooltip
+    // https://observablehq.com/@d3/line-chart
+
     let pseudoSVG = svg._groups[0][0];
     let width = pseudoSVG.clientWidth;
     let height = pseudoSVG.clientHeight;
@@ -22,9 +31,6 @@ let renderSVG = (svg, ridership) => {
         'bottom': 30,
         'left': 100,
     };
-
-    console.log(ridership);
-    // console.log(d3.extent(ridership, d => d.date));
 
     let x = d3.scaleTime()
         .domain(d3.extent(ridership, d => d.date))
@@ -42,6 +48,11 @@ let renderSVG = (svg, ridership) => {
         .attr('transform', `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(y))
         .call(g => g.select('.domain').remove())
+        .call(g => g.select(".tick:last-of-type text").clone()
+            .attr("x", 3)
+            .attr("text-anchor", "start")
+            .attr("font-weight", "bold")
+            .text('Ridership'))
 
     let line = d3.line()
         .curve(d3.curveStep)
@@ -65,7 +76,7 @@ let renderSVG = (svg, ridership) => {
         .attr('d', line);
 }
 
-let createSVG = () => {
+let createLineSVG = () => {
     return d3.select('#line-graph-container')
         .append('svg')
         .attr('id', 'line-graph')
@@ -73,23 +84,22 @@ let createSVG = () => {
         .attr('height', '50vh');
 }
 
-// let createSVG = () => {
-//     return d3.select('body').append('svg')
-//         .attr('id', 'map')
-//         .attr('width', '75%')
-//         .attr('viewBox', [73.94, -40.70, 975, 610])
-//         .append('g');
-// }
+let createMapSVG = () => {
+    return d3.select('#choropleth-container')
+        .append('svg')
+        .attr('id', 'map')
+        .attr('width', '100%')
+        .attr('viewBox', [73.94, -40.70, 975, 610])
+        .append('g')
+        .attr('transform', 'translate(100)')
+}
 
-let choropleth = () => {
-    // let boroughs = await getNYCBoroughs();
-    // let neighborhoods = await getNYCNeighborhoods();
-    // let stops = await getSubwayStops();
+let renderMapSVG = (svg, ridership, stops) => {
 
-    // let projection = d3.geoMercator()
-    //     .scale(50000)
-    //     .center([-73.94, 40.70])
-    // let path = d3.geoPath(projection)
+    let projection = d3.geoMercator()
+        .scale(50000)
+        .center([-73.94, 40.70])
+    let path = d3.geoPath(projection)
 
     // let station_names = Array()
     // for (const station in stops) {
@@ -100,17 +110,17 @@ let choropleth = () => {
     //         console.log(stops[station], station_names[station_names.indexOf(name)])
     //     }
     // }
-    // svg.selectAll('.subway-stop')
-    //     .data(stops)
-    //     .join(
-    //         enter => {
-    //             return enter.append('path')
-    //                 .attr('d', path)
-    //                 .attr('class', 'subway-stop')
-    //                 .attr('fill', d => {
-    //                     // console.log(d.properties.stop_name, d.properties.trains)
-    //                     return 'red'
-    //                 })
-    //         }
-    //     );
+    svg.selectAll('.subway-stop')
+        .data(stops)
+        .join(
+            enter => {
+                return enter.append('path')
+                    .attr('d', path)
+                    .attr('class', 'subway-stop')
+                    .attr('fill', d => {
+                        // console.log(d.properties.stop_name, d.properties.trains)
+                        return 'red'
+                    })
+            }
+        );
 }
