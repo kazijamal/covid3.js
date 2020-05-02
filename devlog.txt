@@ -88,3 +88,36 @@ Timeline adjustments:
 
 kaziJ -- 2020-05-01 10:00
 Create team flag and upload
+
+ericL -- 2020-05-02 03:21
+Remove mta_turnstile data from gitignore
+
+ericL -- 2020-05-02 05:26
+Implement daily ridership line graph
+
+ericL -- 2020-05-02 06:14
+Refactor data parsing functions
+
+ericL -- 2020-05-02 07:02
+Reorganize JavaScript files
+Create query functions for NYC COVID data
+
+ericL -- 2020-05-02 07:49
+Add references for D3 line graphs
+Create choropleth for COVID cases by zipcode
+
+ericL -- 2020-05-02 08:57
+Reorganize JavaScript files for transportation
+Add function comments
+
+ericL -- 2020-05-02 10:29
+Add transition between weekly and daily ridership
+Add legend and borders to choropleth
+
+ericL -- 2020-05-02 11:32
+Fix legend title
+Add tooltips to choropleth hover
+Add borough choropleth variation
+
+ericL -- 2020-05-02 11:54
+Implement animated line drawing
