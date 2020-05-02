@@ -13,7 +13,7 @@ let requestCaseData = async (keyword) => await d3.csv(`/data/transportation/covi
  * @return {Promise} A Promise containing an Array of Objects of zipcode case data
  */
 let getZipCases = async () => {
-    cases = await requestCaseData('tests-by-zcta');
+    let cases = await requestCaseData('tests-by-zcta');
     cases.shift();
 
     return cases;
@@ -27,8 +27,8 @@ let getZipCases = async () => {
 let getZipMap = (cases) => {
     let map = new Object();
 
-    getZipCases.forEach(zip => {
-        map[zip.MODZCTA] = zip.Positive;
+    cases.forEach(zip => {
+        map[zip.MODZCTA] = +zip.Positive;
     });
 
     return map;

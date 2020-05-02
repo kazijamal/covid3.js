@@ -14,13 +14,9 @@ let renderLineSVG = (svg, ridership) => {
     let width = pseudoSVG.clientWidth;
     let height = pseudoSVG.clientHeight;
 
-    let margin = {
-        'top': 20,
-        'right': 30,
-        'bottom': 30,
-        'left': 100,
-    };
+    let margin = { 'top': 20, 'right': 30, 'bottom': 30, 'left': 100 };
 
+    // create scales based on time and ridership
     let x = d3.scaleTime()
         .domain(d3.extent(ridership, d => d.date))
         .range([margin.left, width - margin.right]);
@@ -29,6 +25,7 @@ let renderLineSVG = (svg, ridership) => {
         .domain([0, d3.max(ridership, d => d.riders)]).nice()
         .range([height - margin.bottom, margin.top]);
 
+    // create axes
     let xAxis = g => g
         .attr('transform', `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
@@ -43,17 +40,16 @@ let renderLineSVG = (svg, ridership) => {
             .attr("font-weight", "bold")
             .text('Ridership'))
 
+    svg.append('g').call(xAxis);
+
+    svg.append('g').call(yAxis);
+
+    // line function which creates a path based on data
     let line = d3.line()
         .curve(d3.curveStep)
         .defined(d => !isNaN(d.riders))
         .x(d => x(d.date))
-        .y(d => y(d.riders))
-
-    svg.append('g')
-        .call(xAxis);
-
-    svg.append('g')
-        .call(yAxis);
+        .y(d => y(d.riders));
 
     svg.append('path')
         .datum(ridership)
@@ -65,12 +61,16 @@ let renderLineSVG = (svg, ridership) => {
         .attr('d', line);
 }
 
+
+/**
+ * @returns A D3 selection of an SVG
+ */
 let createLineSVG = () => {
     return d3.select('#line-graph-container')
         .append('svg')
         .attr('id', 'line-graph')
         .attr('width', '100%')
-        .attr('height', '50vh');
+        .attr('height', '50vh')
 }
 
 export { createLineSVG, renderLineSVG };

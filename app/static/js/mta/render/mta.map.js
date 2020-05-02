@@ -20,7 +20,7 @@ let renderMapSVG = (svg, ridership, zipcodes, colorMapper, zipCases) => {
     let color = (colorMapper, d) => {
         let c = colorMapper(zipCases[d]);
         if (c == undefined) {
-            return 'grey';
+            return 'lightgrey';
         }
         return c;
     }
@@ -38,3 +38,5 @@ let renderMapSVG = (svg, ridership, zipcodes, colorMapper, zipCases) => {
             }
         );
 }
+
+export { createMapSVG, renderMapSVG };
