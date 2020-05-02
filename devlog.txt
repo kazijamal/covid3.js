@@ -105,3 +105,6 @@ Create query functions for NYC COVID data
 ericL -- 2020-05-02 07:49
 Add references for D3 line graphs
 Create choropleth for COVID cases by zipcode
+
+ericL -- 2020-05-02 08:20
+Reorganize JavaScript files for transportation

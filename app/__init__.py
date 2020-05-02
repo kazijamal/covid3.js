@@ -73,11 +73,17 @@ def request_csv(url):
 
 @app.route('/data/transportation/mta')
 def turnstile_transfer():
+    '''
+    Retrieve the CSV file containing MTA turnstile data
+    '''
     return transfer_csv('mta_turnstile.csv')
 
 
 @app.route('/data/transportation/covid/<file_type>')
 def covid_transfer(file_type):
+    '''
+    Retrieve CSV files from the official NYC Health GitHub repository
+    '''
     return request_csv(f'https://raw.githubusercontent.com/nychealth/coronavirus-data/master/{file_type}.csv')
 
 
