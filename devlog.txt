@@ -97,3 +97,7 @@ Implement daily ridership line graph
 
 ericL -- 2020-05-02 06:14
 Refactor data parsing functions
+
+ericL -- 2020-05-02 07:02
+Reorganize JavaScript files
+Create query functions for NYC COVID data

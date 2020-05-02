@@ -1,15 +1,26 @@
-import { getDailyRidership, getWeeklyRidership, getSubwayStops } from './mta.data.js';
+import { getDailyRidership, getWeeklyRidership } from './mta.data.js';
+import { getNYCBoroughs, getNYCNeighborhoods, getNYCZipcodes, getSubwayStops } from './mta.map.js';
+import { requestCaseData } from './nyc.corona.js';
 
 window.onload = async () => {
 
+
+    let dateCases = await requestCaseData('case-hosp-death');
+    let boroughCases = await requestCaseData('boro');
+    let zipCases = await requestCaseData('tests-by-zcta');
+
+    console.log(dateCases, boroughCases, zipCases);
+
     // await getWeeklyRidership();
-
-    let ridership = await getDailyRidership();
+    // let ridership = await getDailyRidership();
     // let stops = await getSubwayStops();
+    // let boroughs = await getNYCBoroughs();
+    // let neighborhoods = await getNYCNeighborhoods();
+    // let zipcodes = await getNYCZipcodes();
 
-    let lineSVG = createLineSVG();
+    // let lineSVG = createLineSVG();
 
-    renderLineSVG(lineSVG, ridership);
+    // renderLineSVG(lineSVG, ridership);
 
     // let mapSVG = createMapSVG();
 
@@ -101,15 +112,8 @@ let renderMapSVG = (svg, ridership, stops) => {
         .center([-73.94, 40.70])
     let path = d3.geoPath(projection)
 
-    // let station_names = Array()
-    // for (const station in stops) {
-    //     let name = stops[station]['properties']['stop_name']
-    //     if(!station_names.includes(name)) {
-    //         station_names.push(name)
-    //     } else {
-    //         console.log(stops[station], station_names[station_names.indexOf(name)])
-    //     }
-    // }
+    // TODO: delete stops with the same name and combine their stops
+
     svg.selectAll('.subway-stop')
         .data(stops)
         .join(
@@ -117,10 +121,7 @@ let renderMapSVG = (svg, ridership, stops) => {
                 return enter.append('path')
                     .attr('d', path)
                     .attr('class', 'subway-stop')
-                    .attr('fill', d => {
-                        // console.log(d.properties.stop_name, d.properties.trains)
-                        return 'red'
-                    })
+                    .attr('fill', 'red')
             }
         );
 }

@@ -1,22 +1,6 @@
-let getNYCBoroughs = async () => {
-    let boroughs = await d3.json('/static/json/boroughs.json');
-
-    return topojson.feature(boroughs, boroughs.objects.boroughs).features;
-}
-
-let getNYCNeighborhoods = async () => {
-    let neighborhoods = await d3.json('/static/json/neighborhoods.json');
-
-    return neighborhoods.features;
-}
-
-let getSubwayStops = async () => {
-    let stops = await d3.json('/static/json/subway_stops.json')
-
-    return topojson.feature(stops, stops.objects.subway_stops).features;
-}
-
 let getMTARidership = async () => await d3.csv('/data/transportation/mta');
+
+let getExtent = (ridership) => d3.extent(ridership, d => new Date(`${d.date}T00:00:00`));
 
 let makeRidershipObject = (extent, step) => {
     // Map each date in the data to 0 ridership
@@ -80,6 +64,4 @@ let getWeeklyRidership = async () => {
     return insertData(weeklyRidership);
 }
 
-let getExtent = (ridership) => d3.extent(ridership, d => new Date(`${d.date}T00:00:00`));
-
-export { getNYCBoroughs, getNYCNeighborhoods, getSubwayStops, getDailyRidership, getWeeklyRidership };
+export { getDailyRidership, getWeeklyRidership };

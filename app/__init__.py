@@ -7,6 +7,7 @@ P04 -- Let the Data Speak
 
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os
+import urllib.request
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -58,11 +59,26 @@ def numbers():
 
 
 # DATA TRANSFER
-@app.route('/data/transportation/mta')
-def mta_transfer():
+def transfer_csv(file_name):
     csv_file = os.path.dirname(
-        os.path.abspath(__file__)) + '/static/data/mta_turnstile.csv'
+        os.path.abspath(__file__)) + '/static/data/' + file_name
     return open(csv_file).read()
+
+
+def request_csv(url):
+    req = urllib.request.Request(url)
+    req = urllib.request.urlopen(req)
+    return req.read().decode('utf8')
+
+
+@app.route('/data/transportation/mta')
+def turnstile_transfer():
+    return transfer_csv('mta_turnstile.csv')
+
+
+@app.route('/data/transportation/covid/<file_type>')
+def covid_transfer(file_type):
+    return request_csv(f'https://raw.githubusercontent.com/nychealth/coronavirus-data/master/{file_type}.csv')
 
 
 if __name__ == '__main__':
