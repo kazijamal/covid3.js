@@ -44,7 +44,7 @@ let renderLineSVG = (svg, ridership) => {
         .x(d => x(d.date))
         .y(d => y(d.riders));
 
-    svg.append('path')
+    let path = svg.append('path')
         .datum(ridership)
         .attr('id', 'ridership-line')
         .attr('fill', 'none')
@@ -53,6 +53,18 @@ let renderLineSVG = (svg, ridership) => {
         .attr('stroke-linejoin', 'round')
         .attr('stroke-linecap', 'round')
         .attr('d', line);
+
+    // https://medium.com/@sahilaug/line-graphs-using-d3-animating-the-line-f82a1dfc3c91
+    // https://github.com/d3/d3-ease
+
+    let length = path.node().getTotalLength();
+
+    path.attr('stroke-dasharray', `${length} ${length}`)
+        .attr('stroke-dashoffset', length)
+        .transition()
+        .ease(d3.easeCubicInOut)
+        .duration(10000)
+        .attr('stroke-dashoffset', 0);
 }
 
 let updateLineSVG = (svg, ridership) => {

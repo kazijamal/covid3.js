@@ -118,3 +118,6 @@ ericL -- 2020-05-02 11:32
 Fix legend title
 Add tooltips to choropleth hover
 Add borough choropleth variation
+
+ericL -- 2020-05-02 11:54
+Implement animated line drawing
