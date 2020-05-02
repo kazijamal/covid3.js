@@ -38,7 +38,7 @@ window.onload = async () => {
 
     lineSVG = createLineSVG();
     renderLineSVG(lineSVG, ridership);
-    // await zipChoropleth();
+    await zipChoropleth();
 }
 
 let zipChoropleth = async () => {

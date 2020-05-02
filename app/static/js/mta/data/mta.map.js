@@ -10,11 +10,7 @@ let getNYCNeighborhoods = async () => {
     return neighborhoods.features;
 }
 
-let getNYCZipcodes = async () => {
-    let zipcodes = await d3.json('/static/json/zip_codes.json')
-
-    return topojson.feature(zipcodes, zipcodes.objects.zip_codes).features;
-}
+let getNYCZipcodes = async () => await d3.json('/static/json/zip_codes.json');
 
 let getSubwayStops = async () => {
     let stops = await d3.json('/static/json/subway_stops.json')
