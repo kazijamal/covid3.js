@@ -1,3 +1,5 @@
+let xAxis, yAxis, width, height, margin, line, x, y;
+
 let renderLineSVG = (svg, ridership) => {
 
     // https://observablehq.com/@d3/line-chart-with-tooltip
@@ -5,47 +7,38 @@ let renderLineSVG = (svg, ridership) => {
     // https://github.com/d3/d3-scale/blob/master/README.md#scaleTime
     // https://bl.ocks.org/d3indepth/8948c9936c71e63ef2647bc4cc2ebf78
     // https://bl.ocks.org/scresawn/0e7e4cf9a0a459e59bacad492f73e139
-    // https://stackoverflow.com/questions/3674539/incrementing-a-date-in-javascript
-    // https://stackoverflow.com/questions/492994/compare-two-dates-with-javascript
     // https://www.d3-graph-gallery.com/line
-    // https://bl.ocks.org/d3noob/7030f35b72de721622b8
+
+    // https://bl.ocks.org/d3noob/7030f35b72de721622b8 Update graph on button press
 
     let pseudoSVG = svg._groups[0][0];
-    let width = pseudoSVG.clientWidth;
-    let height = pseudoSVG.clientHeight;
+    width = pseudoSVG.clientWidth;
+    height = pseudoSVG.clientHeight;
 
-    let margin = { 'top': 20, 'right': 30, 'bottom': 30, 'left': 100 };
+    margin = { 'top': 20, 'right': 30, 'bottom': 30, 'left': 100 };
 
     // create scales based on time and ridership
-    let x = d3.scaleTime()
-        .domain(d3.extent(ridership, d => d.date))
-        .range([margin.left, width - margin.right]);
-
-    let y = d3.scaleLinear()
-        .domain([0, d3.max(ridership, d => d.riders)]).nice()
-        .range([height - margin.bottom, margin.top]);
+    x = getXScale(ridership);
+    y = getYScale(ridership);
 
     // create axes
-    let xAxis = g => g
+    xAxis = g => g
         .attr('transform', `translate(0, ${height - margin.bottom})`)
+        .attr('id', 'line-x-axis')
         .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
 
-    let yAxis = g => g
+    yAxis = g => g
         .attr('transform', `translate(${margin.left}, 0)`)
+        .attr('id', 'line-y-axis')
         .call(d3.axisLeft(y))
-        .call(g => g.select('.domain').remove())
-        .call(g => g.select(".tick:last-of-type text").clone()
-            .attr("x", 3)
-            .attr("text-anchor", "start")
-            .attr("font-weight", "bold")
-            .text('Ridership'))
+        // .call(g => g.select('.domain').remove())
 
     svg.append('g').call(xAxis);
 
     svg.append('g').call(yAxis);
 
     // line function which creates a path based on data
-    let line = d3.line()
+    line = d3.line()
         .curve(d3.curveStep)
         .defined(d => !isNaN(d.riders))
         .x(d => x(d.date))
@@ -53,6 +46,7 @@ let renderLineSVG = (svg, ridership) => {
 
     svg.append('path')
         .datum(ridership)
+        .attr('id', 'ridership-line')
         .attr('fill', 'none')
         .attr('stroke', 'steelblue')
         .attr('stroke-width', '1.5')
@@ -61,6 +55,36 @@ let renderLineSVG = (svg, ridership) => {
         .attr('d', line);
 }
 
+let updateLineSVG = (svg, ridership) => {
+    x = getXScale(ridership);
+    y = getYScale(ridership);
+
+    svg = svg.transition();
+
+    svg.select('#ridership-line')
+        .duration(1000)
+        .attr('d', () => line(ridership))
+
+    svg.select('#line-x-axis')
+        .duration(1000)
+        .call(xAxis);
+
+    svg.select('#line-y-axis')
+        .duration(1000)
+        .call(yAxis);
+}
+
+let getXScale = (ridership) => {
+    return d3.scaleTime()
+        .domain(d3.extent(ridership, d => d.date))
+        .range([margin.left, width - margin.right]);
+}
+
+let getYScale = (ridership) => {
+    return d3.scaleLinear()
+        .domain([0, d3.max(ridership, d => d.riders)]).nice()
+        .range([height - margin.bottom, margin.top]);
+}
 
 /**
  * @returns A D3 selection of an SVG
@@ -73,4 +97,4 @@ let createLineSVG = () => {
         .attr('height', '50vh')
 }
 
-export { createLineSVG, renderLineSVG };
+export { createLineSVG, renderLineSVG, updateLineSVG };

@@ -2,10 +2,27 @@ import { getDailyRidership, getWeeklyRidership } from '../data/mta.ridership.js'
 import { getNYCBoroughs, getNYCNeighborhoods, getNYCZipcodes, getSubwayStops } from '../data/mta.map.js';
 import { requestCaseData, getZipCases, getZipMap } from '../data/nyc.corona.js';
 
-import { createLineSVG, renderLineSVG } from './mta.line.js';
+import { createLineSVG, renderLineSVG, updateLineSVG } from './mta.line.js';
 import { createMapSVG, renderMapSVG } from './mta.map.js';
 
-let ridership;
+let lineSVG, ridership;
+let currentView = 'daily'
+
+document.getElementById('daily').addEventListener('click', async () => {
+    buttonCheck('daily', getDailyRidership);
+})
+
+document.getElementById('weekly').addEventListener('click', async () => {
+    buttonCheck('weekly', getWeeklyRidership);
+})
+
+let buttonCheck = async (type, ridershipFunction) => {
+    if (currentView !== type) {
+        ridership = await ridershipFunction();
+        updateLineSVG(lineSVG, ridership);
+        currentView = type;
+    }
+}
 
 window.onload = async () => {
     /*
@@ -19,13 +36,9 @@ window.onload = async () => {
     */
     ridership = await getDailyRidership();
 
-    lineGraph();
-    // await zipChoropleth();
-}
-
-let lineGraph = () => {
-    let lineSVG = createLineSVG();
+    lineSVG = createLineSVG();
     renderLineSVG(lineSVG, ridership);
+    // await zipChoropleth();
 }
 
 let zipChoropleth = async () => {

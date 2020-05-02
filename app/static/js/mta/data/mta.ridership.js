@@ -22,6 +22,10 @@ let getExtent = (ridership) => d3.extent(ridership, d => new Date(`${d.date}T00:
 let makeRidershipObject = (extent, step) => {
     // Map each date in the data to 0 ridership
     let ridership = new Object();
+    if(step == 7) {
+        extent[0].setDate(extent[0].getDate() + 7);
+        extent[1].setDate(extent[1].getDate() + 1);
+    }
     for (let i = extent[0]; i <= extent[1]; i.setDate(i.getDate() + step)) {
         let iso = i.toISOString();
         let current = ridership[`${iso.substring(0, iso.indexOf('T'))}`] = new Object();
@@ -71,11 +75,20 @@ let getWeeklyRidership = async () => {
         let current = new Date(`${d.date}T00:00:00`);
         let day = current.getDay();
         if (day < 6) {
+            current.setDate(current.getDate() + 6 - day);
             // shift days other than Saturday
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay
+        } else if (day == 6) {
+            current.setDate(current.getDate() + 7);
         }
-        weeklyRidership[d.date]['riders'] += +d.enter;
+
+        let iso = current.toISOString();
+        let currentString = `${iso.substring(0, iso.indexOf('T'))}`;
+
+        weeklyRidership[currentString]['riders'] += +d.enter;
     });
+
+    // console.log(weeklyRidership);
 
     return insertData(weeklyRidership);
 }

@@ -109,3 +109,6 @@ Create choropleth for COVID cases by zipcode
 ericL -- 2020-05-02 08:57
 Reorganize JavaScript files for transportation
 Add function comments
+
+ericL -- 2020-05-02 10:29
+Add transition between weekly and daily ridership
