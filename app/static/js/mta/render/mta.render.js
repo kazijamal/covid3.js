@@ -1,6 +1,6 @@
 import { getDailyRidership, getWeeklyRidership } from '../data/mta.ridership.js';
 import { getNYCBoroughs, getNYCNeighborhoods, getNYCZipcodes, getSubwayStops } from '../data/mta.map.js';
-import { requestCaseData, getZipCases, getZipMap } from '../data/nyc.corona.js';
+import { requestCaseData, getZipCases, getZipMap, getBoroughCases, getBoroughMap } from '../data/nyc.corona.js';
 
 import { createLineSVG, renderLineSVG, updateLineSVG } from './mta.line.js';
 import { createMapSVG, renderMapSVG } from './mta.map.js';
@@ -78,6 +78,16 @@ let zipChoropleth = async () => {
     */
     let zipcodes = await getNYCZipcodes();
 
+    let boroughCases = await getBoroughCases();
+
+    // let colorMapper = d3.scaleQuantize()
+    //     .domain([0, d3.max(boroughCases, d => +d.COVID_CASE_COUNT)])
+    //     .range(["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"]);
+
+    let boroughMap = getBoroughMap(boroughCases);
+    let boroughs = await getNYCBoroughs();
+
+
     let mapSVG = createMapSVG();
-    renderMapSVG(mapSVG, ridership, zipcodes, colorMapper, zipMap);
+    renderMapSVG(mapSVG, ridership, zipcodes, boroughs, colorMapper, zipMap, boroughMap);
 }

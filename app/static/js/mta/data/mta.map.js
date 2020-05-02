@@ -1,8 +1,4 @@
-let getNYCBoroughs = async () => {
-    let boroughs = await d3.json('/static/json/boroughs.json');
-
-    return topojson.feature(boroughs, boroughs.objects.boroughs).features;
-}
+let getNYCBoroughs = async () => await d3.json('/static/json/boroughs.json');
 
 let getNYCNeighborhoods = async () => {
     let neighborhoods = await d3.json('/static/json/neighborhoods.json');

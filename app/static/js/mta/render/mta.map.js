@@ -20,17 +20,18 @@ let createMapSVG = () => {
     return map;
 }
 
-let renderMapSVG = (svg, ridership, zipcodes, colorMapper, zipCases) => {
+let renderMapSVG = (svg, ridership, zipcodes, boroughs, colorMapper, zipCases, boroughCases) => {
 
     let projection = d3.geoMercator()
         .scale(50000)
         .center([-73.94, 40.70])
     let path = d3.geoPath(projection)
 
-    let borders = topojson.mesh(zipcodes, zipcodes.objects.zip_codes);
+    let zipborders = topojson.mesh(zipcodes, zipcodes.objects.zip_codes);
     zipcodes = topojson.feature(zipcodes, zipcodes.objects.zip_codes).features;
 
     // TODO: delete stops with the same name and combine their stops
+
     let color = (colorMapper, d) => {
         let c = colorMapper(zipCases[d]);
         if (c == undefined) {
@@ -38,6 +39,14 @@ let renderMapSVG = (svg, ridership, zipcodes, colorMapper, zipCases) => {
         }
         return c;
     }
+
+    // let color = (colorMapper, d) => {
+    //     let c = colorMapper(boroughCases[d]);
+    //     return c;
+    // }
+
+    // let boroughborders = topojson.mesh(boroughs, boroughs.objects.boroughs);
+    // boroughs = topojson.feature(boroughs, boroughs.objects.boroughs).features;
 
     svg.selectAll('.zipcode-area')
         .data(zipcodes)
@@ -50,17 +59,40 @@ let renderMapSVG = (svg, ridership, zipcodes, colorMapper, zipCases) => {
                         return color(colorMapper, d.properties.zcta)
                     })
             }
-        );
+        )
+        .append("title")
+            .text(d => `${d.properties.zcta}, ${zipCases[d.properties.zcta]} cases`);
 
+    addBorders(svg, zipborders, 'zipcode-border', path);
+
+    // svg.selectAll('.borough-area')
+    //     .data(boroughs)
+    //     .join(
+    //         enter => {
+    //             return enter.append('path')
+    //                 .attr('d', path)
+    //                 .attr('class', 'borough-area')
+    //                 .attr('fill', d => {
+    //                     return color(colorMapper, d.properties.bname)
+    //                 })
+    //         }
+    //     )
+    //     .append("title")
+    //     .text(d => `${d.properties.bname}, ${boroughCases[d.properties.bname]} cases`);
+
+    // addBorders(svg, boroughborders, 'borough-border', path);
+
+    legend(colorMapper, 'Number of COVID-19 Cases', 6, 320, 50, 18, 0, 22, 0, 5, 'd')
+}
+
+let addBorders = (svg, border, classtype, path) => {
     svg.append("path")
-        .datum(borders)
+        .datum(border)
         .attr("fill", "none")
-        .attr("class", "zipcode-border")
+        .attr("class", classtype)
         .attr("stroke", "black")
         .attr("stroke-linejoin", "round")
         .attr("d", path);
-
-    legend(colorMapper, 'Number of Positive COVID-19 Cases', 6, 320, 50, 18, 0, 22, 0, 5, 'd')
 }
 
 function legend(
@@ -78,7 +110,7 @@ function legend(
     tickValues) {
 
     let x = d3.scaleLinear()
-        .domain([0, color.range().length])
+        .domain([-1, color.range().length - 1])
         .rangeRound([marginLeft, width - marginRight]);
 
     d3.select('#legend-colors')

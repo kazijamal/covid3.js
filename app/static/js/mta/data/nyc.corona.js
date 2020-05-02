@@ -19,6 +19,13 @@ let getZipCases = async () => {
     return cases;
 }
 
+let getBoroughCases = async () => {
+    let cases = await requestCaseData('boro');
+    cases.pop();
+
+    return cases;
+}
+
 /**
  * Creates an Object based on cases to map positive cases to zipcodes
  * @param {Array<Object>} cases contains zipcode case data
@@ -34,4 +41,16 @@ let getZipMap = (cases) => {
     return map;
 }
 
-export { requestCaseData, getZipCases, getZipMap }
+let getBoroughMap = (cases) => {
+    let map = new Object();
+
+    cases[0]['BOROUGH_GROUP'] = 'Bronx';
+
+    cases.forEach(boro => {
+        map[boro.BOROUGH_GROUP] = +boro.COVID_CASE_COUNT;
+    })
+
+    return map;
+}
+
+export { requestCaseData, getZipCases, getZipMap, getBoroughCases, getBoroughMap }
