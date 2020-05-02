@@ -121,3 +121,6 @@ Add borough choropleth variation
 
 ericL -- 2020-05-02 11:54
 Implement animated line drawing
+
+kaziJ -- 2020-05-02 15:37
+Add favicon
