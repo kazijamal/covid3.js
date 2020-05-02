@@ -11,6 +11,7 @@
 		<div class="article">
 			<h1 class="article-heading">NYC Public Transportation</h1>
 			<p class="article-subheading">Displays transportation changes in New York City during quarantine</p>
+			<div id="line-graph-container"></div>
 		</div>
 	</div>
 </div>
@@ -18,5 +19,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="{{ url_for('static', filename='js/mta.js')}}"></script>
+<script type="module" src="{{ url_for('static', filename='js/mta/mta.render.js')}}"></script>
 {% endblock %}

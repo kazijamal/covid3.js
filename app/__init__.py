@@ -61,7 +61,7 @@ def numbers():
 @app.route('/data/transportation/mta')
 def mta_transfer():
     csv_file = os.path.dirname(
-        os.path.abspath(__file__)) + '/mta_turnstile.csv'
+        os.path.abspath(__file__)) + '/static/data/mta_turnstile.csv'
     return open(csv_file).read()
 
 
