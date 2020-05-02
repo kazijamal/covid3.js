@@ -3,34 +3,49 @@ import { getNYCBoroughs, getNYCNeighborhoods, getNYCZipcodes, getSubwayStops } f
 import { requestCaseData } from './nyc.corona.js';
 
 window.onload = async () => {
+    let ridership = await getDailyRidership();
 
-
-    let dateCases = await requestCaseData('case-hosp-death');
-    let boroughCases = await requestCaseData('boro');
-    let zipCases = await requestCaseData('tests-by-zcta');
-
-    console.log(dateCases, boroughCases, zipCases);
+    // let dateCases = await requestCaseData('case-hosp-death');
+    // let boroughCases = await requestCaseData('boro');
 
     // await getWeeklyRidership();
-    // let ridership = await getDailyRidership();
     // let stops = await getSubwayStops();
     // let boroughs = await getNYCBoroughs();
     // let neighborhoods = await getNYCNeighborhoods();
-    // let zipcodes = await getNYCZipcodes();
 
-    // let lineSVG = createLineSVG();
+    let lineSVG = createLineSVG();
 
-    // renderLineSVG(lineSVG, ridership);
+    renderLineSVG(lineSVG, ridership);
 
-    // let mapSVG = createMapSVG();
+    let zipCases = await requestCaseData('tests-by-zcta');
+    zipCases.shift();
 
-    // renderMapSVG(mapSVG, ridership, stops);
+    let colorMapper = d3.scaleQuantize()
+        .domain([0, d3.max(zipCases, d => +d.Positive)])
+        .range(["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"]);
+
+    let zipCaseDictionary = new Object();
+
+    zipCases.forEach(zip => {
+        zipCaseDictionary[zip.MODZCTA] = zip.Positive;
+    });
+
+    let zipcodes = await getNYCZipcodes();
+    let mapSVG = createMapSVG();
+    renderMapSVG(mapSVG, ridership, zipcodes, colorMapper, zipCaseDictionary);
 }
 
 let renderLineSVG = (svg, ridership) => {
 
     // https://observablehq.com/@d3/line-chart-with-tooltip
     // https://observablehq.com/@d3/line-chart
+    // https://github.com/d3/d3-scale/blob/master/README.md#scaleTime
+    // https://bl.ocks.org/d3indepth/8948c9936c71e63ef2647bc4cc2ebf78
+    // https://bl.ocks.org/scresawn/0e7e4cf9a0a459e59bacad492f73e139
+    // https://stackoverflow.com/questions/3674539/incrementing-a-date-in-javascript
+    // https://stackoverflow.com/questions/492994/compare-two-dates-with-javascript
+    // https://www.d3-graph-gallery.com/line
+    // https://bl.ocks.org/d3noob/7030f35b72de721622b8
 
     let pseudoSVG = svg._groups[0][0];
     let width = pseudoSVG.clientWidth;
@@ -105,7 +120,7 @@ let createMapSVG = () => {
         .attr('transform', 'translate(100)')
 }
 
-let renderMapSVG = (svg, ridership, stops) => {
+let renderMapSVG = (svg, ridership, zipcodes, colorMapper, zipCases) => {
 
     let projection = d3.geoMercator()
         .scale(50000)
@@ -113,15 +128,25 @@ let renderMapSVG = (svg, ridership, stops) => {
     let path = d3.geoPath(projection)
 
     // TODO: delete stops with the same name and combine their stops
+    console.log(zipCases);
+    let color = (colorMapper, d) => {
+        let c = colorMapper(zipCases[d]);
+        if (c == undefined) {
+            return 'grey';
+        }
+        return c;
+    }
 
-    svg.selectAll('.subway-stop')
-        .data(stops)
+    svg.selectAll('.zipcode-area')
+        .data(zipcodes)
         .join(
             enter => {
                 return enter.append('path')
                     .attr('d', path)
-                    .attr('class', 'subway-stop')
-                    .attr('fill', 'red')
+                    .attr('class', 'zipcode-area')
+                    .attr('fill', d => {
+                        return color(colorMapper, d.properties.zcta)
+                    })
             }
         );
 }

@@ -101,3 +101,7 @@ Refactor data parsing functions
 ericL -- 2020-05-02 07:02
 Reorganize JavaScript files
 Create query functions for NYC COVID data
+
+ericL -- 2020-05-02 07:49
+Add references for D3 line graphs
+Create choropleth for COVID cases by zipcode
