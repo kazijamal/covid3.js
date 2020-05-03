@@ -74,3 +74,60 @@ Move navbar into base template and add variability
 
 kaziJ -- 2020-04-28 22:05
 Create about page and route
+
+kaziJ -- 2020-04-29 23:00
+Teams who reviewed our design doc:
+- The-SIMPsons
+- MarshmallowFlush
+Summarized input:
+- Through data transfer systems
+- Listing additional features was nice
+- Extra packages can be expanded upon
+- Consider using SQLite database
+- Consider pulling turnstile data when it updates weekly
+Modifications to design doc:
+- Stated that we are currently looking for a medium income data source
+- Specified that we will be using sentiment analysis and natural processing Python libraries on the datasets
+- Stated that we will consider using GitHub Actions script that will run our processing file every weekend to update our MTA turnstile data CSV
+- Elaborated on extra packages
+Timeline adjustments:
+- We anticipated completing our project by 05-11-2020, and so we did not make any changes to our timeline. Our original additional features are sufficient.
+
+kaziJ -- 2020-05-01 10:00
+Create team flag and upload
+
+ericL -- 2020-05-02 03:21
+Remove mta_turnstile data from gitignore
+
+ericL -- 2020-05-02 05:26
+Implement daily ridership line graph
+
+ericL -- 2020-05-02 06:14
+Refactor data parsing functions
+
+ericL -- 2020-05-02 07:02
+Reorganize JavaScript files
+Create query functions for NYC COVID data
+
+ericL -- 2020-05-02 07:49
+Add references for D3 line graphs
+Create choropleth for COVID cases by zipcode
+
+ericL -- 2020-05-02 08:57
+Reorganize JavaScript files for transportation
+Add function comments
+
+ericL -- 2020-05-02 10:29
+Add transition between weekly and daily ridership
+Add legend and borders to choropleth
+
+ericL -- 2020-05-02 11:32
+Fix legend title
+Add tooltips to choropleth hover
+Add borough choropleth variation
+
+ericL -- 2020-05-02 11:54
+Implement animated line drawing
+
+kaziJ -- 2020-05-02 15:37
+Add favicon
