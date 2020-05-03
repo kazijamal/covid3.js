@@ -1,28 +1,47 @@
-{% extends "base.html" %} 
-
-{% set active_page = "sentiment" %} 
-
-{% block title %} 
-Public Media 
-{% endblock %} 
-
-{% block head %}
+{% extends "base.html" %} {% set active_page = "sentiment" %} {% block title %}
+Public Media {% endblock %} {% block head %}
 <!-- CSS -->
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/publicmedia.css') }}"
 />
-{% endblock %} 
 
-{% block body %}
+<!-- D3 interpolate path plugin -->
+<script
+  src="https://unpkg.com/d3-interpolate-path/build/d3-interpolate-path.min.js"
+  defer
+></script>
+
+<!-- Number of COVID-19 Articles per day script -->
+<script
+  src="{{ url_for('static', filename='js/num-articles-per-day.js')}}"
+  type="text/javascript"
+  defer
+></script>
+{% endblock %} {% block body %}
 <div class="content">
   <div class="article">
     <h1 class="article-heading">Public Media</h1>
     <p class="article-subheading">
       Displays patterns and analysis of public opinion during the COVID-19
       pandemic
-		</p>
-		<h3 class="article-subtitle">Amount of COVID-19 articles written over time</h3>
+    </p>
+    <h3 class="article-subtitle">
+      Amount of COVID-19 articles written over time
+    </h3>
+    <div class="toggle-view-btns">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-warning" id="toggle-daily-view">
+          Daily
+        </button>
+        <button type="button" class="btn btn-warning" id="toggle-weekly-view">
+          Weekly
+        </button>
+        <button type="button" class="btn btn-warning" id="toggle-monthly-view">
+          Monthly
+        </button>
+      </div>
+    </div>
     <div id="line-chart"></div>
   </div>
 </div>

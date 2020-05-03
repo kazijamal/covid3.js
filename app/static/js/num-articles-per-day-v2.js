@@ -262,7 +262,7 @@ d3.csv('/data/sentiment/publicmedia', function (day_data) {
       .style('visibility', 'visible')
       .style(
         'top',
-        d3.mouse(this)[1] - (tooltip[0][0].clientHeight - 400) + 'px'
+        d3.mouse(this)[1] - (tooltip[0][0].clientHeight - 30) + 'px'
       )
       .style(
         'left',

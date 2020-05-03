@@ -36,6 +36,10 @@ const months = {
   11: 'December',
 };
 
+const VIEW_TRANSITION_DURATION = 1000;
+
+const DATA_STATE = 'DAILY';
+
 // Read the data
 // TODO: Split this chunk into smaller, intentional pieces
 d3.csv('/data/sentiment/publicmedia')
@@ -58,31 +62,10 @@ d3.csv('/data/sentiment/publicmedia')
     }
 
     // Create an object, numArticlesPerDay, to map a zero-based index (up to numDatapoints) to the number of articles its position corresponds with
-    const numArticlesPerDayData = d3
-      .range(numDatapoints)
-      .map((d) => ({ y: +numArticlesPerDay[d].numArticles, date: numArticlesPerDay[d].date }));
-
-    // for (const key in numArticles) {
-    //   numArticlesPerDayData[new Date(numArticles[key].date)] =
-    //     numArticlesPerDayData[key];
-    // }
-
-    console.log(numArticlesPerDayData);
-
-    // d3's line generator
-    const line = d3
-      .line()
-      .x((d) => {
-        console.log(xScale(new Date(d.date)));
-        return xScale(new Date(d.date));
-      }) // Set x values for the line generator
-      .y((d) => {
-        console.log(d)
-        console.log(typeof d.y, d.y);
-        console.log(yScale(d.y));
-        return yScale(d.y);
-      }) // Set y values for the line generator
-      .curve(d3.curveMonotoneX); // Apply smoothing to the curve
+    const numArticlesPerDayData = d3.range(numDatapoints).map((d) => ({
+      y: +numArticlesPerDay[d].numArticles,
+      date: numArticlesPerDay[d].date,
+    }));
 
     // Call the x-axis in a group tag
     svg
@@ -99,8 +82,13 @@ d3.csv('/data/sentiment/publicmedia')
     // Call the y-axis in a group tag
     svg.append('g').attr('class', 'y-axis').call(d3.axisLeft(yScale)); // Create a y-axis component with d3.axisLeft
 
-    // console.log(numArticlesPerDayData);
-    console.log(line(10));
+    // d3's line generator
+    const line = d3
+      .line()
+      .x((d) => xScale(new Date(d.date))) // Set x values for the line generator
+      .y((d) => yScale(d.y)) // Set y values for the line generator
+      .curve(d3.curveMonotoneX); // Apply smoothing to the curve
+
     // Append the path, bind the data, and call the line generator
     svg
       .append('path')
@@ -109,18 +97,127 @@ d3.csv('/data/sentiment/publicmedia')
       .attr('d', line); // Call the line generator
 
     // Append a circle for each datapoint
-    svg
-      .selectAll('.dot')
-      .data(numArticlesPerDayData)
-      .enter()
-      .append('circle')
-      .attr('class', 'dot')
-      .attr('cx', (_, i) => {
-        const { date } = numArticlesPerDay[i];
-        return xScale(new Date(date));
-      })
-      .attr('cy', (d) => yScale(d.y))
-      .attr('r', 5);
+    // svg
+    //   .selectAll('.dot')
+    //   .data(numArticlesPerDayData)
+    //   .enter()
+    //   .append('circle')
+    //   .attr('class', 'dot')
+    //   .attr('cx', (_, i) => {
+    //     const { date } = numArticlesPerDay[i];
+    //     return xScale(new Date(date));
+    //   })
+    //   .attr('cy', (d) => yScale(d.y))
+    //   .attr('r', 5);
     // TODO: Add on mouseover events on these datapoint circles
+
+    const formatDate = d3.timeFormat('%Y-%m-%d');
+    const bisectDate = d3.bisector(function (d) {
+      return formatDate(new Date(d['date']));
+    }).left;
+
+    // fix those integers
+    numArticles.forEach((d, i) => {
+      d.y = parseInt(d.numArticles);
+    });
+
+    ///////////////////////
+    // helper functions
+    const create_time_unit_data = (parse_date) => {
+      const new_data = JSON.parse(JSON.stringify(numArticles));
+      new_data.forEach(function (d, i) {
+        const offset = parse_date(d.date);
+        if (offset == 0 || i == 0 || i == numArticles.length - 1) {
+          // it's a new date_unit, or this is the first or last date in the array
+          d['start'] = true;
+        } else {
+          d['start'] = false;
+
+          // add this value to the start of the week
+          let tar_idx = i - offset;
+          if (tar_idx < 0) {
+            tar_idx = 0;
+          }
+          console.log(new_data);
+          new_data[tar_idx].y += d.y;
+
+          // then nil out
+          d.y = -1;
+        }
+      });
+
+      return new_data;
+    };
+
+    ///////////////////////
+    // generate weekly data
+    const parse_for_week = (date) => {
+      const dateObj = new Date(date);
+      return dateObj.getDay();
+    };
+    const week_data = create_time_unit_data(parse_for_week);
+
+    ///////////////////////
+    // generate monthly data
+    const parse_for_month = (date) => {
+      const dateObj = new Date(date);
+      return dateObj.getDate() - 1;
+    };
+    const month_data = create_time_unit_data(parse_for_month);
+
+    // d3's line generator
+    const weeklyLine = d3
+      .line()
+      .x((d) => xScale(new Date(d.date))) // Set x values for the line generator
+      .y((d) => yScale(d.y)) // Set y values for the line generator
+      .curve(d3.curveMonotoneX); // Apply smoothing to the curve
+
+    const monthlyLine = d3
+      .line()
+      .x((d) => xScale(new Date(d.date))) // Set x values for the line generator
+      .y((d) => yScale(d.y)) // Set y values for the line generator
+      .curve(d3.curveMonotoneX); // Apply smoothing to the curve
+
+    dailyViewHandler = () => {
+      d3.select('.line')
+        .transition()
+        .duration(VIEW_TRANSITION_DURATION)
+        .attrTween('d', function (d) {
+          const previous = d3.select(this).attr('d');
+          const current = line(numArticlesPerDayData);
+          return d3.interpolatePath(previous, current);
+        });
+    };
+
+    weeklyViewHandler = () => {
+      d3.select('.line')
+        .transition()
+        .duration(VIEW_TRANSITION_DURATION)
+        .attrTween('d', function (d) {
+          const previous = d3.select(this).attr('d');
+          const current = weeklyLine(week_data);
+          return d3.interpolatePath(previous, current);
+        });
+    };
+
+    monthlyViewHandler = () => {
+      d3.select('.line')
+        .transition()
+        .duration(VIEW_TRANSITION_DURATION)
+        .attrTween('d', function (d) {
+          console.log(month_data);
+          const previous = d3.select(this).attr('d');
+          const current = monthlyLine(month_data);
+          return d3.interpolatePath(previous, current);
+        });
+    };
+
+    const toggleDailyViewBtn = document.getElementById('toggle-daily-view');
+    const toggleWeeklyViewBtn = document.getElementById('toggle-weekly-view');
+    const toggleMonthlyViewBtn = document.getElementById('toggle-monthly-view');
+
+    toggleDailyViewBtn.addEventListener('click', dailyViewHandler);
+    toggleWeeklyViewBtn.addEventListener('click', weeklyViewHandler);
+    toggleMonthlyViewBtn.addEventListener('click', monthlyViewHandler);
   })
   .catch((err) => console.log(err));
