@@ -25,7 +25,7 @@ def about():
 # SENTIMENT ANALYSIS
 
 # absolute path to num-articles-per-day.csv
-num_articles_per_day_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "csv", "num-articles-per-day.csv") 
+num_articles_per_day_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "num-articles-per-day.csv") 
 
 @app.route('/sentiment')
 def sentiment():
