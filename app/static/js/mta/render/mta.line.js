@@ -39,7 +39,7 @@ let renderLineSVG = (svg, ridership) => {
 
     // line function which creates a path based on data
     line = d3.line()
-        .curve(d3.curveStep)
+        .curve(d3.curveMonotoneX)
         .defined(d => !isNaN(d.riders))
         .x(d => x(d.date))
         .y(d => y(d.riders));
@@ -75,7 +75,11 @@ let updateLineSVG = (svg, ridership) => {
 
     svg.select('#ridership-line')
         .duration(1000)
-        .attr('d', () => line(ridership))
+        .attrTween('d', function () {
+            let prev = d3.select(this).attr('d')
+            let current = line(ridership)
+            return d3.interpolatePath(prev, current);
+        })
 
     svg.select('#line-x-axis')
         .duration(1000)
