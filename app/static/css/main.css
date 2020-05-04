@@ -27,7 +27,7 @@ a:hover {
 }
 
 .navbar-top {
-    margin: 1rem;
+    margin: 1rem 0rem;
 }
 
 .navbar-top h1 {
@@ -45,13 +45,17 @@ a:hover {
     border: 2px solid black;
 }
 
+.navbar-bottom {
+    margin: 1rem 0rem;
+}
+
 .navbar-bottom ul {
     list-style-type: none;
 }
 
 .navbar-bottom li {
     display: inline;
-    margin: 1rem;
+    margin-right: 2rem;
 }
 
 .navbar-bottom li a {
