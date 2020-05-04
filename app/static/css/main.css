@@ -133,6 +133,14 @@ a:hover {
     font-family: "Roboto Mono", monospace;
 }
 
+.about a {
+    color: slategray;
+}
+
+.about a:hover {
+    color: black;
+}
+
 /* ABOUT END */
 
 /* MTA LINE GRAPH START */
