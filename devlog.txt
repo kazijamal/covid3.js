@@ -134,3 +134,8 @@ Add favicon
 
 ericL -- 2020-05-04 11:55
 Fix line graph transition and curve smoothing
+
+ericL -- 2020-05-04 13:56
+Fix favicon resolution
+Create turnstile update script
+Refactor turnstile processing
