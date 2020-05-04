@@ -136,6 +136,7 @@ a:hover {
 /* ABOUT END */
 
 /* MTA LINE GRAPH START */
+
 #line-graph {
     position: relative;
     top: 0;
@@ -144,4 +145,26 @@ a:hover {
     bottom: 0;
     margin: auto;
 }
+
 /* MTA LINE GRAPH END */
+
+
+/* NUMBERS START */
+
+.number-col {
+    padding: 1rem;
+}
+
+.number {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.number-description {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+/* NUMBERS END */
