@@ -23,6 +23,10 @@ def about():
     return render_template('about.html')
 
 # SENTIMENT ANALYSIS
+
+# absolute path to num-articles-per-day.csv
+num_articles_per_day_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "num-articles-per-day.csv") 
+
 @app.route('/sentiment')
 def sentiment():
     return render_template('sentiment/sentiment.html')
@@ -32,7 +36,10 @@ def sentiment():
 def publicmedia():
     return render_template('sentiment/publicmedia.html')
 
-
+@app.route("/data/sentiment/publicmedia")
+def publicMediaData():
+    return open(num_articles_per_day_csv).read() 
+    
 @app.route('/sentiment/trumptweets')
 def trumptweets():
     return render_template('sentiment/trumptweets.html')

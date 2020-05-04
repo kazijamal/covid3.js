@@ -26,7 +26,14 @@ Add data for New York City subways, maps
 Implement basic NYC map drawing
 
 kaziJ -- 2020-04-27 09:02
-Add design doc v0.
+Add unfinished version of design doc v0.
+
+rayL -- 2020-04-27 13:41
+Add number of coronavirus articles per day CSV file
+Add Flask route for data transfer to JS files 
+
+rayL -- 2020-04-27 16:43
+Plot number of article per day on line chart
 
 ericL -- 2020-04-27 12:23
 Implement MTA data parsing algorithm
