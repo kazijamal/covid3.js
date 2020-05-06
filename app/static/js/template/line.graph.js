@@ -1,6 +1,7 @@
 import { delay } from '../utility.js';
 
 let x, y, xAxis, yAxis, width, height, line, margin;
+let xaxisid, yaxisid, lineid;
 
 let setSVGBounds = (svg, m) => {
     let pseudo = svg._groups[0][0];
@@ -15,20 +16,28 @@ let renderLineGraph = (
     data,
     xprop,
     yprop,
-    color,
-    time,
-) => {
+    {
+        color = 'steelblue',
+        timedelay = 7000,
+        ease = d3.easeCubicInOut,
+        strokewidth = 1.5,
+        xid = 'line-x-axis',
+        yid = 'line-y-axis',
+        id = 'line-graph'
+    } = {}) => {
 
     x = xScale(data, xprop);
     y = yScale(data, yprop);
 
+    xaxisid = xid; yaxisid = yid; lineid = id;
+
     xAxis = g => g
-        .attr('id', 'x-axis')
+        .attr('id', xid)
         .attr('transform', `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
 
     yAxis = g => g
-        .attr('id', 'y-axis')
+        .attr('id', yid)
         .attr('transform', `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(y))
 
@@ -44,9 +53,9 @@ let renderLineGraph = (
     let path = svg.append('path')
         .datum(data)
         .attr('fill', 'none')
-        .attr('id', 'line-graph')
+        .attr('id', id)
         .attr('stroke', color)
-        .attr('stroke-width', '1.5')
+        .attr('stroke-width', strokewidth)
         .attr('stroke-linejoin', 'round')
         .attr('stroke-linecap', 'round')
         .attr('d', line);
@@ -56,11 +65,11 @@ let renderLineGraph = (
     path.attr('stroke-dasharray', `${length} ${length}`)
         .attr('stroke-dashoffset', length)
         .transition()
-        .ease(d3.easeCubicInOut)
-        .duration(time)
+        .ease(ease)
+        .duration(timedelay)
         .attr('stroke-dashoffset', 0);
 
-    return delay(time);
+    return delay(timedelay);
 }
 
 let xScale = (data, prop) => {
@@ -81,7 +90,7 @@ let updateLineGraph = (svg, data, time, xprop, yprop) => {
 
     svg = svg.transition();
 
-    svg.select('#line-graph')
+    svg.select(`#${lineid}`)
         .duration(time)
         .attrTween('d', function () {
             let prev = d3.select(this).attr('d')
@@ -89,11 +98,11 @@ let updateLineGraph = (svg, data, time, xprop, yprop) => {
             return d3.interpolatePath(prev, current);
         });
 
-    svg.select('#x-axis')
+    svg.select(`#${xaxisid}`)
         .duration(time)
         .call(xAxis);
 
-    svg.select('#y-axis')
+    svg.select(`#${yaxisid}`)
         .duration(time)
         .call(yAxis);
 }

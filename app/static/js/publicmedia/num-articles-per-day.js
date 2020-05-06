@@ -35,7 +35,10 @@ window.onload = async () => {
   let margin = { top: 50, right: 50, bottom: 50, left: 50 };
 
   setSVGBounds(svg, margin);
-  await renderLineGraph(svg, daily, 'date', 'numArticles', 'steelblue', 7000);
+  await renderLineGraph(svg, daily, 'date', 'numArticles', {
+    color: '#ffab00',
+    strokewidth: 3,
+  });
 
   listen('toggle-daily-view', daily, 'date', 'numArticles');
   listen('toggle-weekly-view', weekly, 'date', 'numArticles');

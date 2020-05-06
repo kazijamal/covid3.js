@@ -43,7 +43,6 @@ const createScaffold = (extent, step, property) => {
 
     if (step == 'month') {
         extent.forEach(d => { d.setDate(15) });
-        console.log(extent);
     }
     for (let i = extent[0]; i <= extent[1]; setDate(i, step)) {
         let iso = i.toISOString();

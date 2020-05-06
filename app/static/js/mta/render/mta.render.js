@@ -1,8 +1,4 @@
 import {
-    getMTARidership,
-} from '../data/mta.ridership.js';
-
-import {
     setSVGBounds,
     renderLineGraph,
     updateLineGraph
@@ -17,7 +13,7 @@ let view = 'daily';
 let svg;
 
 window.onload = async () => {
-    const ridership = await getMTARidership();
+    const ridership = await d3.csv('/data/transportation/mta');
 
     let extent = d3.extent(ridership, d => `${d.date}T00:00:00`).map(d => new Date(d));
 
@@ -27,8 +23,6 @@ window.onload = async () => {
     setDate(extent[1], 1); // set       end date to 2020-05-02
 
     let weekly = parseData(ridership, extent, 7, 'riders', 'enter');
-
-    console.log(extent);
 
     let monthly = parseData(ridership, extent, 'month', 'riders', 'enter');
 
@@ -41,7 +35,7 @@ window.onload = async () => {
     let margin = { 'top': 20, 'right': 30, 'bottom': 30, 'left': 100 };
 
     setSVGBounds(svg, margin);
-    await renderLineGraph(svg, daily, 'date', 'riders', 'steelblue', 7000);
+    await renderLineGraph(svg, daily, 'date', 'riders');
 
     listen('daily', daily, 'date', 'riders');
     listen('weekly', weekly, 'date', 'riders');
