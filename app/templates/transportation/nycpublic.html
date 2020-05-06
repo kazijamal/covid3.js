@@ -11,20 +11,16 @@
 		<div class="article">
 			<h1 class="article-heading">NYC Public Transportation</h1>
 			<p class="article-subheading">Displays transportation changes in New York City during quarantine</p>
-			<!-- <button class="btn btn-primary" id="daily">Daily</button>
-			<button class="btn btn-primary" id="weekly">Weekly</button> -->
-
+			New York City is synonymous with a lot: Times Square, Central Park, the Empire State Building.
+			But the thing that holds the city together is the MTA Subway system. In the midst of the COVID-19 pandemic,
+			the iconic image of crowded trains is not to be found. The following line chart shows the number of times
+			people enter an MTA Subway turnstile since 2019. Note that on the daily view, there are drops on the
+			weekends, regardless of the pandemic.
 			<div class="toggle-view-btns">
-				<div class="btn-group" role="group" aria-label="Basic example">
-					<button type="button" class="btn btn-warning" id="daily">
-						Daily
-					</button>
-					<button type="button" class="btn btn-warning" id="weekly">
-						Weekly
-					</button>
-					<button type="button" class="btn btn-warning" id="monthly">
-						Monthly
-					</button>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary" id="daily" disabled>Daily</button>
+					<button type="button" class="btn btn-primary" id="weekly" disabled>Weekly</button>
+					<button type="button" class="btn btn-primary" id="monthly" disabled>Monthly</button>
 				</div>
 			</div>
 			<div id="ridership-line-container"></div>

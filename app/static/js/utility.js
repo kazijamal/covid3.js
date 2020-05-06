@@ -1,5 +1,3 @@
-import { updateLineGraph } from './template/line.graph.js';
-
 const setDate = (date, diff) => {
     if (diff == 'month') {
         date.setMonth(date.getMonth() + 1);
@@ -42,7 +40,7 @@ const createScaffold = (extent, step, property) => {
     let scaffold = new Object();
 
     if (step == 'month') {
-        extent.forEach(d => { d.setDate(15) });
+        extent.forEach(d => { d.setDate(1) });
     }
     for (let i = extent[0]; i <= extent[1]; setDate(i, step)) {
         let iso = i.toISOString();
@@ -71,7 +69,7 @@ const fillScaffold = (scaffold, data, step, property, subprop) => {
     } else if (step == 'month') {
         data.forEach(d => {
             let current = new Date(`${d.date}T00:00:00`);
-            current.setDate(15);
+            current.setDate(1);
 
             if (current.getFullYear() !== 2018) {
                 scaffold[toISO(current)][property] += +d[subprop];
@@ -80,4 +78,6 @@ const fillScaffold = (scaffold, data, step, property, subprop) => {
     }
 }
 
-export { setDate, delay, parseData };
+let tooldate = { month: "short", day: "numeric", year: "numeric" };
+
+export { setDate, delay, parseData, tooldate };

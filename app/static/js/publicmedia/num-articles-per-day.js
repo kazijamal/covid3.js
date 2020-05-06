@@ -7,6 +7,7 @@ import {
 } from '../template/line.graph.js';
 
 import {
+  tooldate,
   parseData,
   setDate
 } from '../utility.js'
@@ -14,6 +15,8 @@ import {
 let svg;
 
 window.onload = async () => {
+  let tool = (x, y) => `${y} articles \n${x.toLocaleString(undefined, tooldate)}`;
+
   let data = await d3.csv('/data/sentiment/publicmedia');
 
   let extent = d3.extent(data, d => `${d.date}T00:00:00`).map(d => new Date(d));
@@ -35,7 +38,7 @@ window.onload = async () => {
   let margin = { top: 50, right: 50, bottom: 50, left: 50 };
 
   setSVGBounds(svg, margin);
-  await renderLineGraph(svg, daily, 'date', 'numArticles', {
+  await renderLineGraph(svg, daily, 'date', 'numArticles', tool, {
     color: '#ffab00',
     strokewidth: 3,
   });
@@ -45,8 +48,10 @@ window.onload = async () => {
   listen('toggle-monthly-view', monthly, 'date', 'numArticles');
 }
 
-let listen = (id, data, xprop, yprop) => {
-  document.getElementById(id).addEventListener('click', () => {
+let listen = (id, data, xprop, yprop, tooltip) => {
+  let button = document.getElementById(id);
+  button.disabled = false;
+  button.addEventListener('click', () => {
     update(id, data, xprop, yprop);
   })
 }

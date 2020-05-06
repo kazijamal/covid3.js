@@ -5,14 +5,18 @@ import {
 } from '../../template/line.graph.js'
 
 import {
+    tooldate,
     setDate,
     parseData,
+    delay,
 } from '../../utility.js';
 
 let view = 'daily';
 let svg;
 
 window.onload = async () => {
+    let tool = (x, y) => `${y} riders \n${x.toLocaleString(undefined, tooldate)}`;
+
     const ridership = await d3.csv('/data/transportation/mta');
 
     let extent = d3.extent(ridership, d => `${d.date}T00:00:00`).map(d => new Date(d));
@@ -32,10 +36,10 @@ window.onload = async () => {
         .attr('width', '100%')
         .attr('height', '50vh');
 
-    let margin = { 'top': 20, 'right': 30, 'bottom': 30, 'left': 100 };
+    let margin = { 'top': 20, 'right': 50, 'bottom': 50, 'left': 100 };
 
     setSVGBounds(svg, margin);
-    await renderLineGraph(svg, daily, 'date', 'riders');
+    await renderLineGraph(svg, daily, 'date', 'riders', tool);
 
     listen('daily', daily, 'date', 'riders');
     listen('weekly', weekly, 'date', 'riders');
@@ -43,14 +47,18 @@ window.onload = async () => {
 }
 
 let listen = (id, data, xprop, yprop) => {
-    document.getElementById(id).addEventListener('click', () => {
+    let button = document.getElementById(id);
+    button.disabled = false;
+    button.addEventListener('click', () => {
         update(id, data, xprop, yprop);
     })
 }
 
 let update = (id, data, xprop, yprop) => {
     if (view !== id) {
-        updateLineGraph(svg, data, 1000, xprop, yprop);
         view = id;
+        // console.log(view, id);
+        updateLineGraph(svg, data, 1000, xprop, yprop);
+        // console.log(view);
     }
 }
