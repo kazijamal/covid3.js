@@ -1,93 +1,61 @@
-import { getDailyRidership, getWeeklyRidership } from '../data/mta.ridership.js';
-import { getNYCBoroughs, getNYCNeighborhoods, getNYCZipcodes, getSubwayStops } from '../data/mta.map.js';
-import { requestCaseData, getZipCases, getZipMap, getBoroughCases, getBoroughMap } from '../data/nyc.corona.js';
+import {
+    getMTARidership,
+    parseRidership,
+    // getMonthlyRidership,
+} from '../data/mta.ridership.js';
 
-import { createLineSVG, renderLineSVG, updateLineSVG } from './mta.line.js';
-import { createMapSVG, renderMapSVG } from './mta.map.js';
+import {
+    setSVGBounds,
+    renderLineGraph,
+    updateLineGraph
+} from '../../template/line.graph.js'
 
-let lineSVG, ridership;
-let currentView = 'daily'
+import {
+    setDate
+} from '../../utility.js';
 
-document.getElementById('daily').addEventListener('click', async () => {
-    buttonCheck('daily', getDailyRidership);
-})
-
-document.getElementById('weekly').addEventListener('click', async () => {
-    buttonCheck('weekly', getWeeklyRidership);
-})
-
-let buttonCheck = async (type, ridershipFunction) => {
-    if (currentView !== type) {
-        ridership = await ridershipFunction();
-        updateLineSVG(lineSVG, ridership);
-        currentView = type;
-    }
-}
+let view = 'daily';
+let svg;
 
 window.onload = async () => {
-    /*
-        ridership contains the following:
-        [
-            { date: Date object, riders: int },
-            { },
-            { },
-            ...
-        ]
-    */
-    ridership = await getDailyRidership();
+    const ridership = await getMTARidership();
 
-    lineSVG = createLineSVG();
-    renderLineSVG(lineSVG, ridership);
-    await zipChoropleth();
+    let extent = d3.extent(ridership, d => `${d.date}T00:00:00`).map(d => new Date(d));
+
+    let daily = parseRidership(ridership, extent, 1);
+
+    setDate(extent[0], 7); // set beginning date to 2019-01-05
+    setDate(extent[1], 1); // set       end date to 2020-05-02
+
+    let weekly = parseRidership(ridership, extent, 7);
+
+    let monthly;
+
+    svg = d3.select('#ridership-line-container')
+        .append('svg')
+        .attr('id', 'ridership-line')
+        .attr('width', '100%')
+        .attr('height', '50vh');
+
+    let margin = { 'top': 20, 'right': 30, 'bottom': 30, 'left': 100 };
+
+    setSVGBounds(svg, margin);
+    await renderLineGraph(svg, daily, 'date', 'riders', 'steelblue', 7000);
+
+    listen('daily', svg, daily);
+    listen('weekly', svg, weekly);
+    listen('monthly', svg, monthly);
 }
 
-let zipChoropleth = async () => {
-    /*
-        zipCases contains the following:
-        [
-            { MODZCTA: "10002", Positive: "848", Total: "1910", zcta_cum.perc_pos: "44.4"},
-            { },
-            { },
-            ...
-            MODZCTA is a zipcode
-            Positive represents the total number of positive cases in the zipcode
-            Total represents the total number of tests administered in the zipcode
-            zcta_cum.perc_pos represents the percentage of positive cases out of the total tests
-        ]
-    */
-    let zipCases = await getZipCases();
+let listen = (id, svg, data) => {
+    document.getElementById(id).addEventListener('click', () => {
+        update(id, svg, data);
+    })
+}
 
-    let colorMapper = d3.scaleQuantize()
-        .domain([0, d3.max(zipCases, d => +d.Positive)])
-        .range(["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"]);
-
-    /*
-        zipMap contains the following:
-        {
-            '10001': 304,
-            '10002': 848,
-
-            zipcode: number-of-positive-cases
-            ...
-        }
-    */
-    let zipMap = getZipMap(zipCases);
-
-    /*
-        zipcodes contains an array of topojson features that allows us to map to a choropleth
-    */
-    let zipcodes = await getNYCZipcodes();
-
-    let boroughCases = await getBoroughCases();
-
-    // let colorMapper = d3.scaleQuantize()
-    //     .domain([0, d3.max(boroughCases, d => +d.COVID_CASE_COUNT)])
-    //     .range(["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"]);
-
-    let boroughMap = getBoroughMap(boroughCases);
-    let boroughs = await getNYCBoroughs();
-
-
-    let mapSVG = createMapSVG();
-    renderMapSVG(mapSVG, ridership, zipcodes, boroughs, colorMapper, zipMap, boroughMap);
+let update = (id, svg, data) => {
+    if (view !== id) {
+        updateLineGraph(svg, data, 1000, 'date', 'riders');
+        view = id;
+    }
 }

@@ -34,12 +34,3 @@
   padding-top: 3rem;
 }
 
-/* View buttons */
-.toggle-view-btns {
-  width: 100%;
-  display: inline-block;
-  flex-flow: column;
-  text-align: center;
-  margin-top: 1.5em;
-  font-family: inherit;
-}
