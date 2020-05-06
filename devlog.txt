@@ -154,5 +154,5 @@ rayL -- 2020-05-06 10:00
 Create data for generated data on average subjectivity of news domains and generated data on polarity ranges of trump tweets starting from January 1, 2020
 Upload generation scripts for the aforementioned data
 
-ray -- 2020-05-06 12:25
+rayL -- 2020-05-06 12:25
 Create a draft of the TextBlob introduction QAF post on google doc and share with team
