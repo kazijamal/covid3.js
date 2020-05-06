@@ -18,6 +18,13 @@ Public Media {% endblock %} {% block head %}
   type="module"
   defer
 ></script>
+
+<!-- News Domains on Polarity Ranges script -->
+<script
+  src="{{ url_for('static', filename='js/publicmedia/news-domains-on-average-subjectivity-ranges.js')}}"
+  type="module"
+  defer
+></script>
 {% endblock %} {% block body %}
 <div class="content">
   <div class="article">
@@ -43,6 +50,11 @@ Public Media {% endblock %} {% block head %}
       </div>
     </div>
     <div id="line-chart"></div>
+    <h3 class="article-subtitle">
+      Subjectivity ratings of COVID-19-related news outlets 
+    </h3>
+    <div id="bar-chart"></div>
+    <p>* Note: the subjectivity values range from 0.0 to 1.0, inclusive, where 0.0 is most objective and 1.0 is most subjective.</p>
   </div>
 </div>
 
