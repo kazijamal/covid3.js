@@ -64,7 +64,6 @@ let renderLineGraph = (
 }
 
 let xScale = (data, prop) => {
-
     return d3.scaleTime()
         .domain(d3.extent(data, d => d[prop]))
         .range([margin.left, width - margin.right]);

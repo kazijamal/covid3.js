@@ -42,18 +42,18 @@ window.onload = async () => {
     setSVGBounds(svg, margin);
     await renderLineGraph(svg, daily, 'date', 'riders', 'steelblue', 7000);
 
-    listen('daily', svg, daily);
-    listen('weekly', svg, weekly);
-    listen('monthly', svg, monthly);
+    listen('daily', daily);
+    listen('weekly', weekly);
+    listen('monthly', monthly);
 }
 
-let listen = (id, svg, data) => {
+let listen = (id, data) => {
     document.getElementById(id).addEventListener('click', () => {
         update(id, svg, data);
     })
 }
 
-let update = (id, svg, data) => {
+let update = (id, data) => {
     if (view !== id) {
         updateLineGraph(svg, data, 1000, 'date', 'riders');
         view = id;
