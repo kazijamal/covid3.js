@@ -11,11 +11,16 @@
 		<div class="article">
 			<h1 class="article-heading">NYC Public Transportation</h1>
 			<p class="article-subheading">Displays transportation changes in New York City during quarantine</p>
-			New York City is synonymous with a lot: Times Square, Central Park, the Empire State Building.
-			But the thing that holds the city together is the MTA Subway system. In the midst of the COVID-19 pandemic,
-			the iconic image of crowded trains is not to be found. The following line chart shows the number of times
-			people enter an MTA Subway turnstile since 2019. Note that on the daily view, there are drops on the
-			weekends, regardless of the pandemic.
+			<p class="article-content">New York City is synonymous with a lot: Times Square, Central Park, the Empire
+				State Building. But the thing that holds the city together is the MTA Subway system. In the midst of the
+				COVID-19 pandemic, the iconic image of crowded trains is not to be found.
+				<br>
+				<div id="avg"></div>
+			</p>
+			<p class="article-content">
+				The following line chart shows the number of times people enter an MTA Subway turnstile since 2019. Note
+				that on the daily view, there are drops on the weekends, regardless of the pandemic. Use the buttons to
+				switch time intervals and hover over the line to view a more specific tooltip.</p>
 			<div class="toggle-view-btns">
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-primary" id="daily" disabled>Daily</button>
@@ -24,6 +29,9 @@
 				</div>
 			</div>
 			<div id="ridership-line-container"></div>
+			<div class="article-content">Let's take a closer look just at data from this year, and also include
+				coronavirus cases on the line graph. </div>
+			<div id="ridership-2020"></div>
 			<div id="choropleth-container"></div>
 		</div>
 	</div>

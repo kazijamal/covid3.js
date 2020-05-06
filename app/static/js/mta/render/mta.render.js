@@ -1,4 +1,9 @@
 import {
+    getData,
+    average
+} from '../data/mta.ridership.js';
+
+import {
     setSVGBounds,
     renderLineGraph,
     updateLineGraph
@@ -6,59 +11,89 @@ import {
 
 import {
     tooldate,
-    setDate,
-    parseData,
-    delay,
+    // setDate,
+    // parseData,
+    // delay,
 } from '../../utility.js';
 
 let view = 'daily';
-let svg;
+let svg, margin;
+let ridership, extent, tool;
 
 window.onload = async () => {
-    let tool = (x, y) => `${y} riders \n${x.toLocaleString(undefined, tooldate)}`;
+    tool = (x, y) => `${y} riders \n${x.toLocaleString(undefined, tooldate)}`;
 
-    const ridership = await d3.csv('/data/transportation/mta');
+    ridership = await d3.csv('/data/transportation/mta');
 
-    let extent = d3.extent(ridership, d => `${d.date}T00:00:00`).map(d => new Date(d));
+    const { daily, weekly, monthly } = getData(ridership);
 
-    let daily = parseData(ridership, extent, 1, 'riders', 'enter');
-
-    setDate(extent[0], 7); // set beginning date to 2019-01-05
-    setDate(extent[1], 1); // set       end date to 2020-05-02
-
-    let weekly = parseData(ridership, extent, 7, 'riders', 'enter');
-
-    let monthly = parseData(ridership, extent, 'month', 'riders', 'enter');
+    document.getElementById('avg').innerHTML = `
+    In 2019, there was an average of ${average(daily, 2019)} swipes per day.
+    This year, it's down to ${average(daily, 2020)}.`;
 
     svg = d3.select('#ridership-line-container')
         .append('svg')
-        .attr('id', 'ridership-line')
+        .attr('id', 'ridership-graph')
         .attr('width', '100%')
         .attr('height', '50vh');
 
-    let margin = { 'top': 20, 'right': 50, 'bottom': 50, 'left': 100 };
+    margin = { 'top': 20, 'right': 50, 'bottom': 50, 'left': 100 };
 
     setSVGBounds(svg, margin);
-    await renderLineGraph(svg, daily, 'date', 'riders', tool);
+    let info = await renderLineGraph(
+        svg, daily, 'date', 'riders', tool,
+        );
 
-    listen('daily', daily, 'date', 'riders');
-    listen('weekly', weekly, 'date', 'riders');
-    listen('monthly', monthly, 'date', 'riders');
+    console.log(info);
+
+    listen('daily', 'line-graph', daily, 'date', 'riders');
+    listen('weekly', 'line-graph', weekly, 'date', 'riders');
+    listen('monthly', 'line-graph', monthly, 'date', 'riders');
 }
 
-let listen = (id, data, xprop, yprop) => {
+let count = 0;
+
+window.onscroll = async () => {
+    // let docEl = document.documentElement;
+    // let numerator = document.body.scrollTop + docEl.scrollTop;
+    // let denominator = docEl.scrollHeight - docEl.clientHeight;
+    // let scrollpercent = (numerator) / (denominator);
+
+    // if (scrollpercent == 1 && count == 0) {
+    //     let extent2020 = [new Date('2020-01-01T00:00:00'), extent[1]];
+    //     setDate(extent[1], -1);
+    //     count++;
+
+    //     let data = parseData(ridership, extent2020, 1, 'riders', 'enter');
+
+    //     let svg2020 = d3.select('#ridership-2020')
+    //         .append('svg')
+    //         .attr('id', 'ridership-2020-line')
+    //         .attr('width', '100%')
+    //         .attr('height', '50vh');
+
+    //     setSVGBounds(svg2020, margin);
+
+    //     await renderLineGraph(svg2020, data, 'date', 'riders', tool,
+    //         {
+    //             xid: 'ridership-2020-x',
+    //             yid: 'ridership-2020-y',
+    //             id: '2020-line-graph'
+    //         });
+    // }
+}
+
+let listen = (id, lineid, data, xprop, yprop) => {
     let button = document.getElementById(id);
     button.disabled = false;
     button.addEventListener('click', () => {
-        update(id, data, xprop, yprop);
+        update(id, lineid, data, xprop, yprop);
     })
 }
 
-let update = (id, data, xprop, yprop) => {
+let update = (id, lineid, data, xprop, yprop) => {
     if (view !== id) {
         view = id;
-        // console.log(view, id);
-        updateLineGraph(svg, data, 1000, xprop, yprop);
-        // console.log(view);
+        updateLineGraph(svg, data, 1000, xprop, yprop, lineid);
     }
 }

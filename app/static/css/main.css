@@ -129,6 +129,10 @@ a:hover {
     font-family: "Roboto Mono", monospace;
 }
 
+.article-content {
+    padding: 0.1rem;
+}
+
 /* ARTICLE END */
 
 /* ABOUT START */
@@ -187,7 +191,7 @@ a:hover {
     display: inline-block;
     flex-flow: column;
     text-align: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
     font-family: inherit;
 }

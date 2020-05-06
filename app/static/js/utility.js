@@ -55,7 +55,9 @@ const createScaffold = (extent, step, property) => {
 const fillScaffold = (scaffold, data, step, property, subprop) => {
     if (step == 1) {
         data.forEach(d => {
-            scaffold[d.date][property] += +d[subprop];
+            if (d.date in scaffold) {
+                scaffold[d.date][property] += +d[subprop];
+            }
         });
     } else if (step == 7) {
         data.forEach(d => {
