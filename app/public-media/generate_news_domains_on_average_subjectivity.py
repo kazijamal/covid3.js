@@ -7,6 +7,24 @@ csv.field_size_limit(sys.maxsize) # Resolves error: _csv.Error: field larger tha
 sentiment_dict = {}
 
 filename = "covid19_articles.csv"
+
+import csv
+import sys
+
+csv.field_size_limit(sys.maxsize) # Resolves error: _csv.Error: field larger than field limit (131072)
+
+domains = {}
+
+with open(filename) as csvfile:
+  articles = csv.reader(csvfile, delimiter=",")
+  next(articles)
+  for article in articles:
+    domain = article[4]
+    if domain in domains:
+      domains[domain] += 1
+    else:
+      domains[domain] = 1
+
 counter = 0
 with open(filename) as csvfile:
   articles = csv.reader(csvfile, delimiter=",")
@@ -27,3 +45,5 @@ with open("output.csv", "w") as output_file:
 
   for key, val in average_polarity_dict.items():
     output.writerow([key, val])
+
+    0.0
