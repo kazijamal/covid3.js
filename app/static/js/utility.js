@@ -1,7 +1,11 @@
 import { updateLineGraph } from './template/line.graph.js';
 
 const setDate = (date, diff) => {
-    date.setDate(date.getDate() + diff);
+    if (diff == 'month') {
+        date.setMonth(date.getMonth() + 1);
+    } else {
+        date.setDate(date.getDate() + diff);
+    }
 }
 
 const delay = (time) => {
@@ -12,14 +16,14 @@ const delay = (time) => {
     });
 };
 
+const toISO = (date) => {
+    let iso = date.toISOString();
+    return iso.substring(0, iso.indexOf('T'));
+}
+
 const parseData = (data, extent, step, property, subprop) => {
 
-    let copy = extent.map(d => {
-        let iso = d.toISOString();
-        let subiso = iso.substring(0, iso.indexOf('T'));
-
-        return new Date(`${subiso}T00:00:00`);
-    })
+    let copy = extent.map(d => new Date(`${toISO(d)}T00:00:00`));
 
     let scaffold = createScaffold(copy, step, property);
 
@@ -37,6 +41,10 @@ const parseData = (data, extent, step, property, subprop) => {
 const createScaffold = (extent, step, property) => {
     let scaffold = new Object();
 
+    if (step == 'month') {
+        extent.forEach(d => { d.setDate(15) });
+        console.log(extent);
+    }
     for (let i = extent[0]; i <= extent[1]; setDate(i, step)) {
         let iso = i.toISOString();
         let subiso = iso.substring(0, iso.indexOf('T'));
@@ -54,27 +62,23 @@ const fillScaffold = (scaffold, data, step, property, subprop) => {
         });
     } else if (step == 7) {
         data.forEach(d => {
-            // console.log(d.date);
             let current = new Date(`${d.date}T00:00:00`);
             let day = current.getDay();
 
-            // console.log(current);
-
             setDate(current, (day < 6) ? 6 - day : 7);
 
-            // console.log(current);
-            let iso = current.toISOString();
-            let subiso = iso.substring(0, iso.indexOf('T'));
+            scaffold[toISO(current)][property] += +d[subprop];
+        })
+    } else if (step == 'month') {
+        data.forEach(d => {
+            let current = new Date(`${d.date}T00:00:00`);
+            current.setDate(15);
 
-            console.log(subiso)
-            console.log(scaffold);
-            scaffold[subiso][property] += +d[subprop];
+            if (current.getFullYear() !== 2018) {
+                scaffold[toISO(current)][property] += +d[subprop];
+            }
         })
     }
 }
-
-// const getMonthlyRidership = (ridership) => {
-
-// }
 
 export { setDate, delay, parseData };

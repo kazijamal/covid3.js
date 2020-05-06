@@ -139,3 +139,10 @@ ericL -- 2020-05-04 13:56
 Fix favicon resolution
 Create turnstile update script
 Refactor turnstile processing
+
+ericL -- 2020-05-06 07:32
+Implement template line graph
+Refactor MTA and public media line graphs
+
+ericL -- 2020-05-06 08:27
+Implement monthly views on line graph

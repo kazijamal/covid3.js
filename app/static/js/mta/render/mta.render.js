@@ -1,11 +1,11 @@
 import {
     getMTARidership,
-    // getMonthlyRidership,
 } from '../data/mta.ridership.js';
 
 import {
     setSVGBounds,
     renderLineGraph,
+    updateLineGraph
 } from '../../template/line.graph.js'
 
 import {
@@ -28,7 +28,9 @@ window.onload = async () => {
 
     let weekly = parseData(ridership, extent, 7, 'riders', 'enter');
 
-    let monthly;
+    console.log(extent);
+
+    let monthly = parseData(ridership, extent, 'month', 'riders', 'enter');
 
     svg = d3.select('#ridership-line-container')
         .append('svg')
