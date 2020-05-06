@@ -11,13 +11,23 @@
 		<div class="article">
 			<h1 class="article-heading">NYC Public Transportation</h1>
 			<p class="article-subheading">Displays transportation changes in New York City during quarantine</p>
-			<!-- It goes without saying that New York City is not what it was like just a few months ago. Small businesses
-			are shuttered, schools are closed, and streets are empty. One of the most iconic images of New York City -
-			the crowded subway car - no longer exists. The following graph shows the number of swipes in all NYC Subway
-			turnstiles since January 2019. -->
-			<button class="btn btn-primary" id="daily">Daily</button>
-			<button class="btn btn-primary" id="weekly">Weekly</button>
-			<div id="line-graph-container"></div>
+			<!-- <button class="btn btn-primary" id="daily">Daily</button>
+			<button class="btn btn-primary" id="weekly">Weekly</button> -->
+
+			<div class="toggle-view-btns">
+				<div class="btn-group" role="group" aria-label="Basic example">
+					<button type="button" class="btn btn-warning" id="daily">
+						Daily
+					</button>
+					<button type="button" class="btn btn-warning" id="weekly">
+						Weekly
+					</button>
+					<button type="button" class="btn btn-warning" id="monthly">
+						Monthly
+					</button>
+				</div>
+			</div>
+			<div id="ridership-line-container"></div>
 			<div id="choropleth-container"></div>
 		</div>
 	</div>
@@ -26,5 +36,6 @@
 {% endblock %}
 
 {% block script %}
+<script src="https://unpkg.com/d3-interpolate-path/build/d3-interpolate-path.min.js"></script>
 <script type="module" src="{{ url_for('static', filename='js/mta/render/mta.render.js')}}"></script>
 {% endblock %}

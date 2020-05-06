@@ -30,7 +30,7 @@ Add unfinished version of design doc v0.
 
 rayL -- 2020-04-27 13:41
 Add number of coronavirus articles per day CSV file
-Add Flask route for data transfer to JS files 
+Add Flask route for data transfer to JS files
 
 rayL -- 2020-04-27 16:43
 Plot number of article per day on line chart
@@ -131,3 +131,18 @@ Implement animated line drawing
 
 kaziJ -- 2020-05-02 15:37
 Add favicon
+
+ericL -- 2020-05-04 11:55
+Fix line graph transition and curve smoothing
+
+ericL -- 2020-05-04 13:56
+Fix favicon resolution
+Create turnstile update script
+Refactor turnstile processing
+
+ericL -- 2020-05-06 07:32
+Implement template line graph
+Refactor MTA and public media line graphs
+
+ericL -- 2020-05-06 08:27
+Implement monthly views on line graph
