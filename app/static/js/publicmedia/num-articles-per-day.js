@@ -31,8 +31,6 @@
 
 // const VIEW_TRANSITION_DURATION = 1000;
 
-// const DATA_STATE = 'DAILY';
-
 let view = 'daily';
 
 import {
@@ -41,15 +39,25 @@ import {
   updateLineGraph,
 } from '../template/line.graph.js';
 
+import {
+  parseData,
+  setDate
+} from '../utility.js'
+
 let svg;
 
 window.onload = async () => {
   let data = await d3.csv('/data/sentiment/publicmedia');
 
-  data.forEach(d => {
-    d.date = new Date(`${d.date}T00:00:00`)
-    d.numArticles = +d.numArticles;
-  })
+  let extent = d3.extent(data, d => `${d.date}T00:00:00`).map(d => new Date(d));
+
+  let daily = parseData(data, extent, 1, 'numArticles', 'numArticles');
+
+  setDate(extent[0], 5); // set beginning date to 2020-01-11
+  setDate(extent[1], 4); // set beginning date to 2020-04-25
+
+  let weekly = parseData(data, extent, 7, 'numArticles', 'numArticles');
+  let monthly;
 
   svg = d3.select('#line-chart')
     .append('svg')
@@ -59,10 +67,27 @@ window.onload = async () => {
 
   let margin = { top: 50, right: 50, bottom: 50, left: 50 };
 
-  console.log(data);
   setSVGBounds(svg, margin);
-  await renderLineGraph(svg, data, 'date', 'numArticles', 'steelblue', 7000);
+  await renderLineGraph(svg, daily, 'date', 'numArticles', 'steelblue', 7000);
+
+  listen('toggle-daily-view', daily, 'date', 'numArticles');
+  listen('toggle-weekly-view', weekly, 'date', 'numArticles');
+  listen('toggle-monthly-view', monthly, 'date', 'numArticles');
 }
+
+let listen = (id, data, xprop, yprop) => {
+  document.getElementById(id).addEventListener('click', () => {
+      update(id, data, xprop, yprop);
+  })
+}
+
+let update = (id, data, xprop, yprop) => {
+  if (view !== id) {
+      updateLineGraph(svg, data, 1000, xprop, yprop);
+      view = id;
+  }
+}
+
 // // Read the data
 // // TODO: Split this chunk into smaller, intentional pieces
 // d3.csv('/data/sentiment/publicmedia')

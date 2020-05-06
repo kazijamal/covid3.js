@@ -1,17 +1,16 @@
 import {
     getMTARidership,
-    parseRidership,
     // getMonthlyRidership,
 } from '../data/mta.ridership.js';
 
 import {
     setSVGBounds,
     renderLineGraph,
-    updateLineGraph
 } from '../../template/line.graph.js'
 
 import {
-    setDate
+    setDate,
+    parseData,
 } from '../../utility.js';
 
 let view = 'daily';
@@ -22,12 +21,12 @@ window.onload = async () => {
 
     let extent = d3.extent(ridership, d => `${d.date}T00:00:00`).map(d => new Date(d));
 
-    let daily = parseRidership(ridership, extent, 1);
+    let daily = parseData(ridership, extent, 1, 'riders', 'enter');
 
     setDate(extent[0], 7); // set beginning date to 2019-01-05
     setDate(extent[1], 1); // set       end date to 2020-05-02
 
-    let weekly = parseRidership(ridership, extent, 7);
+    let weekly = parseData(ridership, extent, 7, 'riders', 'enter');
 
     let monthly;
 
@@ -42,20 +41,20 @@ window.onload = async () => {
     setSVGBounds(svg, margin);
     await renderLineGraph(svg, daily, 'date', 'riders', 'steelblue', 7000);
 
-    listen('daily', daily);
-    listen('weekly', weekly);
-    listen('monthly', monthly);
+    listen('daily', daily, 'date', 'riders');
+    listen('weekly', weekly, 'date', 'riders');
+    listen('monthly', monthly, 'date', 'riders');
 }
 
-let listen = (id, data) => {
+let listen = (id, data, xprop, yprop) => {
     document.getElementById(id).addEventListener('click', () => {
-        update(id, svg, data);
+        update(id, data, xprop, yprop);
     })
 }
 
-let update = (id, data) => {
+let update = (id, data, xprop, yprop) => {
     if (view !== id) {
-        updateLineGraph(svg, data, 1000, 'date', 'riders');
+        updateLineGraph(svg, data, 1000, xprop, yprop);
         view = id;
     }
 }
