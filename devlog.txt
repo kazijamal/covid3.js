@@ -200,3 +200,6 @@ Implement scatterplot displaying variance in polarity (positive/negative) values
 
 rayL --2020-05-07 19:30
 Apply a viridis color interpolator for the dots on the aforementioned scatterplot
+
+rayL --2020-05-07 19:55
+Create a barchart displaying different polarity range brackets that Trump's tweets fall under

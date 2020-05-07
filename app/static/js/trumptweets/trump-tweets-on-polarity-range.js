@@ -79,10 +79,7 @@ d3.csv('/data/sentiment/trumptweetspolarities')
       .attr('cx', (_, i) => xScale(i))
       .attr('cy', (d) => yScale(d.polarity))
       .attr('r', 5)
-      .attr('fill', (d) => {
-        console.log(d);
-        return dotColorInterpolator(d.polarity);
-      });
+      .attr('fill', (d) => dotColorInterpolator(d.polarity));
     // TODO: Add on mouseover events on these datapoint circles
   })
   .catch((err) => console.log(err));

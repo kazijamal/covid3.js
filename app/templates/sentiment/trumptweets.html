@@ -12,6 +12,13 @@ Trump Tweets {% endblock %} {% block head %}
   type="module"
   defer
 ></script>
+
+<!-- Trump tweets on polarity range brackets script -->
+<script
+  src="{{ url_for('static', filename='js/trumptweets/trump-tweets-on-polarity-ranges.js')}}"
+  type="module"
+  defer
+></script>
 {% endblock %} {% block body %}
 
 <div class="content">
@@ -30,6 +37,7 @@ Trump Tweets {% endblock %} {% block head %}
       inclusive, where -1.0 is most negative and 1.0 is most positive. The range
       of the x-axis is the time between January 1, 2020 and April 15, 2020.
     </p>
+    <div id="bar-chart"></div>
   </div>
 </div>
 
