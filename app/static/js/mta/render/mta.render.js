@@ -15,6 +15,11 @@ import {
     average,
 } from '../../utility.js';
 
+import {
+    borodata,
+    zipdata
+} from '../data/nyc.corona.js';
+
 let view = 'daily';
 let svg, margin;
 let ridership, gextent, tool;
@@ -25,7 +30,7 @@ window.onload = async () => {
     await ridership2020();
     await ridershipborough();
     await boroughchorolpeth();
-    await zipchoropleth();
+    // await zipchoropleth();
 }
 
 let ridership20192020 = async () => {
@@ -184,6 +189,7 @@ let mapScaffold = (container, id, legendid, colorid, tickid) => {
 }
 
 let boroughchorolpeth = async () => {
+    let { cases, casemap, colormap } = await borodata();
     let geoboro = await d3.json('/static/json/boroughs.json');
     let area = topojson.feature(geoboro, geoboro.objects.boroughs).features;
     let border = topojson.mesh(geoboro, geoboro.objects.boroughs);
