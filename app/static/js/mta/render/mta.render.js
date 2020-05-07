@@ -13,6 +13,7 @@ import {
     tooldate,
     getData,
     average,
+    delay
 } from '../../utility.js';
 
 import {
@@ -21,6 +22,7 @@ import {
 } from '../data/nyc.corona.js';
 
 let view = 'daily';
+let choroview = 'borough';
 let svg, margin;
 let ridership, gextent, tool;
 let projection = d3.geoMercator()
@@ -28,12 +30,16 @@ let projection = d3.geoMercator()
     .center([-73.94, 40.70]);
 let path = d3.geoPath(projection);
 
+let boroughdata, zipcodedata,
+    geoboro, boroarea, boroborder, borogetprop,
+    geozip, ziparea, zipborder, zipgetprop;
+
 window.onload = async () => {
     await ridership20192020();
     await ridership2020();
     await ridershipborough();
-    await boroughchorolpeth();
-    await zipchoropleth();
+    await chorolpeth();
+    // await zipchoropleth();
 }
 
 let ridership20192020 = async () => {
@@ -198,31 +204,54 @@ let mapScaffold = (container, id, legendid, colorid, tickcontainerid) => {
     return { map, colorid, tickcontainerid };
 }
 
-let boroughchorolpeth = async () => {
-    let { casemap, colormap } = await borodata();
+let initMapData = async () => {
+    boroughdata = await borodata();
+    zipcodedata = await zipdata();
+    geoboro = await d3.json('/static/json/boroughs.json');
+    boroarea = topojson.feature(geoboro, geoboro.objects.boroughs).features;
+    boroborder = topojson.mesh(geoboro, geoboro.objects.boroughs);
+    geozip = await d3.json('/static/json/zip_codes.json');
+    ziparea = topojson.feature(geozip, geozip.objects.zip_codes).features;
+    zipborder = topojson.mesh(geozip, geozip.objects.zip_codes);
+    zipgetprop = (d) => d.properties.zcta;
+    borogetprop = (d) => d.properties.bname;
+}
 
-    let geoboro = await d3.json('/static/json/boroughs.json');
-    let area = topojson.feature(geoboro, geoboro.objects.boroughs).features;
-    let border = topojson.mesh(geoboro, geoboro.objects.boroughs);
+let chorolpeth = async () => {
+    await initMapData();
 
-    let getprop = (d) => d.properties.bname;
+    document.getElementById('choro-container').innerHTML = `
+    <div class="toggle-view-btns">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary" id="borough-toggle">Borough</button>
+            <button type="button" class="btn btn-primary" id="zip-toggle">Zipcode</button>
+        </div>
+    </div>`
 
     let { map, colorid, tickcontainerid } = mapScaffold(
-        'borough-container', 'borough-map',
-        'borough-legend', 'borough-color', 'borough-tick-container'
+        'choro-container', 'choro-map',
+        'choro-legend', 'choro-color', 'choro-tick-container'
     );
 
-    let tickid = 'borough-tick';
+    let tickid = 'choro-tick';
     let legendlabel = 'Number of COVID-19 cases';
 
-    let choropleth = new Choropleth(
-        map, 'borough-area', 'borough-border',
-        area, border, path,
-        casemap, colormap,
-        getprop, legendlabel,
+    let choro = new Choropleth(
+        map, 'choro-area', 'choro-border',
+        boroarea, boroborder, path,
+        boroughdata.casemap, boroughdata.colormap,
+        borogetprop, legendlabel,
         colorid, tickid, tickcontainerid);
 
-    choropleth.render();
+    choro.render();
+
+    maplisten(choro, 'borough',
+        boroarea, boroborder, borogetprop,
+        boroughdata.casemap, boroughdata.colormap);
+
+    maplisten(choro, 'zip',
+        ziparea, zipborder, zipgetprop,
+        zipcodedata.casemap, zipcodedata.colormap);
 }
 
 let zipchoropleth = async () => {
@@ -250,15 +279,24 @@ let zipchoropleth = async () => {
     choropleth.render();
 }
 
+let maplisten = (map, type, area, border, prop, casemap, colormap) => {
+    document.getElementById(`${type}-toggle`).addEventListener('click', () => {
+        if (choroview !== type) {
+            map.update(area, border, prop, casemap, colormap);
+            choroview = type;
+        }
+    })
+}
+
 let listen = (graph, id, data) => {
     let button = document.getElementById(id);
     button.disabled = false;
     button.addEventListener('click', () => {
-        update(graph, id, data);
+        updateline(graph, id, data);
     })
 }
 
-let update = (graph, id, data) => {
+let updateline = (graph, id, data) => {
     if (view !== id) {
         view = id;
         graph.updateLineGraph(data, 1000);

@@ -189,3 +189,6 @@ Add coloring and geo-mapping to choropleth
 
 ericL -- 2020-05-07 10:31
 Add template legend to choropleth
+
+ericL -- 2020-05-07 14:05
+Add toggle to choropleth
