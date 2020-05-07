@@ -171,3 +171,6 @@ Convert line graph functions to class
 
 ericL -- 2020-05-07 02:30
 Add second line graph
+
+ericL -- 2020-05-07 05:10
+Create borough split line graph

@@ -22,11 +22,18 @@ window.onload = async () => { await ridership20192020(); }
 
 window.onscroll = async () => {
 
-    if (percentscroll() == 1 && count == 0) {
+    let docEl = document.documentElement;
+    let numerator = document.body.scrollTop + docEl.scrollTop;
+    let denominator = docEl.scrollHeight - docEl.clientHeight;
+    let percentscroll = (numerator) / (denominator);
+
+    if (percentscroll == 1 && count == 0) {
+        count++;
         await ridership2020();
     }
 
-    if (percentscroll() == 1 && count == 1) {
+    if (percentscroll == 1 && count == 1) {
+        count++;
         await ridershipborough();
     }
 }
@@ -63,6 +70,8 @@ let ridership20192020 = async () => {
     listen(riderline, 'daily', daily);
     listen(riderline, 'weekly', weekly);
     listen(riderline, 'monthly', monthly);
+
+    return;
 }
 
 let ridership2020 = async () => {
@@ -92,23 +101,47 @@ let ridership2020 = async () => {
     let graph = new LineGraph(
         svg2020, data, 'date', 'riders',
         tool, margin, '2020-line', '2020-x', '2020-y',
-        {timedelay: 2000});
+        { timedelay: 2000 });
 
-    count++;
-    await graph.renderLineGraph();
+    return graph.renderLineGraph();
 }
 
 let ridershipborough = async () => {
-    let extent2020 = [new Date('2020-01-01T00:00:00'), gextent[1]];
+    let extent2020 = [new Date('2020-03-10T00:00:00'), gextent[1]];
 
     let data = boroughParse(ridership, extent2020);
 
-    console.log(data);
-    count++;
+    document.getElementById('ridership-borough').innerHTML = `
+    <div class="article-content mb-2">
+        The following graph breaks down MTA ridership by borough.
+        <b><span style="color: #CF5C36">Manhattan</span></b>
+        <b><span style="color: #A09EBB">Brooklyn</span></b>
+        <b><span style="color: #7C7C7C">Queens</span></b>
+        <b><span style="color: #EFC88B">The Bronx</span></b>
+        <b><span style="color: #C2CFB2">Staten Island</span></b>
+    </div>`
+
+    let svgborough = d3.select('#ridership-borough')
+        .append('svg')
+        .attr('id', 'ridership-borough-graph')
+        .attr('width', '100%')
+        .attr('height', '50vh');
+
+    let graph = new LineGraph(
+        svgborough, data, 'date', 'riders',
+        tool, margin, 'borough-line', 'borough-x', 'borough-y',
+        {
+            timedelay: 1000,
+            color: 'red',
+            strokewidth: 2,
+        });
+
+    let ex = [new Date('2020-03-10T00:00:00'), gextent[1]]
+    await graph.renderMultiLine(ex);
 }
 
 let choropleth = () => {
-    console.log('here')
+    // console.log('here')
 }
 
 let listen = (graph, id, data) => {
@@ -124,13 +157,4 @@ let update = (graph, id, data) => {
         view = id;
         graph.updateLineGraph(data, 1000);
     }
-}
-
-let percentscroll = () => {
-    let docEl = document.documentElement;
-    let numerator = document.body.scrollTop + docEl.scrollTop;
-    let denominator = docEl.scrollHeight - docEl.clientHeight;
-    let scrollpercent = (numerator) / (denominator);
-
-    return scrollpercent;
 }

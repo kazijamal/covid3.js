@@ -1,4 +1,7 @@
-import { delay } from '../utility.js';
+import {
+    delay,
+    setDate
+} from '../utility.js';
 
 export default class LineGraph {
     constructor(
@@ -10,7 +13,7 @@ export default class LineGraph {
         id, xid, yid,
         {
             color = 'steelblue',
-            timedelay = 7000,
+            timedelay = 4000,
             ease = d3.easeCubicInOut,
             strokewidth = 1.5,
         } = {}) {
@@ -34,10 +37,7 @@ export default class LineGraph {
         this.height = pseudo.clientHeight;
     }
 
-    async renderLineGraph() {
-        this.x = this.xScale();
-        this.y = this.yScale();
-
+    renderAxes() {
         this.xAxis = g => g
             .attr('id', this.xid)
             .attr('transform', `translate(0, ${this.height - this.margin.bottom})`)
@@ -50,6 +50,13 @@ export default class LineGraph {
 
         this.svg.append('g').call(this.xAxis);
         this.svg.append('g').call(this.yAxis);
+    }
+
+    async renderLineGraph() {
+        this.x = this.xScale();
+        this.y = this.yScale();
+
+        this.renderAxes();
 
         this.line = d3.line()
             .curve(d3.curveMonotoneX)
@@ -89,6 +96,46 @@ export default class LineGraph {
 
         return delay(this.timedelay);
     }
+
+    async renderMultiLine(extent) {
+        setDate(extent[1], 1);
+        let r = d3.timeDay.range(extent[0], extent[1]);
+        this.x = d3.scaleTime()
+            .domain(extent)
+            .range([this.margin.left, this.width - this.margin.right]);
+
+        this.y = d3.scaleLinear()
+            .domain([0, d3.max(this.data, d => d3.max(d.values))]).nice()
+            .range([this.height - this.margin.bottom, this.margin.top]);
+
+        this.renderAxes();
+
+        this.line = d3.line()
+            .defined(d => !isNaN(d))
+            .x((d, i) => this.x(r[i]))
+            .y(d => this.y(d));
+
+        let colorMap = {
+            'Kings County': '#A09EBB',
+            'New York County': '#CF5C36',
+            'Richmond County': '#C2CFB2',
+            'Queens County': '#7C7C7C',
+            'Bronx County': '#EFC88B'
+        };
+
+        this.path = this.svg.append('g')
+            .attr('fill', 'none')
+            .attr('id', this.id)
+            .attr('stroke-width', this.strokewidth)
+            .attr('stroke-linejoin', 'round')
+            .attr('stroke-linecap', 'round')
+            .selectAll('path')
+            .data(this.data)
+            .join('path')
+            .attr('d', d => this.line(d.values))
+            .attr('stroke', d => colorMap[d.name])
+    }
+
 
     updateLineGraph(data, time) {
         this.data = data;

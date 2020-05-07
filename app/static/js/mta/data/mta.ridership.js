@@ -22,16 +22,25 @@ let boroughParse = (data, extent) => {
     data.forEach(d => {
         if (d.date in scaffold[d.borough]) {
             scaffold[d.borough][d.date]['riders'] += +d['enter'];
+            delete scaffold[d.borough][d.date]['date'];
         }
     })
 
-    let arr = new Array();
+    let master = new Array();
 
     for (const borough in scaffold) {
-        arr.push(scaffold[borough]);
+        let arr = new Array();
+        for (const date in scaffold[borough]) {
+            arr.push(scaffold[borough][date]['riders'])
+        }
+        scaffold[borough] = arr;
+        master.push({
+            'name': borough,
+            'values': scaffold[borough]
+        })
     }
 
-    return arr;
+    return master;
 }
 
 export { dayaverage, boroughParse };
