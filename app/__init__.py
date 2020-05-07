@@ -8,6 +8,9 @@ P04 -- Let the Data Speak
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os
 import urllib.request
+import json
+from covid import Covid
+covid = Covid()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -15,7 +18,8 @@ app.secret_key = os.urandom(32)
 # DASHBOARD
 @app.route('/')
 def root():
-    return render_template('dashboard.html')
+    data = covid.get_status_by_country_name("us")
+    return render_template('dashboard.html', confirmed = "{:,}".format(data['confirmed']), active = "{:,}".format(data['active']), recovered = "{:,}".format(data['recovered']), deaths = "{:,}".format(data['deaths']))
 
 # ABOUT
 @app.route('/about')
