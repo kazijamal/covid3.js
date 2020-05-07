@@ -96,6 +96,9 @@ Timeline adjustments:
 kaziJ -- 2020-05-01 10:00
 Create team flag and upload
 
+rayL -- 2020-05-01 21:00
+Create daily, monthly and weekly views for the line graph
+
 ericL -- 2020-05-02 03:21
 Remove mta_turnstile data from gitignore
 
@@ -146,6 +149,13 @@ Refactor MTA and public media line graphs
 
 ericL -- 2020-05-06 08:27
 Implement monthly views on line graph
+
+rayL -- 2020-05-06 10:00
+Create data for generated data on average subjectivity of news domains and generated data on polarity ranges of trump tweets starting from January 1, 2020
+Upload generation scripts for the aforementioned data
+
+rayL -- 2020-05-06 12:25
+Create a draft of the TextBlob introduction QAF post on google doc and share with team
 
 kaziJ -- 2020-05-06 13:50
 Upload design doc v1 with a more detailed list of visualizations
