@@ -267,11 +267,29 @@ let chorolpeth = async () => {
 
     stopdrop(stations, ridership, prev, curr);
 
-    console.log(stations);
+    let mapper = d3.scaleQuantize()
+        .domain([0, 100])
+        .range(d3.schemeReds[9]);
+
+    let opacitymap = d3.scaleLinear()
+        .domain([0, 100])
+        .range([0.75, 1])
+
+    let stopcolor = (d) => {
+        let c = mapper(stations[d.properties.stop_name])
+        return (c == undefined) ? 'transparent' : c;
+    }
+
+    let stopopacity = (d) => {
+        let c = opacitymap(stations[d.properties.stop_name])
+        return (c == undefined) ? 0: c;
+    }
+
+    let stoplabel = (d) => `${d.properties.stop_name}, ${stations[d.properties.stop_name]}% decrease`
 
     document.getElementById('subwayswitch').addEventListener('change', (event) => {
         if (event.target.checked) {
-            choro.add(geostops, 'subway-stops');
+            choro.add(geostops, 'subway-stops', stopcolor, stopopacity, stoplabel);
             checked = true;
         } else {
             choro.removeAll('subway-stops');
@@ -282,20 +300,21 @@ let chorolpeth = async () => {
     maplisten(choro, 'borough',
         boroarea, boroborder, borogetprop,
         boroughdata.casemap, boroughdata.colormap,
-        geostops, 'subway-stops');
+        geostops, 'subway-stops', stopcolor, stopopacity, stoplabel);
 
     maplisten(choro, 'zip',
         ziparea, zipborder, zipgetprop,
         zipcodedata.casemap, zipcodedata.colormap,
-        geostops, 'subway-stops');
+        geostops, 'subway-stops', stopcolor, stopopacity, stoplabel);
 }
 
-let maplisten = (map, type, area, border, prop, casemap, colormap, stops, stopsclass) => {
+let maplisten = (map, type, area, border, prop, casemap, colormap,
+    stops, stopsclass, stopcolor, stopopacity, stoplabel) => {
     document.getElementById(`${type}-toggle`).addEventListener('click', () => {
         if (choroview !== type) {
             map.update(area, border, prop, casemap, colormap);
             if (checked) {
-                map.add(stops, stopsclass);
+                map.add(stops, stopsclass, stopcolor, stopopacity, stoplabel);
             }
             choroview = type;
         }

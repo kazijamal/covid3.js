@@ -45,7 +45,7 @@ export default class Choropleth {
         this.legend(6, 320, 50, 18, 0, 22, 0, 5, 'd');
     }
 
-    add(features, classname) {
+    add(features, classname, colorfunct, opacityfunct, label) {
         this.svg.selectAll(`.${classname}`).remove();
         this.svg.selectAll(`.${classname}`)
             .data(features)
@@ -54,9 +54,11 @@ export default class Choropleth {
                     return enter.append('path')
                         .attr('d', this.path)
                         .attr('class', classname)
-                        .attr('fill', 'red')
+                        .attr('fill', d => colorfunct(d))
+                        .attr('opacity', d => opacityfunct(d))
                 }
-            )
+            ).append('title')
+            .text(d => label(d));
     }
 
     removeAll(classname) {
