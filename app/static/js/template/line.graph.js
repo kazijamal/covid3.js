@@ -67,7 +67,6 @@ export default class LineGraph {
             .attr('stroke-linecap', 'round')
             .attr('d', this.line);
 
-
         let length = this.path.node().getTotalLength();
 
         this.path.attr('stroke-dasharray', `${length} ${length}`)

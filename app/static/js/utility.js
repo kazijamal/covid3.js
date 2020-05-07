@@ -21,9 +21,7 @@ const toISO = (date) => {
 
 const parseData = (data, extent, step, property, subprop) => {
 
-    let copy = extent.map(d => new Date(`${toISO(d)}T00:00:00`));
-
-    let scaffold = createScaffold(copy, step, property);
+    let scaffold = createScaffold(extent, step, property);
 
     fillScaffold(scaffold, data, step, property, subprop);
 
@@ -37,12 +35,14 @@ const parseData = (data, extent, step, property, subprop) => {
 }
 
 const createScaffold = (extent, step, property) => {
+    let copy = extent.map(d => new Date(`${toISO(d)}T00:00:00`));
+
     let scaffold = new Object();
 
     if (step == 'month') {
-        extent.forEach(d => { d.setDate(1) });
+        copy.forEach(d => { d.setDate(1) });
     }
-    for (let i = extent[0]; i <= extent[1]; setDate(i, step)) {
+    for (let i = copy[0]; i <= copy[1]; setDate(i, step)) {
         let iso = i.toISOString();
         let subiso = iso.substring(0, iso.indexOf('T'));
 
@@ -107,4 +107,4 @@ let average = (data, year) => {
     return Math.round(total / select.length);
 }
 
-export { setDate, delay, parseData, tooldate, getData, average };
+export { setDate, delay, parseData, tooldate, getData, average, toISO, createScaffold };

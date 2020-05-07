@@ -1,7 +1,8 @@
 import LineGraph from '../../template/line.graph.js'
 
 import {
-    dayaverage
+    dayaverage,
+    boroughParse
 } from '../data/mta.ridership.js';
 
 import {
@@ -17,7 +18,20 @@ let svg, margin;
 let ridership, gextent, tool;
 let count = 0;
 
-let ridership20192020 = () => {
+window.onload = async () => { await ridership20192020(); }
+
+window.onscroll = async () => {
+
+    if (percentscroll() == 1 && count == 0) {
+        await ridership2020();
+    }
+
+    if (percentscroll() == 1 && count == 1) {
+        await ridershipborough();
+    }
+}
+
+let ridership20192020 = async () => {
     tool = (x, y) => `${y} riders \n${x.toLocaleString(undefined, tooldate)}`;
 
     ridership = await d3.csv('/data/transportation/mta');
@@ -51,10 +65,9 @@ let ridership20192020 = () => {
     listen(riderline, 'monthly', monthly);
 }
 
-let ridership2020 = () => {
+let ridership2020 = async () => {
     let extent2020 = [new Date('2020-01-01T00:00:00'), gextent[1]];
     setDate(gextent[1], -1);
-    count++;
 
     let data = parseData(ridership, extent2020, 1, 'riders', 'enter');
 
@@ -78,24 +91,24 @@ let ridership2020 = () => {
 
     let graph = new LineGraph(
         svg2020, data, 'date', 'riders',
-        tool, margin, '2020-line', '2020-x', '2020-y');
+        tool, margin, '2020-line', '2020-x', '2020-y',
+        {timedelay: 2000});
 
+    count++;
     await graph.renderLineGraph();
 }
 
-window.onload = async () => {
-    ridership20192020();
+let ridershipborough = async () => {
+    let extent2020 = [new Date('2020-01-01T00:00:00'), gextent[1]];
+
+    let data = boroughParse(ridership, extent2020);
+
+    console.log(data);
+    count++;
 }
 
-window.onscroll = async () => {
-    let docEl = document.documentElement;
-    let numerator = document.body.scrollTop + docEl.scrollTop;
-    let denominator = docEl.scrollHeight - docEl.clientHeight;
-    let scrollpercent = (numerator) / (denominator);
-
-    if (scrollpercent == 1 && count == 0) {
-        ridership2020();
-    }
+let choropleth = () => {
+    console.log('here')
 }
 
 let listen = (graph, id, data) => {
@@ -111,4 +124,13 @@ let update = (graph, id, data) => {
         view = id;
         graph.updateLineGraph(data, 1000);
     }
+}
+
+let percentscroll = () => {
+    let docEl = document.documentElement;
+    let numerator = document.body.scrollTop + docEl.scrollTop;
+    let denominator = docEl.scrollHeight - docEl.clientHeight;
+    let scrollpercent = (numerator) / (denominator);
+
+    return scrollpercent;
 }
