@@ -168,3 +168,6 @@ Experiment using covid Python package to retrieve cases data for dashboard, and 
 
 ericL -- 2020-05-07 01:27
 Convert line graph functions to class
+
+ericL -- 2020-05-07 02:30
+Add second line graph
