@@ -104,7 +104,7 @@ let ridership2020 = async () => {
         Now let's take a look at data just from this year.
         We can see that the first major dip in ridership occurs on the week of March 8th.
         Schools officially closed on Sunday, March 15th. On Monday, March 16th, ridership dropped
-        to <b>2180285</b> swipes. Previous Mondays in the year had an average of <b>${dayaverage(temp, 1)}</b> swipes.
+        to <b>2,180,285</b> swipes. Previous Mondays in the year had an average of <b>${d3.format(",")(dayaverage(temp, 1))}</b> swipes.
     </div>`
 
     let svg2020 = d3.select('#ridership-2020')
