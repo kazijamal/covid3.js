@@ -27,17 +27,6 @@ def about():
     return render_template('about.html')
 
 # SENTIMENT ANALYSIS
-
-
-# absolute path to num-articles-per-day.csv
-num_articles_per_day_csv = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "static", "data", "num-articles-per-day.csv")
-news_domains_on_average_subjectivity_ranges_csv = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "static", "data", "news-domains-on-average-subjectivity-ranges.csv")
-trumps_tweets_on_polarity_range_csv = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "static", "data", "trump-tweets-on-polarity-range.csv")
-
-
 @app.route('/sentiment')
 def sentiment():
     return render_template('sentiment/sentiment.html')
@@ -50,17 +39,17 @@ def publicmedia():
 
 @app.route("/data/sentiment/publicmedia")
 def publicMediaData():
-    return open(num_articles_per_day_csv).read()
+    return transfer_csv('num-articles-per-day.csv')
 
 
 @app.route("/data/sentiment/newsdomainsubjectivities")
 def newsDomainSubjectivities():
-    return open(news_domains_on_average_subjectivity_ranges_csv).read()
+    return transfer_csv('news-domains-on-average-subjectivity-ranges.csv')
 
 
 @app.route("/data/sentiment/trumptweetspolarities")
 def trumpTweetsPolarities():
-    return open(trumps_tweets_on_polarity_range_csv).read()
+    return transfer_csv('trump-tweets-on-polarity-range.csv')
 
 
 @app.route('/sentiment/trumptweets')
