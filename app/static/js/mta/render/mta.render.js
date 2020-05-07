@@ -4,7 +4,8 @@ import Choropleth from '../../template/choropleth.js';
 import {
     dayaverage,
     boroughParse,
-    percentChange
+    percentChange,
+    stopdrop
 } from '../data/mta.ridership.js';
 
 import {
@@ -251,7 +252,24 @@ let chorolpeth = async () => {
     let stops = await d3.json('/static/json/subway_stops.json')
     let geostops = topojson.feature(stops, stops.objects.subway_stops).features;
 
-    document.getElementById('subwayswitch').addEventListener('change', (e) => {
+    let stations = new Object();
+    geostops.forEach((stop, i) => {
+        let name = stop.properties.stop_name;
+        if (name in stations) {
+            geostops.splice(i, 1);
+        } else {
+            stations[name] = { 'prev': 0, 'curr': 0 };
+        }
+    })
+
+    let prev = [new Date('2019-03-01T00:00:00'), new Date('2019-05-02T00:00:00')];
+    let curr = [new Date('2020-03-01T00:00:00'), new Date('2020-05-02T00:00:00')];
+
+    stopdrop(stations, ridership, prev, curr);
+
+    console.log(stations);
+
+    document.getElementById('subwayswitch').addEventListener('change', (event) => {
         if (event.target.checked) {
             choro.add(geostops, 'subway-stops');
             checked = true;
