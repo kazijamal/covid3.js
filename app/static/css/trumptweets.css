@@ -18,10 +18,10 @@
 }
 
 /* Style the dots by assigning a fill and stroke */
-.dot {
+/* .dot {
   fill: #ffab00;
   stroke: #fff;
-}
+} */
 
 .focus circle {
   fill: none;
@@ -30,6 +30,8 @@
 
 #scatterplot {
   width: 100%;
-  height: 600px;
-  overflow: auto;
+  height: 30%;
+  margin-bottom: 20px;
+  text-align: center;
+  /* overflow: auto; */
 }
