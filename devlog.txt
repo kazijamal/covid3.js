@@ -154,6 +154,9 @@ rayL -- 2020-05-06 10:00
 Create data for generated data on average subjectivity of news domains and generated data on polarity ranges of trump tweets starting from January 1, 2020
 Upload generation scripts for the aforementioned data
 
+ericL -- 2020-05-06 11:41
+Add tooltip to line graphs
+
 rayL -- 2020-05-06 12:25
 Create a draft of the TextBlob introduction QAF post on google doc and share with team
 
@@ -162,3 +165,27 @@ Upload design doc v1 with a more detailed list of visualizations
 
 kaziJ -- 2020-05-06 23:30
 Experiment using covid Python package to retrieve cases data for dashboard, and update requirements.txt
+
+ericL -- 2020-05-07 01:27
+Convert line graph functions to class
+
+ericL -- 2020-05-07 02:30
+Add second line graph
+
+ericL -- 2020-05-07 05:10
+Create borough split line graph
+
+ericL -- 2020-05-07 06:28
+Add y axis label
+
+ericL -- 2020-05-07 07:27
+Add percent decrease by borough
+
+ericL -- 2020-05-07 08:51
+Implement choropleth template
+
+ericL -- 2020-05-07 09:37
+Add coloring and geo-mapping to choropleth
+
+ericL -- 2020-05-07 10:31
+Add template legend to choropleth

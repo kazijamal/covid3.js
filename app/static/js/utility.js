@@ -1,5 +1,3 @@
-import { updateLineGraph } from './template/line.graph.js';
-
 const setDate = (date, diff) => {
     if (diff == 'month') {
         date.setMonth(date.getMonth() + 1);
@@ -23,9 +21,7 @@ const toISO = (date) => {
 
 const parseData = (data, extent, step, property, subprop) => {
 
-    let copy = extent.map(d => new Date(`${toISO(d)}T00:00:00`));
-
-    let scaffold = createScaffold(copy, step, property);
+    let scaffold = createScaffold(extent, step, property);
 
     fillScaffold(scaffold, data, step, property, subprop);
 
@@ -39,12 +35,14 @@ const parseData = (data, extent, step, property, subprop) => {
 }
 
 const createScaffold = (extent, step, property) => {
+    let copy = extent.map(d => new Date(`${toISO(d)}T00:00:00`));
+
     let scaffold = new Object();
 
     if (step == 'month') {
-        extent.forEach(d => { d.setDate(15) });
+        copy.forEach(d => { d.setDate(1) });
     }
-    for (let i = extent[0]; i <= extent[1]; setDate(i, step)) {
+    for (let i = copy[0]; i <= copy[1]; setDate(i, step)) {
         let iso = i.toISOString();
         let subiso = iso.substring(0, iso.indexOf('T'));
 
@@ -57,7 +55,9 @@ const createScaffold = (extent, step, property) => {
 const fillScaffold = (scaffold, data, step, property, subprop) => {
     if (step == 1) {
         data.forEach(d => {
-            scaffold[d.date][property] += +d[subprop];
+            if (d.date in scaffold) {
+                scaffold[d.date][property] += +d[subprop];
+            }
         });
     } else if (step == 7) {
         data.forEach(d => {
@@ -71,7 +71,7 @@ const fillScaffold = (scaffold, data, step, property, subprop) => {
     } else if (step == 'month') {
         data.forEach(d => {
             let current = new Date(`${d.date}T00:00:00`);
-            current.setDate(15);
+            current.setDate(1);
 
             if (current.getFullYear() !== 2018) {
                 scaffold[toISO(current)][property] += +d[subprop];
@@ -80,4 +80,31 @@ const fillScaffold = (scaffold, data, step, property, subprop) => {
     }
 }
 
-export { setDate, delay, parseData };
+let tooldate = { month: "short", day: "numeric", year: "numeric" };
+
+let getData = (data, bshift, eshift, prop, subprop) => {
+    let extent = d3.extent(data, d => `${d.date}T00:00:00`).map(d => new Date(d));
+
+    let daily = parseData(data, extent, 1, prop, subprop);
+
+    setDate(extent[0], bshift); // set beginning date to 2019-01-05
+    setDate(extent[1], eshift); // set       end date to 2020-05-02
+
+    let weekly = parseData(data, extent, 7, prop, subprop);
+
+    let monthly = parseData(data, extent, 'month', prop, subprop);
+
+    return { daily, weekly, monthly, extent };
+}
+
+let average = (data, year) => {
+    const select = data.filter(d => d.date.getFullYear() == year);
+
+    let total = select.reduce((acc, cur) => {
+        return acc + cur.riders;
+    }, 0)
+
+    return Math.round(total / select.length);
+}
+
+export { setDate, delay, parseData, tooldate, getData, average, toISO, createScaffold };
