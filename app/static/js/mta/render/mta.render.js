@@ -3,11 +3,7 @@ import {
     average
 } from '../data/mta.ridership.js';
 
-import {
-    setSVGBounds,
-    renderLineGraph,
-    updateLineGraph
-} from '../../template/line.graph.js'
+import LineGraph from '../../template/line.graph.js'
 
 import {
     tooldate,
@@ -36,12 +32,17 @@ window.onload = async () => {
 
     margin = { 'top': 20, 'right': 50, 'bottom': 50, 'left': 100 };
 
-    setSVGBounds(svg, margin);
-    await renderLineGraph(svg, daily, 'date', 'riders', tool);
+    let riderline = new LineGraph(
+        svg, daily,
+        'date', 'riders',
+        tool, margin,
+        'ride-line',
+        'ride-x', 'ride-y');
+    await riderline.renderLineGraph();
 
-    listen('daily', 'line-graph', daily, 'date', 'riders');
-    listen('weekly', 'line-graph', weekly, 'date', 'riders');
-    listen('monthly', 'line-graph', monthly, 'date', 'riders');
+    listen(riderline, 'daily', daily);
+    listen(riderline, 'weekly', weekly);
+    listen(riderline, 'monthly', monthly);
 }
 
 let count = 0;
@@ -76,17 +77,17 @@ window.onscroll = async () => {
     // }
 }
 
-let listen = (id, lineid, data, xprop, yprop) => {
+let listen = (graph, id, data) => {
     let button = document.getElementById(id);
     button.disabled = false;
     button.addEventListener('click', () => {
-        update(id, lineid, data, xprop, yprop);
+        update(graph, id, data);
     })
 }
 
-let update = (id, lineid, data, xprop, yprop) => {
+let update = (graph, id, data) => {
     if (view !== id) {
         view = id;
-        updateLineGraph(svg, data, 1000, xprop, yprop, lineid);
+        graph.updateLineGraph(data, 1000);
     }
 }

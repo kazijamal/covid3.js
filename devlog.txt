@@ -165,3 +165,6 @@ Upload design doc v1 with a more detailed list of visualizations
 
 kaziJ -- 2020-05-06 23:30
 Experiment using covid Python package to retrieve cases data for dashboard, and update requirements.txt
+
+ericL -- 2020-05-07 01:27
+Convert line graph functions to class

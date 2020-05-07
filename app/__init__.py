@@ -19,7 +19,7 @@ app.secret_key = os.urandom(32)
 @app.route('/')
 def root():
     data = covid.get_status_by_country_name("us")
-    return render_template('dashboard.html', confirmed = "{:,}".format(data['confirmed']), active = "{:,}".format(data['active']), recovered = "{:,}".format(data['recovered']), deaths = "{:,}".format(data['deaths']))
+    return render_template('dashboard.html', confirmed="{:,}".format(data['confirmed']), active="{:,}".format(data['active']), recovered="{:,}".format(data['recovered']), deaths="{:,}".format(data['deaths']))
 
 # ABOUT
 @app.route('/about')
@@ -28,10 +28,15 @@ def about():
 
 # SENTIMENT ANALYSIS
 
+
 # absolute path to num-articles-per-day.csv
-num_articles_per_day_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "num-articles-per-day.csv") 
-news_domains_on_average_subjectivity_ranges_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "news-domains-on-average-subjectivity-ranges.csv") 
-trumps_tweets_on_polarity_range_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "trump-tweets-on-polarity-range.csv") 
+num_articles_per_day_csv = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), "static", "data", "num-articles-per-day.csv")
+news_domains_on_average_subjectivity_ranges_csv = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), "static", "data", "news-domains-on-average-subjectivity-ranges.csv")
+trumps_tweets_on_polarity_range_csv = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), "static", "data", "trump-tweets-on-polarity-range.csv")
+
 
 @app.route('/sentiment')
 def sentiment():
@@ -42,18 +47,22 @@ def sentiment():
 def publicmedia():
     return render_template('sentiment/publicmedia.html')
 
+
 @app.route("/data/sentiment/publicmedia")
 def publicMediaData():
     return open(num_articles_per_day_csv).read()
+
 
 @app.route("/data/sentiment/newsdomainsubjectivities")
 def newsDomainSubjectivities():
     return open(news_domains_on_average_subjectivity_ranges_csv).read()
 
+
 @app.route("/data/sentiment/trumptweetspolarities")
 def trumpTweetsPolarities():
     return open(trumps_tweets_on_polarity_range_csv).read()
-    
+
+
 @app.route('/sentiment/trumptweets')
 def trumptweets():
     return render_template('sentiment/trumptweets.html')
