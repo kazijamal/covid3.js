@@ -1,12 +1,9 @@
-import {
-    getData,
-    average
-} from '../data/mta.ridership.js';
-
 import LineGraph from '../../template/line.graph.js'
 
 import {
     tooldate,
+    getData,
+    average
 } from '../../utility.js';
 
 let view = 'daily';
@@ -18,7 +15,7 @@ window.onload = async () => {
 
     ridership = await d3.csv('/data/transportation/mta');
 
-    const { daily, weekly, monthly } = getData(ridership);
+    const { daily, weekly, monthly } = getData(ridership, 7, 1, 'riders', 'enter');
 
     document.getElementById('avg').innerHTML = `
     In 2019, there was an average of ${average(daily, 2019)} swipes per day.

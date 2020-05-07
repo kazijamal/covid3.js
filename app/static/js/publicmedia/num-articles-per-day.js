@@ -1,15 +1,10 @@
 let view = 'daily';
 
-import {
-  setSVGBounds,
-  renderLineGraph,
-  updateLineGraph,
-} from '../template/line.graph.js';
+import LineGraph from '../template/line.graph.js';
 
 import {
   tooldate,
-  parseData,
-  setDate
+  getData
 } from '../utility.js'
 
 let svg;
@@ -19,15 +14,7 @@ window.onload = async () => {
 
   let data = await d3.csv('/data/sentiment/publicmedia');
 
-  let extent = d3.extent(data, d => `${d.date}T00:00:00`).map(d => new Date(d));
-
-  let daily = parseData(data, extent, 1, 'numArticles', 'numArticles');
-
-  setDate(extent[0], 5); // set beginning date to 2020-01-11
-  setDate(extent[1], 4); // set beginning date to 2020-04-25
-
-  let weekly = parseData(data, extent, 7, 'numArticles', 'numArticles');
-  let monthly = parseData(data, extent, 'month', 'numArticles', 'numArticles');
+  const { daily, weekly, monthly } = getData(data, 5, 4, 'numArticles', 'numArticles');
 
   svg = d3.select('#line-chart')
     .append('svg')
@@ -37,28 +24,32 @@ window.onload = async () => {
 
   let margin = { top: 50, right: 50, bottom: 50, left: 50 };
 
-  setSVGBounds(svg, margin);
-  await renderLineGraph(svg, daily, 'date', 'numArticles', tool, {
-    color: '#ffab00',
-    strokewidth: 3,
-  });
+  let linegraph = new LineGraph(
+    svg, daily, 'date', 'numArticles',
+    tool, margin, 'num-articles-line', 'articles-x', 'articles-y',
+    {
+      color: '#ffab00',
+      strokewidth: 3
+    });
 
-  listen('toggle-daily-view', daily, 'date', 'numArticles');
-  listen('toggle-weekly-view', weekly, 'date', 'numArticles');
-  listen('toggle-monthly-view', monthly, 'date', 'numArticles');
+  await linegraph.renderLineGraph();
+
+  listen(linegraph, 'toggle-daily-view', daily);
+  listen(linegraph, 'toggle-weekly-view', weekly);
+  listen(linegraph, 'toggle-monthly-view', monthly);
 }
 
-let listen = (id, data, xprop, yprop, tooltip) => {
+let listen = (graph, id, data) => {
   let button = document.getElementById(id);
   button.disabled = false;
   button.addEventListener('click', () => {
-    update(id, data, xprop, yprop);
+    update(graph, id, data);
   })
 }
 
-let update = (id, data, xprop, yprop) => {
+let update = (graph, id, data) => {
   if (view !== id) {
-    updateLineGraph(svg, data, 1000, xprop, yprop);
     view = id;
+    graph.updateLineGraph(data, 1000);
   }
 }

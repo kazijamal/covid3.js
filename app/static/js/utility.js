@@ -82,4 +82,29 @@ const fillScaffold = (scaffold, data, step, property, subprop) => {
 
 let tooldate = { month: "short", day: "numeric", year: "numeric" };
 
-export { setDate, delay, parseData, tooldate };
+let getData = (data, bshift, eshift, prop, subprop) => {
+    let extent = d3.extent(data, d => `${d.date}T00:00:00`).map(d => new Date(d));
+
+    let daily = parseData(data, extent, 1, prop, subprop);
+
+    setDate(extent[0], bshift); // set beginning date to 2019-01-05
+    setDate(extent[1], eshift); // set       end date to 2020-05-02
+
+    let weekly = parseData(data, extent, 7, prop, subprop);
+
+    let monthly = parseData(data, extent, 'month', prop, subprop);
+
+    return { daily, weekly, monthly };
+}
+
+let average = (data, year) => {
+    const select = data.filter(d => d.date.getFullYear() == year);
+
+    let total = select.reduce((acc, cur) => {
+        return acc + cur.riders;
+    }, 0)
+
+    return Math.round(total / select.length);
+}
+
+export { setDate, delay, parseData, tooldate, getData, average };
