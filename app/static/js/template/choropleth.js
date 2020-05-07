@@ -45,6 +45,24 @@ export default class Choropleth {
         this.legend(6, 320, 50, 18, 0, 22, 0, 5, 'd');
     }
 
+    add(features, classname) {
+        this.svg.selectAll(`.${classname}`).remove();
+        this.svg.selectAll(`.${classname}`)
+            .data(features)
+            .join(
+                enter => {
+                    return enter.append('path')
+                        .attr('d', this.path)
+                        .attr('class', classname)
+                        .attr('fill', 'red')
+                }
+            )
+    }
+
+    removeAll(classname) {
+        this.svg.selectAll(`.${classname}`).remove();
+    }
+
     update(area, border, getprop, datamap, colormap) {
         this.geoarea = area;
         this.geoborder = border;
@@ -53,12 +71,11 @@ export default class Choropleth {
         this.colormap = colormap;
 
         this.svg.selectAll(`.${this.areaclass}`).remove();
+        this.svg.selectAll(`.${this.borderclass}`).remove();
         this.render();
     }
 
     addBorder() {
-        this.svg.selectAll(`.${this.borderclass}`).remove();
-
         this.svg.append('path')
             .datum(this.geoborder)
             .attr('fill', 'none')

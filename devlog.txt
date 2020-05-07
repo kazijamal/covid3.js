@@ -192,3 +192,6 @@ Add template legend to choropleth
 
 ericL -- 2020-05-07 14:05
 Add toggle to choropleth
+
+ericL -- 2020-05-07 15:06
+Add subway stop toggle
