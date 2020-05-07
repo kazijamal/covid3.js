@@ -94,7 +94,7 @@ let getData = (data, bshift, eshift, prop, subprop) => {
 
     let monthly = parseData(data, extent, 'month', prop, subprop);
 
-    return { daily, weekly, monthly };
+    return { daily, weekly, monthly, extent };
 }
 
 let average = (data, year) => {
