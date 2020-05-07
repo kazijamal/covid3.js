@@ -127,12 +127,13 @@ let ridershipborough = async () => {
         The following graph breaks down MTA ridership by borough since the beginning of March.
         Though ridership in all boroughs have fallen to relatively similar numbers,
         the percentage decrease for each borough is clearly different. Lets calculate ther percentage difference
-        by comparing ridership from March 1st - May 2nd 2020 to the same timeframe from the previous year.<br>
-        <b><span style="color: #CF5C36">Manhattan</span></b> ${manhattan}<br>
-        <b><span style="color: #A09EBB">Brooklyn</span></b> ${brooklyn}<br>
-        <b><span style="color: #7C7C7C">Queens</span></b> ${queens}<br>
-        <b><span style="color: #EFC88B">The Bronx</span></b> ${bronx}<br>
-        <b><span style="color: #C2CFB2">Staten Island</span></b> ${staten}<br>
+        by comparing ridership from March 1st - May 2nd 2020 to the same timeframe from the previous year.<br><br>
+        <b><span style="color: #CF5C36">Manhattan</span></b> has seen a <b>${manhattan}%</b> decrease, the largest out of all boroughs.
+        <b><span style="color: #C2CFB2">Staten Island</span></b> has the second largest decrease with <b>${staten}%</b>
+        though it should be noted that the Subway system is not used as much in Staten Island regardless of COVID.
+        <b><span style="color: #A09EBB">Brooklyn</span></b> comes in third with a <b>${brooklyn}%</b> decrease, followed by
+        <b><span style="color: #7C7C7C">Queens</span></b> with a <b>${queens}%</b> decrease.
+        <b><span style="color: #EFC88B">The Bronx</span></b> has experienced the least percentage decrease with <b>${bronx}%.</b><br>
     </div>`
 
     let svgborough = d3.select('#ridership-borough')

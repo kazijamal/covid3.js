@@ -11,20 +11,43 @@ let dayaverage = (data, day) => {
 }
 
 let percentChange = (data, extent) => {
-    console.log(data);
 
     let prev = extent.map(d => new Date(`${toISO(d)}T00:00:00`));
     prev[0].setFullYear(prev[0].getFullYear() - 1);
     prev[1].setFullYear(prev[1].getFullYear() - 1);
 
-    console.log(extent, prev);
-    return {
+    let select2019 = {
         'New York County': 0,
         'Kings County': 0,
         'Queens County': 0,
         'Bronx County': 0,
         'Richmond County': 0
+    };
+    let select2020 = {
+        'New York County': 0,
+        'Kings County': 0,
+        'Queens County': 0,
+        'Bronx County': 0,
+        'Richmond County': 0
+    };
+
+    data.forEach(d => {
+        let date = new Date(`${d.date}T00:00:00`);
+        if (date <= prev[1] && date >= prev[0]) {
+            select2019[d.borough] += +d.enter;
+        }
+        if (date >= extent[0] && date <= extent[1]) {
+            select2020[d.borough] += +d.enter;
+        }
+    })
+
+    let obj = new Object();
+
+    for (const borough in select2019) {
+        obj[borough] = ((select2019[borough] - select2020[borough]) / select2019[borough] * 100).toFixed(2);
     }
+
+    return obj;
 }
 
 let boroughParse = (data, extent) => {
