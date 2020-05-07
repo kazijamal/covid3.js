@@ -65,8 +65,8 @@ let ridership20192020 = async () => {
             </div>`;
 
     document.getElementById('avg').innerHTML = `
-    In 2019, there was an average of <b>${average(daily, 2019)}</b> swipes per day.
-    This year, it's down to <b>${average(daily, 2020)}</b>.`;
+    In 2019, there was an average of <b>${d3.format(",")(average(daily, 2019))}</b> swipes per day.
+    This year, it's down to <b>${d3.format(",")(average(daily, 2020))}</b>.`;
 
     svg = d3.select('#ridership-line-container')
         .append('svg')
