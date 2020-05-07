@@ -10,6 +10,23 @@ let dayaverage = (data, day) => {
     return Math.round(total / select.length);
 }
 
+let percentChange = (data, extent) => {
+    console.log(data);
+
+    let prev = extent.map(d => new Date(`${toISO(d)}T00:00:00`));
+    prev[0].setFullYear(prev[0].getFullYear() - 1);
+    prev[1].setFullYear(prev[1].getFullYear() - 1);
+
+    console.log(extent, prev);
+    return {
+        'New York County': 0,
+        'Kings County': 0,
+        'Queens County': 0,
+        'Bronx County': 0,
+        'Richmond County': 0
+    }
+}
+
 let boroughParse = (data, extent) => {
     let scaffold = {
         'Kings County': createScaffold(extent, 1, 'riders'),
@@ -43,4 +60,4 @@ let boroughParse = (data, extent) => {
     return master;
 }
 
-export { dayaverage, boroughParse };
+export { dayaverage, boroughParse, percentChange };

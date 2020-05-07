@@ -174,3 +174,6 @@ Add second line graph
 
 ericL -- 2020-05-07 05:10
 Create borough split line graph
+
+ericL -- 2020-05-07 06:28
+Add y axis label

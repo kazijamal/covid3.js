@@ -2,7 +2,8 @@ import LineGraph from '../../template/line.graph.js'
 
 import {
     dayaverage,
-    boroughParse
+    boroughParse,
+    percentChange
 } from '../data/mta.ridership.js';
 
 import {
@@ -16,9 +17,9 @@ import {
 let view = 'daily';
 let svg, margin;
 let ridership, gextent, tool;
-let count = 0;
+let count;
 
-window.onload = async () => { await ridership20192020(); }
+window.onload = async () => { count = 0; await ridership20192020(); }
 
 window.onscroll = async () => {
 
@@ -48,8 +49,8 @@ let ridership20192020 = async () => {
     gextent = extent;
 
     document.getElementById('avg').innerHTML = `
-    In 2019, there was an average of ${average(daily, 2019)} swipes per day.
-    This year, it's down to ${average(daily, 2020)}.`;
+    In 2019, there was an average of <b>${average(daily, 2019)}</b> swipes per day.
+    This year, it's down to <b>${average(daily, 2020)}</b>.`;
 
     svg = d3.select('#ridership-line-container')
         .append('svg')
@@ -89,7 +90,7 @@ let ridership2020 = async () => {
         Now let's take a look at data just from this year.
         We can see that the first major dip in ridership occurs on the week of March 8th.
         Schools officially closed on Sunday, March 15th. On Monday, March 16th, ridership dropped
-        to 2180285 swipes. Previous Mondays in the year had an average of ${dayaverage(temp, 1)} swipes.
+        to <b>2180285</b> swipes. Previous Mondays in the year had an average of <b>${dayaverage(temp, 1)}</b> swipes.
     </div>`
 
     let svg2020 = d3.select('#ridership-2020')
@@ -100,25 +101,38 @@ let ridership2020 = async () => {
 
     let graph = new LineGraph(
         svg2020, data, 'date', 'riders',
-        tool, margin, '2020-line', '2020-x', '2020-y',
+        tool, margin, 'line-2020', 'x-2020', 'y-2020',
         { timedelay: 2000 });
 
-    return graph.renderLineGraph();
+    await graph.renderLineGraph();
+    graph.yLabel('# of swipes');
+    return;
 }
 
 let ridershipborough = async () => {
-    let extent2020 = [new Date('2020-03-10T00:00:00'), gextent[1]];
+    let extent2020 = [new Date('2020-03-01T00:00:00'), gextent[1]];
 
     let data = boroughParse(ridership, extent2020);
 
+    let {
+        'New York County': manhattan,
+        "Kings County": brooklyn,
+        "Queens County": queens,
+        "Bronx County": bronx,
+        "Richmond County": staten
+    } = percentChange(ridership, extent2020);
+
     document.getElementById('ridership-borough').innerHTML = `
     <div class="article-content mb-2">
-        The following graph breaks down MTA ridership by borough.
-        <b><span style="color: #CF5C36">Manhattan</span></b>
-        <b><span style="color: #A09EBB">Brooklyn</span></b>
-        <b><span style="color: #7C7C7C">Queens</span></b>
-        <b><span style="color: #EFC88B">The Bronx</span></b>
-        <b><span style="color: #C2CFB2">Staten Island</span></b>
+        The following graph breaks down MTA ridership by borough since the beginning of March.
+        Though ridership in all boroughs have fallen to relatively similar numbers,
+        the percentage decrease for each borough is clearly different. Lets calculate ther percentage difference
+        by comparing ridership from March 1st - May 2nd 2020 to the same timeframe from the previous year.<br>
+        <b><span style="color: #CF5C36">Manhattan</span></b> ${manhattan}<br>
+        <b><span style="color: #A09EBB">Brooklyn</span></b> ${brooklyn}<br>
+        <b><span style="color: #7C7C7C">Queens</span></b> ${queens}<br>
+        <b><span style="color: #EFC88B">The Bronx</span></b> ${bronx}<br>
+        <b><span style="color: #C2CFB2">Staten Island</span></b> ${staten}<br>
     </div>`
 
     let svgborough = d3.select('#ridership-borough')
@@ -136,8 +150,9 @@ let ridershipborough = async () => {
             strokewidth: 2,
         });
 
-    let ex = [new Date('2020-03-10T00:00:00'), gextent[1]]
+    let ex = [new Date('2020-03-01T00:00:00'), gextent[1]]
     await graph.renderMultiLine(ex);
+    graph.yLabel('# of swipes');
 }
 
 let choropleth = () => {

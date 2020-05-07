@@ -238,4 +238,13 @@ export default class LineGraph {
 
         this.svg.on("touchend mouseleave", () => tooltip.call(callout, null));
     }
+
+    yLabel(label) {
+        this.svg.select(`#${this.yid}`)
+            .call(g => g.select('.tick:last-of-type text').clone()
+                .attr('x', 3)
+                .attr('text-anchor', 'start')
+                .attr('font-weight', 'bold')
+                .text(label));
+    }
 }
