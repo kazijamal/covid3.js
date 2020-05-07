@@ -25,6 +25,6 @@ for el in trump_tweets_sentiment_arr:
 
 with open("output1.csv", "w") as output_file:
   output = csv.writer(output_file, delimiter=",")
-
-  for key, val in trump_tweets_sentiment_range_dict.items():
-    output.writerow([key, val])
+  output.writerow(["index", "polarity"])
+  for idx, el in enumerate(trump_tweets_sentiment_arr):
+    output.writerow([idx + 1, el])

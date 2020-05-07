@@ -1,16 +1,31 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% set active_page = "sentiment" %} {% block title %}
+Trump Tweets {% endblock %} {% block head %}
+<!-- CSS -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/trumptweets.css') }}"
+/>
 
-{% set active_page = "sentiment" %}
-
-{% block title %} Trump Tweets {% endblock %}
-
-{% block body %}
+<!-- Trump tweets on polarity ranges script -->
+<script
+  src="{{ url_for('static', filename='js/trumptweets/trump-tweets-on-polarity-range.js')}}"
+  type="module"
+  defer
+></script>
+{% endblock %} {% block body %}
 
 <div class="content">
-	<div class="article">
-		<h1 class="article-heading">Trump Tweets</h1>
-		<p class="article-subheading">Sentiment analysis on tweets from Donald Trump, the president of the United States</p>
-	</div>
+  <div class="article">
+    <h1 class="article-heading">Trump Tweets</h1>
+    <p class="article-subheading">
+      Sentiment analysis on tweets from Donald Trump, the president of the
+      United States
+    </p>
+    <h3 class="article-subtitle">
+      Sentiment polarity values of Trump's tweets during COVID-19
+    </h3>
+    <div id="scatterplot"></div>
+  </div>
 </div>
 
 {% endblock %}

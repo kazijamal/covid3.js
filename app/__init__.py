@@ -27,6 +27,7 @@ def about():
 # absolute path to num-articles-per-day.csv
 num_articles_per_day_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "num-articles-per-day.csv") 
 news_domains_on_average_subjectivity_ranges_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "news-domains-on-average-subjectivity-ranges.csv") 
+trumps_tweets_on_polarity_range_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "trump-tweets-on-polarity-range.csv") 
 
 @app.route('/sentiment')
 def sentiment():
@@ -42,8 +43,12 @@ def publicMediaData():
     return open(num_articles_per_day_csv).read()
 
 @app.route("/data/sentiment/newsdomainsubjectivities")
-def newsDomainPolarities():
+def newsDomainSubjectivities():
     return open(news_domains_on_average_subjectivity_ranges_csv).read()
+
+@app.route("/data/sentiment/trumptweetspolarities")
+def trumpTweetsPolarities():
+    return open(trumps_tweets_on_polarity_range_csv).read()
     
 @app.route('/sentiment/trumptweets')
 def trumptweets():
