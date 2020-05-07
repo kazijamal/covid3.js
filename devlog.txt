@@ -156,3 +156,8 @@ Upload generation scripts for the aforementioned data
 
 rayL -- 2020-05-06 12:25
 Create a draft of the TextBlob introduction QAF post on google doc and share with team
+
+rayL -- 2020-05-06 20:43
+Finish creating a bar chart for subjectivity values of different new outlets related to COVID-19
+Fix folder structure
+Create starting template for scatterplot measuring polarity values of trump tweets
