@@ -11,7 +11,7 @@ let zipdata = async () => {
 
     let colormap = colorMapper(cases, 'Positive');
 
-    return { cases, casemap, colormap };
+    return { casemap, colormap };
 }
 
 let borodata = async () => {
@@ -27,7 +27,7 @@ let borodata = async () => {
 
     let colormap = colorMapper(cases, 'COVID_CASE_COUNT');
 
-    return { cases, casemap, colormap };
+    return { casemap, colormap };
 }
 
 let colorMapper = (cases, prop) => {

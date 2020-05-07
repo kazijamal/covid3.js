@@ -1,7 +1,9 @@
 export default class Choropleth {
     constructor(
         svg, areaclass, borderclass,
-        geoarea, geoborder, path
+        geoarea, geoborder, path,
+        datamap, colormap,
+        getprop
     ) {
         this.svg = svg;
         this.areaclass = areaclass;
@@ -9,6 +11,14 @@ export default class Choropleth {
         this.geoarea = geoarea;
         this.geoborder = geoborder;
         this.path = path;
+        this.datamap = datamap;
+        this.colormap = colormap;
+        this.getprop = getprop;
+    }
+
+    colorfunction(d) {
+        let c = this.colormap(this.datamap[d]);
+        return (c == undefined) ? 'lightgrey' : c;
     }
 
     render() {
@@ -19,7 +29,7 @@ export default class Choropleth {
                     return enter.append('path')
                         .attr('d', this.path)
                         .attr('class', this.areaclass)
-                        .attr('fill', 'red');
+                        .attr('fill', d => this.colorfunction(this.getprop(d)));
                 }
             )
 

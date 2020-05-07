@@ -183,3 +183,6 @@ Add percent decrease by borough
 
 ericL -- 2020-05-07 08:51
 Implement choropleth template
+
+ericL -- 2020-05-07 09:37
+Add coloring and geo-mapping to choropleth

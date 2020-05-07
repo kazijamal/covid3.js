@@ -23,14 +23,17 @@ import {
 let view = 'daily';
 let svg, margin;
 let ridership, gextent, tool;
-let projection, path;
+let projection = d3.geoMercator()
+    .scale(50000)
+    .center([-73.94, 40.70]);
+let path = d3.geoPath(projection);
 
 window.onload = async () => {
     await ridership20192020();
     await ridership2020();
     await ridershipborough();
     await boroughchorolpeth();
-    // await zipchoropleth();
+    await zipchoropleth();
 }
 
 let ridership20192020 = async () => {
@@ -189,27 +192,31 @@ let mapScaffold = (container, id, legendid, colorid, tickid) => {
 }
 
 let boroughchorolpeth = async () => {
-    let { cases, casemap, colormap } = await borodata();
+    let { casemap, colormap } = await borodata();
+
     let geoboro = await d3.json('/static/json/boroughs.json');
     let area = topojson.feature(geoboro, geoboro.objects.boroughs).features;
     let border = topojson.mesh(geoboro, geoboro.objects.boroughs);
 
-    projection = d3.geoMercator()
-        .scale(50000)
-        .center([-73.94, 40.70])
-
-    path = d3.geoPath(projection);
+    let getprop = (d) => d.properties.bname;
 
     let { map, id, legendid, colorid, tickid } = mapScaffold(
         'borough-container', 'borough-map',
         'borough-legend', 'borough-color', 'borough-tick'
     );
 
-    let choropleth = new Choropleth(map, 'borough-area', 'borough-border', area, border, path);
+    let choropleth = new Choropleth(
+        map, 'borough-area', 'borough-border',
+        area, border, path,
+        casemap, colormap,
+        getprop);
+
     choropleth.render();
 }
 
 let zipchoropleth = async () => {
+    let { casemap, colormap } = await zipdata();
+
     let geozip = await d3.json('/static/json/zip_codes.json');
     let area = topojson.feature(geozip, geozip.objects.zip_codes).features;
     let border = topojson.mesh(geozip, geozip.objects.zip_codes);
@@ -218,7 +225,14 @@ let zipchoropleth = async () => {
         'zip-container', 'zip-map',
         'zip-legend', 'zip-color', 'zip-tick');
 
-    let choropleth = new Choropleth(map, 'zip-area', 'zip-border', area, border, path);
+    let getprop = (d) => d.properties.zcta;
+
+    let choropleth = new Choropleth(
+        map, 'zip-area', 'zip-border',
+        area, border, path,
+        casemap, colormap,
+        getprop);
+
     choropleth.render();
 }
 
