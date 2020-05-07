@@ -180,3 +180,6 @@ Add y axis label
 
 ericL -- 2020-05-07 07:27
 Add percent decrease by borough
+
+ericL -- 2020-05-07 08:51
+Implement choropleth template

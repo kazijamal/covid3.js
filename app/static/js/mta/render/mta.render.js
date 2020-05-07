@@ -1,4 +1,5 @@
 import LineGraph from '../../template/line.graph.js'
+import Choropleth from '../../template/choropleth.js';
 
 import {
     dayaverage,
@@ -17,26 +18,14 @@ import {
 let view = 'daily';
 let svg, margin;
 let ridership, gextent, tool;
-let count;
+let projection, path;
 
-window.onload = async () => { count = 0; await ridership20192020(); }
-
-window.onscroll = async () => {
-
-    let docEl = document.documentElement;
-    let numerator = document.body.scrollTop + docEl.scrollTop;
-    let denominator = docEl.scrollHeight - docEl.clientHeight;
-    let percentscroll = (numerator) / (denominator);
-
-    if (percentscroll == 1 && count == 0) {
-        count++;
-        await ridership2020();
-    }
-
-    if (percentscroll == 1 && count == 1) {
-        count++;
-        await ridershipborough();
-    }
+window.onload = async () => {
+    await ridership20192020();
+    await ridership2020();
+    await ridershipborough();
+    await boroughchorolpeth();
+    await zipchoropleth();
 }
 
 let ridership20192020 = async () => {
@@ -71,8 +60,6 @@ let ridership20192020 = async () => {
     listen(riderline, 'daily', daily);
     listen(riderline, 'weekly', weekly);
     listen(riderline, 'monthly', monthly);
-
-    return;
 }
 
 let ridership2020 = async () => {
@@ -106,7 +93,6 @@ let ridership2020 = async () => {
 
     await graph.renderLineGraph();
     graph.yLabel('# of swipes');
-    return;
 }
 
 let ridershipborough = async () => {
@@ -156,8 +142,59 @@ let ridershipborough = async () => {
     graph.yLabel('# of swipes');
 }
 
-let choropleth = () => {
-    // console.log('here')
+let mapScaffold = (container, id, legendid, colorid, tickid) => {
+    let map = d3.select(`#${container}`)
+        .append('svg')
+        .attr('id', id)
+        .attr('width', '100%')
+        .attr('viewBox', [73.94, -40.70, 975, 610])
+        .append('g')
+        .attr('transform', 'translate(100)');
+
+    let legend = map.append('g')
+        .attr('id', legendid)
+        .attr("width", 320)
+        .attr("height", 50)
+        .attr('transform', 'translate(120,20)')
+        .attr("viewBox", [0, 0, 320, 50]);
+
+    legend.append('g').attr('id', colorid);
+    legend.append('g').attr('id', tickid);
+
+    return { map, id, legendid, colorid, tickid };
+}
+
+let boroughchorolpeth = async () => {
+    let geoboro = await d3.json('/static/json/boroughs.json');
+    let area = topojson.feature(geoboro, geoboro.objects.boroughs).features;
+    let border = topojson.mesh(geoboro, geoboro.objects.boroughs);
+
+    projection = d3.geoMercator()
+        .scale(50000)
+        .center([-73.94, 40.70])
+
+    path = d3.geoPath(projection);
+
+    let { map, id, legendid, colorid, tickid } = mapScaffold(
+        'borough-container', 'borough-map',
+        'borough-legend', 'borough-color', 'borough-tick'
+    );
+
+    let choropleth = new Choropleth(map, 'borough-area', area, border, path);
+    choropleth.render();
+}
+
+let zipchoropleth = async () => {
+    let geozip = await d3.json('/static/json/zip_codes.json');
+    let area = topojson.feature(geozip, geozip.objects.zip_codes).features;
+    let border = topojson.mesh(geozip, geozip.objects.zip_codes);
+
+    let { map, id, legendid, colorid, tickid } = mapScaffold(
+        'zip-container', 'zip-map',
+        'zip-legend', 'zip-color', 'zip-tick');
+
+    let choropleth = new Choropleth(map, 'zip-area', area, border, path);
+    choropleth.render();
 }
 
 let listen = (graph, id, data) => {
