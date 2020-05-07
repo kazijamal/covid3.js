@@ -11,9 +11,6 @@ import {
 
 import {
     tooldate,
-    // setDate,
-    // parseData,
-    // delay,
 } from '../../utility.js';
 
 let view = 'daily';
@@ -40,11 +37,7 @@ window.onload = async () => {
     margin = { 'top': 20, 'right': 50, 'bottom': 50, 'left': 100 };
 
     setSVGBounds(svg, margin);
-    let info = await renderLineGraph(
-        svg, daily, 'date', 'riders', tool,
-        );
-
-    console.log(info);
+    await renderLineGraph(svg, daily, 'date', 'riders', tool);
 
     listen('daily', 'line-graph', daily, 'date', 'riders');
     listen('weekly', 'line-graph', weekly, 'date', 'riders');

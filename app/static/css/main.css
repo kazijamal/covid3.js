@@ -74,6 +74,29 @@ a:hover {
 
 /* NAVBAR END */
 
+/* DASHBOARD START */
+
+.case-col {
+    padding: 1rem;
+}
+
+.case {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.case-description {
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+.confirmed {
+    background-color: green;
+}
+
+/* DASHBOARD END */
+
 /* ORGANIZATION START */
 
 .subheading {

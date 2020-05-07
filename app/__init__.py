@@ -8,6 +8,9 @@ P04 -- Let the Data Speak
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os
 import urllib.request
+import json
+from covid import Covid
+covid = Covid()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -15,7 +18,8 @@ app.secret_key = os.urandom(32)
 # DASHBOARD
 @app.route('/')
 def root():
-    return render_template('dashboard.html')
+    data = covid.get_status_by_country_name("us")
+    return render_template('dashboard.html', confirmed = "{:,}".format(data['confirmed']), active = "{:,}".format(data['active']), recovered = "{:,}".format(data['recovered']), deaths = "{:,}".format(data['deaths']))
 
 # ABOUT
 @app.route('/about')
@@ -26,6 +30,8 @@ def about():
 
 # absolute path to num-articles-per-day.csv
 num_articles_per_day_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "num-articles-per-day.csv") 
+news_domains_on_average_subjectivity_ranges_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "news-domains-on-average-subjectivity-ranges.csv") 
+trumps_tweets_on_polarity_range_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "data", "trump-tweets-on-polarity-range.csv") 
 
 @app.route('/sentiment')
 def sentiment():
@@ -38,7 +44,15 @@ def publicmedia():
 
 @app.route("/data/sentiment/publicmedia")
 def publicMediaData():
-    return open(num_articles_per_day_csv).read() 
+    return open(num_articles_per_day_csv).read()
+
+@app.route("/data/sentiment/newsdomainsubjectivities")
+def newsDomainSubjectivities():
+    return open(news_domains_on_average_subjectivity_ranges_csv).read()
+
+@app.route("/data/sentiment/trumptweetspolarities")
+def trumpTweetsPolarities():
+    return open(trumps_tweets_on_polarity_range_csv).read()
     
 @app.route('/sentiment/trumptweets')
 def trumptweets():
