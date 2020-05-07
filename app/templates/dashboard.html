@@ -11,6 +11,24 @@
 		<h1 class="article-heading">COVID-19</h1>
 		<p class="article-subheading">Data visualization of COVID-19 in the United States of America</p>
 	</div>
+	<div class="row">
+		<div class="case-col col-md-6">
+			<h1 class="case">{{ confirmed }}</h1>
+			<p class="case-description">confirmed</p>
+		</div>
+		<div class="case-col col-md-6">
+			<h1 class="case">{{ active }}</h1>
+			<p class="case-description">active</p>
+		</div>
+		<div class="case-col col-md-6">
+			<h1 class="case">{{ recovered }}</h1>
+			<p class="case-description">recovered</p>
+		</div>
+		<div class="case-col col-md-6">
+			<h1 class="case">{{ deaths }}</h1>
+			<p class="case-description">deaths</p>
+		</div>
+	</div>
 </div>
 
 {% endblock %}

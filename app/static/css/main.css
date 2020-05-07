@@ -74,6 +74,29 @@ a:hover {
 
 /* NAVBAR END */
 
+/* DASHBOARD START */
+
+.case-col {
+    padding: 1rem;
+}
+
+.case {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.case-description {
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+.confirmed {
+    background-color: green;
+}
+
+/* DASHBOARD END */
+
 /* ORGANIZATION START */
 
 .subheading {
@@ -127,6 +150,10 @@ a:hover {
     text-align: center;
     font-size: 1rem;
     font-family: "Roboto Mono", monospace;
+}
+
+.article-content {
+    padding: 0.1rem;
 }
 
 /* ARTICLE END */
@@ -187,7 +214,7 @@ a:hover {
     display: inline-block;
     flex-flow: column;
     text-align: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
     font-family: inherit;
 }
