@@ -3,7 +3,9 @@ export default class Choropleth {
         svg, areaclass, borderclass,
         geoarea, geoborder, path,
         datamap, colormap,
-        getprop
+        getprop,
+        legendlabel, legendcolor,
+        legendticks, tickcontainer
     ) {
         this.svg = svg;
         this.areaclass = areaclass;
@@ -14,6 +16,10 @@ export default class Choropleth {
         this.datamap = datamap;
         this.colormap = colormap;
         this.getprop = getprop;
+        this.legendlabel = legendlabel;
+        this.legendcolor = legendcolor;
+        this.legendticks = legendticks;
+        this.tickcontainer = tickcontainer;
     }
 
     colorfunction(d) {
@@ -31,7 +37,8 @@ export default class Choropleth {
                         .attr('class', this.areaclass)
                         .attr('fill', d => this.colorfunction(this.getprop(d)));
                 }
-            )
+            ).append('title')
+            .text(d => `${this.getprop(d)}, ${this.datamap[this.getprop(d)]} cases`);
 
         this.svg.append('path')
             .datum(this.geoborder)
@@ -40,5 +47,63 @@ export default class Choropleth {
             .attr('stroke', 'black')
             .attr('stroke-linejoin', 'round')
             .attr('d', this.path);
+
+        this.legend(6, 320, 50, 18, 0, 22, 0, 5, 'd');
+    }
+
+    legend(
+        tickSize = 6,
+        width = 320,
+        height = 44 + tickSize,
+        marginTop = 18,
+        marginRight = 0,
+        marginBottom = 16 + tickSize,
+        marginLeft = 0,
+        ticks = width / 64,
+        tickFormat,
+        tickValues) {
+
+        let x = d3.scaleLinear()
+            .domain([-1, this.colormap.range().length - 1])
+            .rangeRound([marginLeft, width - marginRight]);
+
+        d3.select(`#${this.legendcolor}`)
+            .selectAll('rect')
+            .data(this.colormap.range())
+            .join(
+                enter => enter.append('rect')
+                    .attr('x', (d, i) => x(i - 1))
+                    .attr('y', marginTop)
+                    .attr('width', (d, i) => x(i) - x(i - 1))
+                    .attr('height', height - marginTop - marginBottom)
+                    .attr('fill', d => d)
+            );
+
+        let tickAdjust = g => g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height);
+        const thresholds = this.colormap.thresholds();
+        const thresholdFormat = d => Math.round(d);
+        tickValues = d3.range(thresholds.length);
+        tickFormat = i => thresholdFormat(thresholds[i], i);
+
+        d3.select(`#${this.legendticks}`).remove();
+
+        d3.select(`#${this.tickcontainer}`)
+            .append("g")
+            .attr("transform", `translate(0,${height - marginBottom})`)
+            .attr('id', this.legendticks)
+            .call(d3.axisBottom(x)
+                .ticks(ticks, typeof tickFormat === "string" ? tickFormat : undefined)
+                .tickFormat(typeof tickFormat === "function" ? tickFormat : undefined)
+                .tickSize(tickSize)
+                .tickValues(tickValues))
+            .call(tickAdjust)
+            .call(g => g.select(".domain").remove())
+            .call(g => g.append("text")
+                .attr("x", -marginLeft)
+                .attr("y", marginTop + marginBottom - height - 6)
+                .attr("fill", "currentColor")
+                .attr("text-anchor", "start")
+                .attr("font-weight", "bold")
+                .text(this.legendlabel));
     }
 }

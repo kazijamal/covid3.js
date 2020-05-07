@@ -186,3 +186,6 @@ Implement choropleth template
 
 ericL -- 2020-05-07 09:37
 Add coloring and geo-mapping to choropleth
+
+ericL -- 2020-05-07 10:31
+Add template legend to choropleth

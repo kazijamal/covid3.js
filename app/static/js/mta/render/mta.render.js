@@ -165,11 +165,18 @@ let ridershipborough = async () => {
         });
 
     let ex = [new Date('2020-03-01T00:00:00'), gextent[1]]
-    await graph.renderMultiLine(ex);
+    await graph.renderMultiLine(
+        ex, {
+        'Kings County': '#A09EBB',
+        'New York County': '#CF5C36',
+        'Richmond County': '#C2CFB2',
+        'Queens County': '#7C7C7C',
+        'Bronx County': '#EFC88B'
+    });
     graph.yLabel('# of swipes');
 }
 
-let mapScaffold = (container, id, legendid, colorid, tickid) => {
+let mapScaffold = (container, id, legendid, colorid, tickcontainerid) => {
     let map = d3.select(`#${container}`)
         .append('svg')
         .attr('id', id)
@@ -186,9 +193,9 @@ let mapScaffold = (container, id, legendid, colorid, tickid) => {
         .attr("viewBox", [0, 0, 320, 50]);
 
     legend.append('g').attr('id', colorid);
-    legend.append('g').attr('id', tickid);
+    legend.append('g').attr('id', tickcontainerid);
 
-    return { map, id, legendid, colorid, tickid };
+    return { map, colorid, tickcontainerid };
 }
 
 let boroughchorolpeth = async () => {
@@ -200,16 +207,20 @@ let boroughchorolpeth = async () => {
 
     let getprop = (d) => d.properties.bname;
 
-    let { map, id, legendid, colorid, tickid } = mapScaffold(
+    let { map, colorid, tickcontainerid } = mapScaffold(
         'borough-container', 'borough-map',
-        'borough-legend', 'borough-color', 'borough-tick'
+        'borough-legend', 'borough-color', 'borough-tick-container'
     );
+
+    let tickid = 'borough-tick';
+    let legendlabel = 'Number of COVID-19 cases';
 
     let choropleth = new Choropleth(
         map, 'borough-area', 'borough-border',
         area, border, path,
         casemap, colormap,
-        getprop);
+        getprop, legendlabel,
+        colorid, tickid, tickcontainerid);
 
     choropleth.render();
 }
@@ -221,17 +232,20 @@ let zipchoropleth = async () => {
     let area = topojson.feature(geozip, geozip.objects.zip_codes).features;
     let border = topojson.mesh(geozip, geozip.objects.zip_codes);
 
-    let { map, id, legendid, colorid, tickid } = mapScaffold(
+    let { map, colorid, tickcontainerid } = mapScaffold(
         'zip-container', 'zip-map',
-        'zip-legend', 'zip-color', 'zip-tick');
+        'zip-legend', 'zip-color', 'zip-tick-container');
 
     let getprop = (d) => d.properties.zcta;
+    let legendlabel = 'Number of COVID-19 cases';
+    let tickid = 'zip-tick';
 
     let choropleth = new Choropleth(
         map, 'zip-area', 'zip-border',
         area, border, path,
         casemap, colormap,
-        getprop);
+        getprop, legendlabel,
+        colorid, tickid, tickcontainerid);
 
     choropleth.render();
 }

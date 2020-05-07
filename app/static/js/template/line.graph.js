@@ -97,7 +97,7 @@ export default class LineGraph {
         return delay(this.timedelay);
     }
 
-    async renderMultiLine(extent) {
+    async renderMultiLine(extent, colorMap) {
         setDate(extent[1], 1);
         let r = d3.timeDay.range(extent[0], extent[1]);
         this.x = d3.scaleTime()
@@ -114,14 +114,6 @@ export default class LineGraph {
             .defined(d => !isNaN(d))
             .x((d, i) => this.x(r[i]))
             .y(d => this.y(d));
-
-        let colorMap = {
-            'Kings County': '#A09EBB',
-            'New York County': '#CF5C36',
-            'Richmond County': '#C2CFB2',
-            'Queens County': '#7C7C7C',
-            'Bronx County': '#EFC88B'
-        };
 
         this.path = this.svg.append('g')
             .attr('fill', 'none')
