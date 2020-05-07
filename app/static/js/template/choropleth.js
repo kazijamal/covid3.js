@@ -1,9 +1,11 @@
 export default class Choropleth {
     constructor(
-        svg, areaclass, geoarea, geoborder, path
+        svg, areaclass, borderclass,
+        geoarea, geoborder, path
     ) {
         this.svg = svg;
         this.areaclass = areaclass;
+        this.borderclass = borderclass;
         this.geoarea = geoarea;
         this.geoborder = geoborder;
         this.path = path;
@@ -20,5 +22,13 @@ export default class Choropleth {
                         .attr('fill', 'red');
                 }
             )
+
+        this.svg.append('path')
+            .datum(this.geoborder)
+            .attr('fill', 'none')
+            .attr('class', this.borderclass)
+            .attr('stroke', 'black')
+            .attr('stroke-linejoin', 'round')
+            .attr('d', this.path);
     }
 }

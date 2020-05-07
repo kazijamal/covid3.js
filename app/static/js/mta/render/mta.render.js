@@ -37,6 +37,25 @@ let ridership20192020 = async () => {
 
     gextent = extent;
 
+    document.getElementById('ridership-line-container').innerHTML += `
+    <p class="article-content">New York City is synonymous with a lot: Times Square, Central Park, the Empire
+				State Building. But the thing that holds the city together is the MTA Subway system. In the midst of the
+				COVID-19 pandemic, the iconic image of crowded trains is not to be found.
+				<br>
+				<div id="avg"></div>
+			</p>
+			<p class="article-content">
+				The following line chart shows the number of times people enter an MTA Subway turnstile since 2019. Note
+				that on the daily view, there are drops on the weekends, regardless of the pandemic. Use the buttons to
+				switch time intervals and hover over the line to view a more specific tooltip.</p>
+			<div class="toggle-view-btns">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary" id="daily" disabled>Daily</button>
+					<button type="button" class="btn btn-primary" id="weekly" disabled>Weekly</button>
+					<button type="button" class="btn btn-primary" id="monthly" disabled>Monthly</button>
+				</div>
+            </div>`;
+
     document.getElementById('avg').innerHTML = `
     In 2019, there was an average of <b>${average(daily, 2019)}</b> swipes per day.
     This year, it's down to <b>${average(daily, 2020)}</b>.`;
@@ -180,7 +199,7 @@ let boroughchorolpeth = async () => {
         'borough-legend', 'borough-color', 'borough-tick'
     );
 
-    let choropleth = new Choropleth(map, 'borough-area', area, border, path);
+    let choropleth = new Choropleth(map, 'borough-area', 'borough-border', area, border, path);
     choropleth.render();
 }
 
@@ -193,7 +212,7 @@ let zipchoropleth = async () => {
         'zip-container', 'zip-map',
         'zip-legend', 'zip-color', 'zip-tick');
 
-    let choropleth = new Choropleth(map, 'zip-area', area, border, path);
+    let choropleth = new Choropleth(map, 'zip-area', 'zip-border', area, border, path);
     choropleth.render();
 }
 
