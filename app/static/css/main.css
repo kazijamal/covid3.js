@@ -95,6 +95,10 @@ a:hover {
     background-color: green;
 }
 
+.us-line-and-legend {
+    display: inline;
+}
+
 /* DASHBOARD END */
 
 /* ORGANIZATION START */

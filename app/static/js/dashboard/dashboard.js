@@ -62,3 +62,10 @@ let uslinegraph = async () => {
 	
     usline.yLabel('# of people');
 };
+
+var svg = d3.select("#us-line-legend")
+
+svg.append("circle").attr("cx",70).attr("cy",30).attr("r", 6).style("fill", "#2315ba")
+svg.append("circle").attr("cx",70).attr("cy",60).attr("r", 6).style("fill", "#911111")
+svg.append("text").attr("x", 90).attr("y", 30).text("cases").style("font-size", "15px").attr("alignment-baseline","middle")
+svg.append("text").attr("x", 90).attr("y", 60).text("deaths").style("font-size", "15px").attr("alignment-baseline","middle")
