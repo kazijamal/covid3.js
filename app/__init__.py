@@ -37,21 +37,6 @@ def publicmedia():
     return render_template('sentiment/publicmedia.html')
 
 
-@app.route("/data/sentiment/publicmedia")
-def publicMediaData():
-    return transfer_csv('num-articles-per-day.csv')
-
-
-@app.route("/data/sentiment/newsdomainsubjectivities")
-def newsDomainSubjectivities():
-    return transfer_csv('news-domains-on-average-subjectivity-ranges.csv')
-
-
-@app.route("/data/sentiment/trumptweetspolarities")
-def trumpTweetsPolarities():
-    return transfer_csv('trump-tweets-on-polarity-range.csv')
-
-
 @app.route('/sentiment/trumptweets')
 def trumptweets():
     return render_template('sentiment/trumptweets.html')
@@ -90,6 +75,22 @@ def request_csv(url):
     return req.read().decode('utf8')
 
 
+@app.route('/data/dashboard/us')
+def dashboard_us_transfer():
+    '''
+    Retrieve US CSV file from the official NY Times COVID-19 repository
+    '''
+    return request_csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us.csv')
+
+
+@app.route('/data/dashboard/states')
+def dashboard_states_transfer():
+    '''
+    Retrieve US states CSV file from the official NY Times COVID-19 repository
+    '''
+    return request_csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv')
+
+
 @app.route('/data/transportation/mta')
 def turnstile_transfer():
     '''
@@ -104,6 +105,26 @@ def covid_transfer(file_type):
     Retrieve CSV files from the official NYC Health GitHub repository
     '''
     return request_csv(f'https://raw.githubusercontent.com/nychealth/coronavirus-data/master/{file_type}.csv')
+
+
+@app.route("/data/sentiment/publicmedia")
+def publicMediaData():
+    return transfer_csv('num-articles-per-day.csv')
+
+
+@app.route("/data/sentiment/newsdomainsubjectivities")
+def newsDomainSubjectivities():
+    return transfer_csv('news-domains-on-average-subjectivity-ranges.csv')
+
+
+@app.route("/data/sentiment/trumptweetspolarities")
+def trumpTweetsPolarities():
+    return transfer_csv('trump-tweets-on-polarity-range.csv')
+
+
+@app.route("/data/sentiment/trumptweetspolaritiesonranges")
+def trumpTweetsPolaritiesOnRanges():
+    return transfer_csv('trump-tweets-on-polarity-ranges.csv')
 
 
 if __name__ == '__main__':

@@ -1,44 +1,85 @@
-// set the dimensions and margins of the graph
-const margin = { top: 10, right: 30, bottom: 30, left: 60 },
-  width = 460 - margin.left - margin.right,
-  height = 400 - margin.top - margin.bottom;
+// Credits to https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89 for showing how to create a line chart in d3.js v5
 
-// append the svg object to the body of the page
+// Set the dimensions and margins of the graph
+const margin = { top: 50, right: 50, bottom: 50, left: 50 };
+const width = 800; // Use window's width
+const height = window.innerHeight - margin.top - margin.bottom; // Use window's height
+
+// TODO: extract numDatapoints dynamically
+const numDatapoints = 1379;
+
+// X scale maps the index of our data to the width of the graph
+const xScale = d3
+  .scaleLinear()
+  .domain([0, numDatapoints - 1])
+  .range([0, width]);
+
+// Y scale maps the upper bound of the number of articles (2000) to the height of the graph
+// TODO: extract upper bound dynamically
+const yScale = d3.scaleLinear().domain([-1, 1]).range([height, 0]);
+
+// d3's line generator
+const line = d3
+  .line()
+  .x((_, i) => xScale(i)) // Set x values for the line generator
+  .y((d) => yScale(d.polarity)) // Set y values for the line generator
+  .curve(d3.curveMonotoneX); // Apply smoothing to the curve
+
+// Append the SVG object to the body of the page
 const svg = d3
   .select('#scatterplot')
   .append('svg')
-  .attr('width', width + margin.left + margin.right)
+  .attr('width', 900)
   .attr('height', height + margin.top + margin.bottom)
   .append('g')
-  .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+  .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-//Read the data
-d3.csv('/data/sentiment/trumptweetspolarities', function (data) {
-  // Add X axis
-  const x = d3.scaleLinear().domain([0, 1400]).range([0, width]);
-  svg
-    .append('g')
-    .attr('transform', 'translate(0,' + height + ')')
-    .call(d3.axisBottom(x));
+const numArticlesPerDay = {};
 
-  // Add Y axis
-  const y = d3.scaleLinear().domain([-1, 1]).range([height, 0]);
-  svg.append('g').call(d3.axisLeft(y));
+const dotColorInterpolator = d3
+  .scaleSequential()
+  .domain([-1.0, 1.0])
+  .interpolator(d3.interpolateViridis);
 
-  // Add dots
-  svg
-    .append('g')
-    .selectAll('dot')
-    .data(data)
-    .enter()
-    .append('circle')
-    .attr('cx', function (d) {
-      console.log(d);
-      return x(d.idx);
-    })
-    .attr('cy', function (d) {
-      return y(d.polarity);
-    })
-    .attr('r', 1.5)
-    .style('fill', '#69b3a2');
-});
+// Read the data
+// TODO: Split this chunk into smaller, intentional pieces
+d3.csv('/data/sentiment/trumptweetspolarities')
+  .then((numArticles) => {
+    for (const day in numArticles) {
+      numArticlesPerDay[day] = numArticles[day];
+    }
+    const numArticlesPerDayData = d3
+      .range(numDatapoints)
+      .map((d) => ({ polarity: +numArticlesPerDay[d].polarity }));
+
+    // Call the x-axis in a group tag
+    svg
+      .append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(xScale).ticks(0)); // Create an x-axis component with d3.axisBottom
+
+    // Call the y-axis in a group tag
+    svg.append('g').attr('class', 'y-axis').call(d3.axisLeft(yScale)); // Create a y-axis component with d3.axisLeft
+
+    // Append the path, bind the data, and call the line generator
+    // svg
+    //   .append('path')
+    //   .datum(numArticlesPerDayData) // Bind the data to the line
+    //   .attr('class', 'line') // TODO: Create custom CSS to style line
+    //   .attr('d', line); // Call the line generator
+
+    // Append a circle for each datapoint
+    svg
+      .selectAll('.dot')
+      .data(numArticlesPerDayData)
+      .enter()
+      .append('circle')
+      .attr('class', 'dot')
+      .attr('cx', (_, i) => xScale(i))
+      .attr('cy', (d) => yScale(d.polarity))
+      .attr('r', 5)
+      .attr('fill', (d) => dotColorInterpolator(d.polarity));
+    // TODO: Add on mouseover events on these datapoint circles
+  })
+  .catch((err) => console.log(err));

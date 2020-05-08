@@ -33,28 +33,44 @@ Public Media {% endblock %} {% block head %}
       Displays patterns and analysis of public opinion during the COVID-19
       pandemic
     </p>
-    <h3 class="article-subtitle">
-      Amount of COVID-19 articles written over time
-    </h3>
     <div class="toggle-view-btns">
       <div class="btn-group" role="group">
-        <button type="button" class="btn btn-warning" id="toggle-daily-view" disabled>
+        <button
+          type="button"
+          class="btn btn-warning"
+          id="toggle-daily-view"
+          disabled
+        >
           Daily
         </button>
-        <button type="button" class="btn btn-warning" id="toggle-weekly-view" disabled>
+        <button
+          type="button"
+          class="btn btn-warning"
+          id="toggle-weekly-view"
+          disabled
+        >
           Weekly
         </button>
-        <button type="button" class="btn btn-warning" id="toggle-monthly-view" disabled>
+        <button
+          type="button"
+          class="btn btn-warning"
+          id="toggle-monthly-view"
+          disabled
+        >
           Monthly
         </button>
       </div>
     </div>
     <div id="line-chart"></div>
-    <h3 class="article-subtitle">
-      Subjectivity ratings of COVID-19-related news outlets 
-    </h3>
+    <p>
+      This line chart shows the amount of COVID-19 articles written over time.
+    </p>
     <div id="bar-chart"></div>
-    <p>* Note: the subjectivity values range from 0.0 to 1.0, inclusive, where 0.0 is most objective and 1.0 is most subjective.</p>
+    <p>
+      This bar chart shows the subjectivity ratings of COVID-19-related news
+      outlets (or domains). The subjectivity values range from 0.0 to 1.0,
+      inclusive, where 0.0 is most objective and 1.0 is most subjective.
+    </p>
   </div>
 </div>
 
