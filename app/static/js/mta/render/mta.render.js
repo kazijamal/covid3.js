@@ -40,7 +40,7 @@ window.onload = async () => {
     await ridership20192020();
     await ridership2020();
     await ridershipborough();
-    await chorolpeth();
+    await choropleth();
 }
 
 let ridership20192020 = async () => {
@@ -217,7 +217,7 @@ let initMapData = async () => {
     borogetprop = (d) => d.properties.bname;
 }
 
-let chorolpeth = async () => {
+let choropleth = async () => {
     await initMapData();
 
     document.getElementById('choro-container').innerHTML = `
