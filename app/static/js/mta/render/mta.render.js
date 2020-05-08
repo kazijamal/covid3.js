@@ -4,7 +4,8 @@ import Choropleth from '../../template/choropleth.js';
 import {
     dayaverage,
     boroughParse,
-    percentChange
+    percentChange,
+    stopdrop
 } from '../data/mta.ridership.js';
 
 import {
@@ -13,6 +14,7 @@ import {
     tooldate,
     getData,
     average,
+    delay
 } from '../../utility.js';
 
 import {
@@ -21,6 +23,8 @@ import {
 } from '../data/nyc.corona.js';
 
 let view = 'daily';
+let choroview = 'borough';
+let checked = false;
 let svg, margin;
 let ridership, gextent, tool;
 let projection = d3.geoMercator()
@@ -28,12 +32,15 @@ let projection = d3.geoMercator()
     .center([-73.94, 40.70]);
 let path = d3.geoPath(projection);
 
+let boroughdata, zipcodedata,
+    geoboro, boroarea, boroborder, borogetprop,
+    geozip, ziparea, zipborder, zipgetprop;
+
 window.onload = async () => {
     await ridership20192020();
     await ridership2020();
     await ridershipborough();
-    await boroughchorolpeth();
-    await zipchoropleth();
+    await chorolpeth();
 }
 
 let ridership20192020 = async () => {
@@ -47,22 +54,21 @@ let ridership20192020 = async () => {
 
     document.getElementById('ridership-line-container').innerHTML += `
     <p class="article-content">New York City is synonymous with a lot: Times Square, Central Park, the Empire
-				State Building. But the thing that holds the city together is the MTA Subway system. In the midst of the
-				COVID-19 pandemic, the iconic image of crowded trains is not to be found.
-				<br>
-				<div id="avg"></div>
-			</p>
-			<p class="article-content">
-				The following line chart shows the number of times people enter an MTA Subway turnstile since 2019. Note
-				that on the daily view, there are drops on the weekends, regardless of the pandemic. Use the buttons to
-				switch time intervals and hover over the line to view a more specific tooltip.</p>
-			<div class="toggle-view-btns">
-				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-primary" id="daily" disabled>Daily</button>
-					<button type="button" class="btn btn-primary" id="weekly" disabled>Weekly</button>
-					<button type="button" class="btn btn-primary" id="monthly" disabled>Monthly</button>
-				</div>
-            </div>`;
+        State Building. But the thing that holds the city together is the MTA Subway system. In the midst of the
+        COVID-19 pandemic, the iconic image of crowded trains is not to be found.
+        <br><div id="avg"></div>
+    </p>
+    <p class="article-content">
+        The following line chart shows the number of times people enter an MTA Subway turnstile since 2019. Note
+        that on the daily view, there are drops on the weekends, regardless of the pandemic. Use the buttons to
+        switch time intervals and hover over the line to view a more specific tooltip.</p>
+    <div class="toggle-view-btns">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary" id="daily" disabled>Daily</button>
+            <button type="button" class="btn btn-primary" id="weekly" disabled>Weekly</button>
+            <button type="button" class="btn btn-primary" id="monthly" disabled>Monthly</button>
+        </div>
+    </div>`;
 
     document.getElementById('avg').innerHTML = `
     In 2019, there was an average of <b>${d3.format(",")(average(daily, 2019))}</b> swipes per day.
@@ -198,67 +204,132 @@ let mapScaffold = (container, id, legendid, colorid, tickcontainerid) => {
     return { map, colorid, tickcontainerid };
 }
 
-let boroughchorolpeth = async () => {
-    let { casemap, colormap } = await borodata();
-
-    let geoboro = await d3.json('/static/json/boroughs.json');
-    let area = topojson.feature(geoboro, geoboro.objects.boroughs).features;
-    let border = topojson.mesh(geoboro, geoboro.objects.boroughs);
-
-    let getprop = (d) => d.properties.bname;
-
-    let { map, colorid, tickcontainerid } = mapScaffold(
-        'borough-container', 'borough-map',
-        'borough-legend', 'borough-color', 'borough-tick-container'
-    );
-
-    let tickid = 'borough-tick';
-    let legendlabel = 'Number of COVID-19 cases';
-
-    let choropleth = new Choropleth(
-        map, 'borough-area', 'borough-border',
-        area, border, path,
-        casemap, colormap,
-        getprop, legendlabel,
-        colorid, tickid, tickcontainerid);
-
-    choropleth.render();
+let initMapData = async () => {
+    boroughdata = await borodata();
+    zipcodedata = await zipdata();
+    geoboro = await d3.json('/static/json/boroughs.json');
+    boroarea = topojson.feature(geoboro, geoboro.objects.boroughs).features;
+    boroborder = topojson.mesh(geoboro, geoboro.objects.boroughs);
+    geozip = await d3.json('/static/json/zip_codes.json');
+    ziparea = topojson.feature(geozip, geozip.objects.zip_codes).features;
+    zipborder = topojson.mesh(geozip, geozip.objects.zip_codes);
+    zipgetprop = (d) => d.properties.zcta;
+    borogetprop = (d) => d.properties.bname;
 }
 
-let zipchoropleth = async () => {
-    let { casemap, colormap } = await zipdata();
+let chorolpeth = async () => {
+    await initMapData();
 
-    let geozip = await d3.json('/static/json/zip_codes.json');
-    let area = topojson.feature(geozip, geozip.objects.zip_codes).features;
-    let border = topojson.mesh(geozip, geozip.objects.zip_codes);
+    document.getElementById('choro-container').innerHTML = `
+    <div class="toggle-view-btns">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary" id="borough-toggle">Borough</button>
+            <button type="button" class="btn btn-primary" id="zip-toggle">Zipcode</button>
+        </div>
+    </div>
+    <div class="text-center noselect custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="subwayswitch" name="subwayswitch">
+      <label class="custom-control-label" for="subwayswitch">Subway Toggle</label>
+    </div>`
 
     let { map, colorid, tickcontainerid } = mapScaffold(
-        'zip-container', 'zip-map',
-        'zip-legend', 'zip-color', 'zip-tick-container');
+        'choro-container', 'choro-map',
+        'choro-legend', 'choro-color', 'choro-tick-container'
+    );
 
-    let getprop = (d) => d.properties.zcta;
+    let tickid = 'choro-tick';
     let legendlabel = 'Number of COVID-19 cases';
-    let tickid = 'zip-tick';
 
-    let choropleth = new Choropleth(
-        map, 'zip-area', 'zip-border',
-        area, border, path,
-        casemap, colormap,
-        getprop, legendlabel,
+    let choro = new Choropleth(
+        map, 'choro-area', 'choro-border',
+        boroarea, boroborder, path,
+        boroughdata.casemap, boroughdata.colormap,
+        borogetprop, legendlabel,
         colorid, tickid, tickcontainerid);
 
-    choropleth.render();
+    choro.render();
+
+    let stops = await d3.json('/static/json/subway_stops.json')
+    let geostops = topojson.feature(stops, stops.objects.subway_stops).features;
+
+    let stations = new Object();
+    geostops.forEach((stop, i) => {
+        let name = stop.properties.stop_name;
+        if (name in stations) {
+            geostops.splice(i, 1);
+        } else {
+            stations[name] = { 'prev': 0, 'curr': 0 };
+        }
+    })
+
+    let prev = [new Date('2019-03-01T00:00:00'), new Date('2019-05-02T00:00:00')];
+    let curr = [new Date('2020-03-01T00:00:00'), new Date('2020-05-02T00:00:00')];
+
+    stopdrop(stations, ridership, prev, curr);
+
+    let mapper = d3.scaleQuantize()
+        .domain([0, 100])
+        .range(d3.schemeReds[9]);
+
+    let opacitymap = d3.scaleLinear()
+        .domain([0, 100])
+        .range([0.75, 1])
+
+    let stopcolor = (d) => {
+        let c = mapper(stations[d.properties.stop_name])
+        return (c == undefined) ? 'transparent' : c;
+    }
+
+    let stopopacity = (d) => {
+        let c = opacitymap(stations[d.properties.stop_name])
+        return (c == undefined) ? 0: c;
+    }
+
+    let stoplabel = (d) => `${d.properties.stop_name}, ${stations[d.properties.stop_name]}% decrease`
+
+    document.getElementById('subwayswitch').addEventListener('change', (event) => {
+        if (event.target.checked) {
+            choro.add(geostops, 'subway-stops', stopcolor, stopopacity, stoplabel);
+            checked = true;
+        } else {
+            choro.removeAll('subway-stops');
+            checked = false;
+        }
+    })
+
+    maplisten(choro, 'borough',
+        boroarea, boroborder, borogetprop,
+        boroughdata.casemap, boroughdata.colormap,
+        geostops, 'subway-stops', stopcolor, stopopacity, stoplabel);
+
+    maplisten(choro, 'zip',
+        ziparea, zipborder, zipgetprop,
+        zipcodedata.casemap, zipcodedata.colormap,
+        geostops, 'subway-stops', stopcolor, stopopacity, stoplabel);
+}
+
+let maplisten = (map, type, area, border, prop, casemap, colormap,
+    stops, stopsclass, stopcolor, stopopacity, stoplabel) => {
+    document.getElementById(`${type}-toggle`).addEventListener('click', () => {
+        if (choroview !== type) {
+            map.update(area, border, prop, casemap, colormap);
+            if (checked) {
+                map.add(stops, stopsclass, stopcolor, stopopacity, stoplabel);
+            }
+            choroview = type;
+        }
+    })
 }
 
 let listen = (graph, id, data) => {
     let button = document.getElementById(id);
     button.disabled = false;
     button.addEventListener('click', () => {
-        update(graph, id, data);
+        updateline(graph, id, data);
     })
 }
 
-let update = (graph, id, data) => {
+let updateline = (graph, id, data) => {
     if (view !== id) {
         view = id;
         graph.updateLineGraph(data, 1000);

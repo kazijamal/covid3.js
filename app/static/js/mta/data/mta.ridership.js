@@ -44,11 +44,13 @@ let percentChange = (data, extent) => {
     let obj = new Object();
 
     for (const borough in select2019) {
-        obj[borough] = ((select2019[borough] - select2020[borough]) / select2019[borough] * 100).toFixed(2);
+        obj[borough] = change(select2019[borough], select2020[borough])
     }
 
     return obj;
 }
+
+let change = (prev, curr) => ((prev - curr) / prev * 100).toFixed(2);
 
 let boroughParse = (data, extent) => {
     let scaffold = {
@@ -83,4 +85,27 @@ let boroughParse = (data, extent) => {
     return master;
 }
 
-export { dayaverage, boroughParse, percentChange };
+let stopdrop = (stations, ridership, prev, curr) => {
+    ridership.forEach(d => {
+        if (d.station in stations) {
+            let date = new Date(`${d.date}T00:00:00`);
+            if (date <= prev[1] && date >= prev[0]) {
+                stations[d.station]['prev'] += +d.enter;
+            }
+            if (date >= curr[0] && date <= curr[1]) {
+                stations[d.station]['curr'] += +d.enter;
+            }
+        }
+    })
+
+    for (const station in stations) {
+        let obj = stations[station];
+        if (obj.prev == 0 || obj.curr == 0) {
+            delete stations[station]
+        } else {
+            stations[station] = +change(obj.prev, obj.curr);
+        }
+    }
+}
+
+export { dayaverage, boroughParse, percentChange, stopdrop };
