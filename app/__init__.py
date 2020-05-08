@@ -37,24 +37,6 @@ def publicmedia():
     return render_template('sentiment/publicmedia.html')
 
 
-@app.route("/data/sentiment/publicmedia")
-def publicMediaData():
-    return transfer_csv('num-articles-per-day.csv')
-
-
-@app.route("/data/sentiment/newsdomainsubjectivities")
-def newsDomainSubjectivities():
-    return transfer_csv('news-domains-on-average-subjectivity-ranges.csv')
-
-@app.route("/data/sentiment/trumptweetspolarities")
-def trumpTweetsPolarities():
-    return transfer_csv('trump-tweets-on-polarity-range.csv')
-
-@app.route("/data/sentiment/trumptweetspolaritiesonranges")
-def trumpTweetsPolaritiesOnRanges():
-    return transfer_csv('trump-tweets-on-polarity-ranges.csv')
-
-
 @app.route('/sentiment/trumptweets')
 def trumptweets():
     return render_template('sentiment/trumptweets.html')
@@ -107,6 +89,26 @@ def covid_transfer(file_type):
     Retrieve CSV files from the official NYC Health GitHub repository
     '''
     return request_csv(f'https://raw.githubusercontent.com/nychealth/coronavirus-data/master/{file_type}.csv')
+
+
+@app.route("/data/sentiment/publicmedia")
+def publicMediaData():
+    return transfer_csv('num-articles-per-day.csv')
+
+
+@app.route("/data/sentiment/newsdomainsubjectivities")
+def newsDomainSubjectivities():
+    return transfer_csv('news-domains-on-average-subjectivity-ranges.csv')
+
+
+@app.route("/data/sentiment/trumptweetspolarities")
+def trumpTweetsPolarities():
+    return transfer_csv('trump-tweets-on-polarity-range.csv')
+
+
+@app.route("/data/sentiment/trumptweetspolaritiesonranges")
+def trumpTweetsPolaritiesOnRanges():
+    return transfer_csv('trump-tweets-on-polarity-ranges.csv')
 
 
 if __name__ == '__main__':
