@@ -40,7 +40,7 @@ let uslinegraph = async () => {
         .attr("width", "100%")
         .attr("height", "60vh");
 
-    let margin = { top: 20, right: 50, bottom: 50, left: 100 };
+    let margin = { top: 50, right: 50, bottom: 50, left: 100 };
 
     let usline = new LineGraph(
         svg,
@@ -51,7 +51,8 @@ let uslinegraph = async () => {
         margin,
         "us-line",
         "date-x",
-        "people-y"
+		"people-y",
+		{strokewidth: 4}
     );
 
     await usline.renderMultiLine([minDate, maxDate], {
