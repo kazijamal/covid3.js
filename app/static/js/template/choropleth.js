@@ -40,6 +40,44 @@ export default class Choropleth {
             ).append('title')
             .text(d => `${this.getprop(d)}, ${this.datamap[this.getprop(d)]} cases`);
 
+        this.addBorder();
+
+        this.legend(6, 320, 50, 18, 0, 22, 0, 5, 'd');
+    }
+
+    add(features, classname, colorfunct, opacityfunct, label) {
+        this.svg.selectAll(`.${classname}`).remove();
+        this.svg.selectAll(`.${classname}`)
+            .data(features)
+            .join(
+                enter => {
+                    return enter.append('path')
+                        .attr('d', this.path)
+                        .attr('class', classname)
+                        .attr('fill', d => colorfunct(d))
+                        .attr('opacity', d => opacityfunct(d))
+                }
+            ).append('title')
+            .text(d => label(d));
+    }
+
+    removeAll(classname) {
+        this.svg.selectAll(`.${classname}`).remove();
+    }
+
+    update(area, border, getprop, datamap, colormap) {
+        this.geoarea = area;
+        this.geoborder = border;
+        this.getprop = getprop;
+        this.datamap = datamap;
+        this.colormap = colormap;
+
+        this.svg.selectAll(`.${this.areaclass}`).remove();
+        this.svg.selectAll(`.${this.borderclass}`).remove();
+        this.render();
+    }
+
+    addBorder() {
         this.svg.append('path')
             .datum(this.geoborder)
             .attr('fill', 'none')
@@ -47,8 +85,6 @@ export default class Choropleth {
             .attr('stroke', 'black')
             .attr('stroke-linejoin', 'round')
             .attr('d', this.path);
-
-        this.legend(6, 320, 50, 18, 0, 22, 0, 5, 'd');
     }
 
     legend(
