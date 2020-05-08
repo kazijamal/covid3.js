@@ -11,7 +11,7 @@
 		<h1 class="article-heading">COVID-19</h1>
 		<p class="article-subheading">Data visualization of COVID-19 in the United States of America</p>
 	</div>
-	<div class="row">
+	<div class="case-stats row">
 		<div class="case-col col-md-6">
 			<h1 class="case">{{ confirmed }}</h1>
 			<p class="case-description">confirmed</p>
@@ -29,6 +29,11 @@
 			<p class="case-description">deaths</p>
 		</div>
 	</div>
+	<div id="us-line-container"></div>
 </div>
 
+{% endblock %}
+
+{% block script %}
+<script type="module" src="{{ url_for('static', filename='js/dashboard/dashboard.js')}}"></script>
 {% endblock %}
