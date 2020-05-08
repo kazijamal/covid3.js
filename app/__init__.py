@@ -75,6 +75,22 @@ def request_csv(url):
     return req.read().decode('utf8')
 
 
+@app.route('/data/dashboard/us')
+def dashboard_us_transfer():
+    '''
+    Retrieve US CSV file from the official NY Times COVID-19 repository
+    '''
+    return request_csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us.csv')
+
+
+@app.route('/data/dashboard/states')
+def dashboard_states_transfer():
+    '''
+    Retrieve US states CSV file from the official NY Times COVID-19 repository
+    '''
+    return request_csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv')
+
+
 @app.route('/data/transportation/mta')
 def turnstile_transfer():
     '''
