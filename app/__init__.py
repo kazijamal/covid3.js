@@ -46,10 +46,13 @@ def publicMediaData():
 def newsDomainSubjectivities():
     return transfer_csv('news-domains-on-average-subjectivity-ranges.csv')
 
-
 @app.route("/data/sentiment/trumptweetspolarities")
 def trumpTweetsPolarities():
     return transfer_csv('trump-tweets-on-polarity-range.csv')
+
+@app.route("/data/sentiment/trumptweetspolaritiesonranges")
+def trumpTweetsPolaritiesOnRanges():
+    return transfer_csv('trump-tweets-on-polarity-ranges.csv')
 
 
 @app.route('/sentiment/trumptweets')

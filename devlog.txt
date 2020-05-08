@@ -163,6 +163,11 @@ Create a draft of the TextBlob introduction QAF post on google doc and share wit
 kaziJ -- 2020-05-06 13:50
 Upload design doc v1 with a more detailed list of visualizations
 
+rayL -- 2020-05-06 20:43
+Finish creating a bar chart for subjectivity values of different new outlets related to COVID-19
+Fix folder structure
+Create starting template for scatterplot measuring polarity values of trump tweets
+
 kaziJ -- 2020-05-06 23:30
 Experiment using covid Python package to retrieve cases data for dashboard, and update requirements.txt
 
@@ -189,3 +194,12 @@ Add coloring and geo-mapping to choropleth
 
 ericL -- 2020-05-07 10:31
 Add template legend to choropleth
+
+rayL -- 2020-05-07 19:20
+Implement scatterplot displaying variance in polarity (positive/negative) values of Trump tweets
+
+rayL --2020-05-07 19:30
+Apply a viridis color interpolator for the dots on the aforementioned scatterplot
+
+rayL --2020-05-07 19:55
+Create a barchart displaying different polarity range brackets that Trump's tweets fall under
