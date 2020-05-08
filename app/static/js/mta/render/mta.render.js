@@ -1,4 +1,4 @@
-import LineGraph from '../../template/line.graph.js'
+import LineGraph from '../../template/line.graph.js';
 import Choropleth from '../../template/choropleth.js';
 
 import {
