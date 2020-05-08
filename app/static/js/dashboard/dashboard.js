@@ -1,7 +1,4 @@
 import LineGraph from "../template/line.graph.js";
-import Choropleth from "../template/choropleth.js";
-
-import { toISO } from "../utility.js";
 
 window.onload = async () => {
     await uslinegraph();
