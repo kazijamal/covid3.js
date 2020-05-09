@@ -203,3 +203,10 @@ Apply a viridis color interpolator for the dots on the aforementioned scatterplo
 
 rayL --2020-05-07 19:55
 Create a barchart displaying different polarity range brackets that Trump's tweets fall under
+
+rayL --2020-05-09 15:19
+Add hover to trump tweets polarity scatter plot to show data points
+Show start and end date on trump tweets polarity scatter plot x-axis
+Make bar chart hover color opaque rather than red
+Make bar chart hover display text
+Try making trump tweets polarity bar chart colors go from blue to yellow like the scatter plot
