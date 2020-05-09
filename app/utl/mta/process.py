@@ -152,21 +152,6 @@ def merge_stations(stations, s0, s1):
     return stations
 
 
-def merge_stations(stations, s0, s1):
-
-    d0 = stations[s0]
-    d1 = stations[s1]
-
-    for date in list(d0.keys()):
-        if date in d1:
-            d0[date]['enter'] += d1[date]['enter']
-            d0[date]['exit'] += d1[date]['exit']
-
-    stations.pop(s1)
-
-    return stations
-
-
 def send_request(date):
 
     req = urllib.request.Request(BASE_URL + date + TXT)

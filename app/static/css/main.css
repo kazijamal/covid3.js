@@ -95,6 +95,25 @@ a:hover {
     background-color: green;
 }
 
+#states-choropleth-section {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#states-choropleth-container {
+    margin-top: 50px;
+    /* Fix the press start button and then horizontal scrollbar glitch */
+    overflow: auto;
+    /* margin: auto; */
+    padding-bottom: 100px;
+}
+
+#states-choropleth-container text {
+    color: black;
+    font: inherit;
+    font-size: 10px;
+}
+
 /* DASHBOARD END */
 
 /* ORGANIZATION START */
@@ -164,11 +183,11 @@ a:hover {
     font-family: "Roboto Mono", monospace;
 }
 
-.about a {
+.link {
     color: slategray;
 }
 
-.about a:hover {
+.link:hover {
     color: black;
 }
 
@@ -186,7 +205,6 @@ a:hover {
 }
 
 /* MTA LINE GRAPH END */
-
 
 /* NUMBERS START */
 
@@ -217,4 +235,14 @@ a:hover {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     font-family: inherit;
+}
+
+.noselect {
+    -webkit-touch-callout: default; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Opera and Firefox */
 }
