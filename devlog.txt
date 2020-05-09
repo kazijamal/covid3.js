@@ -218,3 +218,9 @@ Create data retrieval routes for dashboard
 
 kaziJ -- 2020-05-07 23:45
 Create US cases and deaths line graph for dashboard
+
+kaziJ -- 2020-05-08 02:15
+Create legend for US cases and death line graph
+
+kaziJ -- 2020-05-07 22:15
+Create US states choropleth for dashboard
