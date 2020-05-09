@@ -37,28 +37,6 @@ def publicmedia():
     return render_template('sentiment/publicmedia.html')
 
 
-@app.route("/data/sentiment/publicmedia")
-def publicMediaData():
-    return transfer_csv('num-articles-per-day.csv')
-
-
-@app.route("/data/sentiment/newsdomainsubjectivities")
-def newsDomainSubjectivities():
-    return transfer_csv('news-domains-on-average-subjectivity-ranges.csv')
-
-@app.route("/data/sentiment/trumptweetspolarities")
-def trumpTweetsPolarities():
-    return transfer_csv('trump-tweets-on-polarity-range.csv')
-
-@app.route("/data/sentiment/trumptweetspolaritiesonranges")
-def trumpTweetsPolaritiesOnRanges():
-    return transfer_csv('trump-tweets-on-polarity-ranges.csv')
-
-@app.route("/data/sentiment/wordclouddata")
-def wordcloudData():
-    return transfer_csv('wordcloud-data.csv')
-
-
 @app.route('/sentiment/trumptweets')
 def trumptweets():
     return render_template('sentiment/trumptweets.html')
