@@ -183,11 +183,11 @@ a:hover {
     font-family: "Roboto Mono", monospace;
 }
 
-.about a {
+.link {
     color: slategray;
 }
 
-.about a:hover {
+.link:hover {
     color: black;
 }
 
