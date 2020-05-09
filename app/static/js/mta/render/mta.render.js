@@ -28,7 +28,7 @@ let checked = false;
 let svg, margin;
 let ridership, gextent, tool;
 let projection = d3.geoMercator()
-    .scale(50000)
+    .scale(70000)
     .center([-73.94, 40.70]);
 let path = d3.geoPath(projection);
 
@@ -40,7 +40,7 @@ window.onload = async () => {
     await ridership20192020();
     await ridership2020();
     await ridershipborough();
-    await chorolpeth();
+    await choropleth();
 }
 
 let ridership20192020 = async () => {
@@ -187,15 +187,15 @@ let mapScaffold = (container, id, legendid, colorid, tickcontainerid) => {
         .append('svg')
         .attr('id', id)
         .attr('width', '100%')
-        .attr('viewBox', [73.94, -40.70, 975, 610])
+        .attr('viewBox', [-147.88 * 1.2, -81.4 * 1.5, 975 * 1.2, 610 * 1.2])
         .append('g')
-        .attr('transform', 'translate(100)');
+        .attr('transform', 'translate(-50)');
 
     let legend = map.append('g')
         .attr('id', legendid)
         .attr("width", 320)
         .attr("height", 50)
-        .attr('transform', 'translate(120,20)')
+        .attr('transform', 'translate(100)')
         .attr("viewBox", [0, 0, 320, 50]);
 
     legend.append('g').attr('id', colorid);
@@ -217,10 +217,26 @@ let initMapData = async () => {
     borogetprop = (d) => d.properties.bname;
 }
 
-let chorolpeth = async () => {
+let choropleth = async () => {
     await initMapData();
 
     document.getElementById('choro-container').innerHTML = `
+    Let's take a look at a map of New York City's coronavirus cases.
+    Switch between borough and zipcode cases by using the buttons below.
+    Hover over each area to see the number of cases. Zipcode areas that
+    are grey do not have any COVID case data associated with them.<br>
+    Toggle the subway stops to see the percentage decrease in ridership from
+    March 1st to May 2nd of last year to this year. Not all subway stops are represented
+    because of data inconsistencies. Hover over the stops to see the percentage decrease.
+    Stops that are darker saw more decrease than lighter stops.<br><br>
+    This map shows that the fact that ridership has decreased most dramatically in Manhattan.
+    The outer boroughs have experienced significantly less decrease, which is correlated with
+    an increased number of COVID-19 cases. Even though Manhattan is less populous than Queens
+    and Brooklyn, it does have more population density which would theoretically lead to higher
+    spread. But as seen when viewing the map with borough outlines, Manhattan is fourth in
+    number of COVID-19 cases.<br>
+    When we switch to the zipcode view, we can see that the area with the most number of cases
+    (<b>3884</b>) has zipcode <b>11368</b>, the aptly named neighborhood of <b>Corona, Queens</b>.
     <div class="toggle-view-btns">
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-primary" id="borough-toggle">Borough</button>
@@ -282,7 +298,7 @@ let chorolpeth = async () => {
 
     let stopopacity = (d) => {
         let c = opacitymap(stations[d.properties.stop_name])
-        return (c == undefined) ? 0: c;
+        return (c == undefined) ? 0 : c;
     }
 
     let stoplabel = (d) => `${d.properties.stop_name}, ${stations[d.properties.stop_name]}% decrease`
@@ -306,6 +322,8 @@ let chorolpeth = async () => {
         ziparea, zipborder, zipgetprop,
         zipcodedata.casemap, zipcodedata.colormap,
         geostops, 'subway-stops', stopcolor, stopopacity, stoplabel);
+
+    $("#sources").css('display', 'block');
 }
 
 let maplisten = (map, type, area, border, prop, casemap, colormap,
