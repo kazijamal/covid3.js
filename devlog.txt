@@ -222,5 +222,5 @@ Create US cases and deaths line graph for dashboard
 kaziJ -- 2020-05-08 02:15
 Create legend for US cases and death line graph
 
-kaziJ -- 2020-05-07 22:15
-Create US states choropleth for dashboard
+ericL -- 2020-05-09 04:12
+Add content and analysis to choropleth
