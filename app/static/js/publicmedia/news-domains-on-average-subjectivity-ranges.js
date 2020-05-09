@@ -14,6 +14,8 @@ const g = svg
   .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+const tooltip = d3.select('body').append('div').attr('class', 'toolTip');
+
 d3.csv('/data/sentiment/newsdomainsubjectivities')
   .then((data) => {
     return data.map((d) => {
@@ -62,6 +64,16 @@ d3.csv('/data/sentiment/newsdomainsubjectivities')
       .attr('width', x.bandwidth())
       .attr('height', function (d) {
         return height - y(d.averageSubjectivity);
+      })
+      .on('mousemove', function (d) {
+        tooltip
+          .style('left', d3.event.pageX - 120 + 'px')
+          .style('top', d3.event.pageY - 70 + 'px')
+          .style('display', 'inline-block')
+          .html(`Average subjectivity value: ${d.averageSubjectivity}`);
+      })
+      .on('mouseout', function (d) {
+        tooltip.style('display', 'none');
       });
 
     svg.attr('height', '660');

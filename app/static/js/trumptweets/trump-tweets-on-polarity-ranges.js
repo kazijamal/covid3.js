@@ -3,6 +3,7 @@ const svg = d3
   .append('svg')
   .attr('width', '960')
   .attr('height', '600');
+
 const margin = { top: 20, right: 20, bottom: 40, left: 40 };
 const width = +svg.attr('width') - margin.left - margin.right;
 const height = +svg.attr('height') - margin.top - margin.bottom;
@@ -13,6 +14,13 @@ const y = d3.scaleLinear().rangeRound([height, 0]);
 const g = svg
   .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+const barColorInterpolator = d3
+  .scaleSequential()
+  .domain([-1.0, 1.0])
+  .interpolator(d3.interpolateViridis);
+
+const tooltip = d3.select('body').append('div').attr('class', 'toolTip');
 
 d3.csv('/data/sentiment/trumptweetspolaritiesonranges')
   .then((data) => {
@@ -28,7 +36,7 @@ d3.csv('/data/sentiment/trumptweetspolaritiesonranges')
         return d.rangeBracket;
       })
     );
-    y.domain([0, 700]);
+    y.domain([0, 600]);
 
     g.append('g')
       .attr('class', 'axis axis--x')
@@ -53,15 +61,51 @@ d3.csv('/data/sentiment/trumptweetspolaritiesonranges')
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', function (d) {
+      .attr('x', (d) => {
         return x(d.rangeBracket);
       })
-      .attr('y', function (d) {
+      .attr('y', (d) => {
         return y(d.numTweets);
       })
       .attr('width', x.bandwidth())
-      .attr('height', function (d) {
+      .attr('height', (d) => {
         return height - y(d.numTweets);
+      })
+      .style('fill', (d) => {
+        switch (d.rangeBracket) {
+          case '-1.0 to -0.8':
+            return barColorInterpolator(-1.0);
+          case '-0.8 to -0.6':
+            return barColorInterpolator(-0.8);
+          case '-0.6 to -0.4':
+            return barColorInterpolator(-0.6);
+          case '-0.4 to -0.2':
+            return barColorInterpolator(-0.4);
+          case '-0.2 to 0.0':
+            return barColorInterpolator(-0.2);
+          case '0.0 to 0.2':
+            return barColorInterpolator(0.0);
+          case '0.2 to 0.4':
+            return barColorInterpolator(0.2);
+          case '0.4 to 0.6':
+            return barColorInterpolator(0.4);
+          case '0.6 to 0.8':
+            return barColorInterpolator(0.6);
+          case '0.8 to 1.0':
+            return barColorInterpolator(0.8);
+          default:
+            break;
+        }
+      })
+      .on('mousemove', function (d) {
+        tooltip
+          .style('left', d3.event.pageX - 50 + 'px')
+          .style('top', d3.event.pageY - 70 + 'px')
+          .style('display', 'inline-block')
+          .html(`Number of Tweets: ${d.numTweets}`);
+      })
+      .on('mouseout', function (d) {
+        tooltip.style('display', 'none');
       });
 
     svg.attr('height', '660');

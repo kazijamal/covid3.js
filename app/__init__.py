@@ -54,10 +54,15 @@ def trumpTweetsPolarities():
 def trumpTweetsPolaritiesOnRanges():
     return transfer_csv('trump-tweets-on-polarity-ranges.csv')
 
+@app.route("/data/sentiment/wordclouddata")
+def wordcloudData():
+    return transfer_csv('wordcloud-data.csv')
+
 
 @app.route('/sentiment/trumptweets')
 def trumptweets():
     return render_template('sentiment/trumptweets.html')
+
 
 # TRANSPORTATION
 @app.route('/transportation')
