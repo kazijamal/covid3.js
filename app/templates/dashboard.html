@@ -30,10 +30,16 @@
 		</div>
 	</div>
 	<div id="us-line-container"></div>
+	<div id="states-choropleth-section">
+		<h5 id="date">2020-01-21</h5>
+		<button id="start-btn" class="btn btn-outline-danger">Start</button>
+		<div id="states-choropleth-container"></div>
+	</div>
 </div>
 
 {% endblock %}
 
 {% block script %}
-<script type="module" src="{{ url_for('static', filename='js/dashboard/dashboard.js')}}"></script>
+<script type="module" src="{{ url_for('static', filename='js/dashboard/us-line-graph.js')}}"></script>
+<script type="module" src="{{ url_for('static', filename='js/dashboard/states-choropleth.js')}}"></script>
 {% endblock %}
