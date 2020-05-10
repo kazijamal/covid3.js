@@ -31,6 +31,9 @@ d3.csv('/data/sentiment/namedentitiesfrequencies').then(
         '#222',
       ]);
 
+    // Define the div for the tooltip
+    const tooltip = d3.select('body').append('div').attr('class', 'toolTip');
+
     const draw = (words) => {
       console.log('[wordcloud.js] draw');
       d3.select('#wordcloud')
@@ -57,6 +60,16 @@ d3.csv('/data/sentiment/namedentitiesfrequencies').then(
         })
         .text(function (d) {
           return d.text;
+        })
+        .on('mousemove', function (d) {
+          tooltip
+            .style('left', d3.event.pageX - 50 + 'px')
+            .style('top', d3.event.pageY - 70 + 'px')
+            .style('display', 'inline-block')
+            .html(`Frequency of "${d.text}": ${d.value}`);
+        })
+        .on('mouseout', function (d) {
+          tooltip.style('display', 'none');
         });
     };
 
