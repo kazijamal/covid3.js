@@ -18,6 +18,14 @@ a:hover {
     color: black;
 }
 
+.link {
+    color: slategray;
+}
+
+.link:hover {
+    color: black;
+}
+
 /* NAVBAR START */
 
 .navbar {
@@ -181,14 +189,6 @@ a:hover {
 
 .about {
     font-family: "Roboto Mono", monospace;
-}
-
-.link {
-    color: slategray;
-}
-
-.link:hover {
-    color: black;
 }
 
 /* ABOUT END */
