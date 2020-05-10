@@ -29,31 +29,38 @@ Trump Tweets {% endblock %} {% block head %}
       Sentiment analysis on tweets from Donald Trump, the president of the
       United States
     </p>
+    <p>
+      The following scatterplot shows the sentiment values of Trump tweets
+      during the COVID-19 pandemic.
+    </p>
     <div id="scatterplot"></div>
     <p>
       The polarity values on the y-axis range from -1.0 to 1.0, inclusive, where
       -1.0 is most negative and 1.0 is most positive. The range of the x-axis is
-      the time between January 1, 2020 and April 15, 2020.
+      the time between <b>January 1, 2020</b> and <b>April 15, 2020</b>.
+    </p>
+    <p>
+      The following bar chart shows a more discrete perspective of the
+      previously shown data, where different ranges are created (in intervals of
+      0.2 within the overall range of [-1.0, 1.0]) and the frequency of tweets
+      that belong in each range is recorded.
     </p>
     <div id="bar-chart"></div>
     <p>
-      This is a different perspective of looking at the data, where different
-      ranges are create (in intervals of 0.2 within the overall range of [-1.0,
-      1.0]). Each tweet that is less than or equal to the right endpoint of each
-      range is considered to be in that range. For example, if a tweet had a
-      polarity rating of 0.0, we would categorize that to be in the -0.2 to 0.0
-      range. We see that the majority of the tweets are within the -0.2 to 0.0
-      range. We also see that the barchart is skewed to the right. This means
-      the majority of the tweets are positive. However, there are many neutral
-      tweets that are rated as 0.0 and are counted in the -0.2 to 0.0 range.
+      Each tweet that is less than or equal to the right endpoint of each range
+      is considered to be in that range. For example, if a tweet had a polarity
+      rating of 0.0, we would categorize that to be in the -0.2 to 0.0 range. We
+      see that the <b>majority</b> of the tweets are
+      <b>within the -0.2 to 0.0 range</b>. We also see that the barchart is
+      <b>skewed to the right</b>. This means the majority of the tweets are
+      positive. However, there are many <b>neutral tweets</b> that are
+      <b>rated as 0.0</b> and are <b>counted in the -0.2 to 0.0 range</b>.
     </p>
   </div>
   <div class="article-content" id="sources">
     <b>Sources</b><br />
     Trump Tweets data retrieved from a
-    <a
-      class="link"
-      href="https://www.kaggle.com/austinreese/trump-tweets"
+    <a class="link" href="https://www.kaggle.com/austinreese/trump-tweets"
       >Kaggle dataset by Austin Reese</a
     >.
   </div>
