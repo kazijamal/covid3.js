@@ -41,7 +41,7 @@ d3.csv('/data/sentiment/namedentitiesfrequencies').then(
         .append('g')
         // without the transform, words words would get cutoff to the left and top, they would
         // appear outside of the SVG area
-        .attr('transform', 'translate(370,200)')
+        .attr('transform', 'translate(450,200)')
         .selectAll('text')
         .data(words)
         .enter()

@@ -39,23 +39,6 @@
   display: none;
 }
 
-#wordcloud {
-  /* width: 100%;
-  height: 30%;
-  margin-bottom: 20px; */
-  position: center; 
-  text-align: center;
-}
-
-svg {
-  /* position: center; */
-  padding-left: 100px;
-}
-
-g {
-  /* width: 100%; */
-}
-
 .toolTip {
   position: absolute;
   display: none;
