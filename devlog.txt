@@ -242,5 +242,8 @@ Add generation script for aforementioned data
 rayL -- 2020-05-09 19:00
 Create wordcloud for named entities frequencies
 
-rayL -- 2020-05-10 19:33
+rayL -- 2020-05-09 19:33
 Help team create spaCy QAF post
+
+rayL -- 2020-05-09 20:47
+Improve wordcloud—change style
