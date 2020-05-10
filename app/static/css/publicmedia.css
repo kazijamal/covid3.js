@@ -32,9 +32,28 @@
 }
 
 .bar:hover {
-  fill: brown;
+  opacity: 0.7;
 }
 
 .axis--x path {
   display: none;
+}
+
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6f257f;
+  padding: 14px;
+  text-align: center;
+}
+
+.legend {
+  border: 1px solid #555555;
+  border-radius: 5px 5px 5px 5px;
+  font-size: 0.8em;
+  margin: 10px;
+  padding: 8px;
 }

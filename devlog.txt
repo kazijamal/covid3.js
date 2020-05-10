@@ -225,5 +225,31 @@ Create legend for US cases and death line graph
 ericL -- 2020-05-09 04:12
 Add content and analysis to choropleth
 
+rayL -- 2020-05-07 19:55
+Create a barchart displaying different polarity range brackets that Trump's tweets fall under
+
+rayL -- 2020-05-09 15:19
+Add hover to trump tweets polarity scatter plot to show data points
+Show start and end date on trump tweets polarity scatter plot x-axis
+Make bar chart hover color opaque rather than red
+Make bar chart hover display text
+Try making trump tweets polarity bar chart colors go from blue to yellow like the scatter plot
+
+rayL -- 2020-05-09 18:32
+Generate named entities frequency data for the public media dataset
+Add generation script for aforementioned data
+
+rayL -- 2020-05-09 19:00
+Create wordcloud for named entities frequencies
+
+rayL -- 2020-05-09 19:33
+Help team create spaCy QAF post
+
+rayL -- 2020-05-09 20:47
+Improve wordcloud—change style
+
 kaziJ -- 2020-05-09 23:45
 Add sources to dashboard
+
+rayL -- 2020-05-09 23:48
+Add Trump tweets' analysis

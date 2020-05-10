@@ -14,7 +14,12 @@ const xScale = d3
   .domain([0, numDatapoints - 1])
   .range([0, width]);
 
-// Y scale maps the upper bound of the number of articles (2000) to the height of the graph
+const pseudoXScale = d3
+  .scaleTime()
+  .domain([new Date('January 1, 2020'), new Date('April 15, 2020')])
+  .range([0, width]);
+
+// Y scale maps the polarity range [-1.0,1.0] to the height of the graph
 // TODO: extract upper bound dynamically
 const yScale = d3.scaleLinear().domain([-1, 1]).range([height, 0]);
 
@@ -32,7 +37,9 @@ const svg = d3
   .attr('width', 900)
   .attr('height', height + margin.top + margin.bottom)
   .append('g')
-  .attr('transform', `translate(${margin.left}, ${margin.top})`);
+  .attr('transform', `translate(${margin.left}, ${margin.top})`)
+  .attr('width', 900)
+  .attr('height', height + margin.top + margin.bottom);
 
 const numArticlesPerDay = {};
 
@@ -40,6 +47,9 @@ const dotColorInterpolator = d3
   .scaleSequential()
   .domain([-1.0, 1.0])
   .interpolator(d3.interpolateViridis);
+
+// Define the div for the tooltip
+const tooltip = d3.select('body').append('div').attr('class', 'toolTip');
 
 // Read the data
 // TODO: Split this chunk into smaller, intentional pieces
@@ -57,17 +67,15 @@ d3.csv('/data/sentiment/trumptweetspolarities')
       .append('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScale).ticks(0)); // Create an x-axis component with d3.axisBottom
+      .call(
+        d3
+          .axisBottom(pseudoXScale)
+          .ticks(4)
+          .tickFormat(d3.timeFormat('%B %d, %Y'))
+      ); // Create an x-axis component with d3.axisBottom
 
     // Call the y-axis in a group tag
     svg.append('g').attr('class', 'y-axis').call(d3.axisLeft(yScale)); // Create a y-axis component with d3.axisLeft
-
-    // Append the path, bind the data, and call the line generator
-    // svg
-    //   .append('path')
-    //   .datum(numArticlesPerDayData) // Bind the data to the line
-    //   .attr('class', 'line') // TODO: Create custom CSS to style line
-    //   .attr('d', line); // Call the line generator
 
     // Append a circle for each datapoint
     svg
@@ -79,7 +87,16 @@ d3.csv('/data/sentiment/trumptweetspolarities')
       .attr('cx', (_, i) => xScale(i))
       .attr('cy', (d) => yScale(d.polarity))
       .attr('r', 5)
-      .attr('fill', (d) => dotColorInterpolator(d.polarity));
-    // TODO: Add on mouseover events on these datapoint circles
+      .attr('fill', (d) => dotColorInterpolator(d.polarity))
+      .on('mousemove', function (d) {
+        tooltip
+          .style('left', d3.event.pageX - 50 + 'px')
+          .style('top', d3.event.pageY - 70 + 'px')
+          .style('display', 'inline-block')
+          .html(`Polarity: ${d.polarity}`);
+      })
+      .on('mouseout', function (d) {
+        tooltip.style('display', 'none');
+      });
   })
   .catch((err) => console.log(err));

@@ -40,6 +40,7 @@ def publicmedia():
 def trumptweets():
     return render_template('sentiment/trumptweets.html')
 
+
 # TRANSPORTATION
 @app.route('/transportation')
 def transportation():
@@ -119,6 +120,10 @@ def trumpTweetsPolarities():
 @app.route("/data/sentiment/trumptweetspolaritiesonranges")
 def trumpTweetsPolaritiesOnRanges():
     return transfer_csv('trump-tweets-on-polarity-ranges.csv')
+
+@app.route("/data/sentiment/namedentitiesfrequencies")
+def namedEntitiesFrequencies():
+    return transfer_csv('named-entities-frequencies.csv')
 
 
 if __name__ == '__main__':

@@ -19,6 +19,7 @@ Trump Tweets {% endblock %} {% block head %}
   type="module"
   defer
 ></script>
+
 {% endblock %} {% block body %}
 
 <div class="content">
@@ -35,14 +36,20 @@ Trump Tweets {% endblock %} {% block head %}
     <p>
       The polarity values on the y-axis range from -1.0 to 1.0, inclusive, where
       -1.0 is most negative and 1.0 is most positive. The range of the x-axis is
-      the time between January 1, 2020 and April 15, 2020.
+      the time between January 1, 2020 and April 15, 2020. The densest part of
+      the scatterplot is the
     </p>
     <div id="bar-chart"></div>
     <p>
       This is a different perspective of looking at the data, where different
       ranges are create (in intervals of 0.2 within the overall range of [-1.0,
-      1.0]). We see that the majority of the tweets are within the -0.2 to 0.0
-      range. We also see that the barchart is skewed to the right.
+      1.0]). Each tweet that is less than or equal to the right endpoint of each
+      range is considered to be in that range. For example, if a tweet had a
+      polarity rating of 0.0, we would categorize that to be in the -0.2 to 0.0
+      range. We see that the majority of the tweets are within the -0.2 to 0.0
+      range. We also see that the barchart is skewed to the right. This means
+      the majority of the tweets are positive. However, there are many neutral
+      tweets that are rated as 0.0 and are counted in the -0.2 to 0.0 range.
     </p>
   </div>
 </div>
