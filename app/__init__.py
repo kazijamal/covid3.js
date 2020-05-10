@@ -8,7 +8,6 @@ P04 -- Let the Data Speak
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os
 import urllib.request
-import json
 from covid import Covid
 covid = Covid()
 
@@ -51,11 +50,6 @@ def transportation():
 @app.route('/transportation/nycpublic')
 def nycpublic():
     return render_template('transportation/nycpublic.html')
-
-
-@app.route('/transportation/mobility')
-def mobility():
-    return render_template('transportation/mobility.html')
 
 # NUMBERS
 @app.route('/numbers')
