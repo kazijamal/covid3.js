@@ -14,6 +14,9 @@ covid = Covid()
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
+DIR = os.path.dirname(__file__) or '.'
+DIR += '/'
+
 # DASHBOARD
 @app.route('/')
 def root():
@@ -127,5 +130,5 @@ def namedEntitiesFrequencies():
 
 
 if __name__ == '__main__':
-    app.debug = True
+    app.debug = False
     app.run()
