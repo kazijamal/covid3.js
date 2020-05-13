@@ -8,7 +8,7 @@ start = time.time()
 
 f = open('../../static/data/mta_turnstile.csv', 'a')
 
-date = datetime.datetime(2020, 5, 2)
+date = datetime.datetime(2020, 5, 9)
 
 url_date = correct_date(date)
 
