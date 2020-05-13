@@ -10,6 +10,10 @@
 
 coviD3.js is a website run by TwoFortyNine. We specialize in telling stories through beautiful and engaging data visualizations. With coviD3.js, we plan on analyzing the ways the coronavirus pandemic affects society outside of the hospital. For our first week, we plan on publishing articles on changes in media sentiment and transportation. 
 
+## Video Demo
+
+[video demo here](https://www.youtube.com/watch?v=EcRPQK6-89Q&feature=youtu.be)
+
 ## Instructions
 
 ### Assuming python3 and pip are already installed
