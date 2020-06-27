@@ -6,9 +6,11 @@ from process import send_request, process_request, correct_date
 
 start = time.time()
 
-f = open('../../static/data/mta_turnstile.csv', 'a')
+filepath = os.path.dirname(os.path.abspath(__file__))
 
-date = datetime.datetime(2020, 5, 9)
+f = open(f'{filepath}/../../static/data/mta_turnstile.csv', 'a')
+
+date = datetime.datetime(2020, 6, 20)
 
 url_date = correct_date(date)
 
