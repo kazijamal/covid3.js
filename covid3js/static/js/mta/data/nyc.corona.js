@@ -6,7 +6,7 @@ let zipdata = async () => {
 
     let casemap = new Object();
     cases.forEach(zip => {
-        casemap[zip.MODZCTA] = +zip.Positive
+        casemap[zip.modzcta] = +zip.Positive
     });
 
     let colormap = colorMapper(cases, 'Positive');
